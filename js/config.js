@@ -28,10 +28,10 @@ window.ENDCITY_CONFIG = {
    */
   donations: [{ username: "MkMonte", amount: 30 }],
 
-  /** PayPal payment link */
-  paypalUrl: "https://www.paypal.com/ncp/payment/AZRGUERUTKAHG",
+  /** PayPal hosted donate button */
+  paypalUrl: "https://www.paypal.com/donate/?hosted_button_id=KQ75P59W6Y22E",
 
-  /** Discord username for crypto donations (DM) */
+  /** Discord username for Apple Pay / crypto (DM) */
   discordUsername: "tcp.syn.ack",
 
   /** Public Discord invite — also update any <a data-discord-invite> hrefs if you change it. */
