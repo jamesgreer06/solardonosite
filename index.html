@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Endcity Survival — community Minecraft SMP at endcity.net. Java &amp; Bedrock. Donations, economy, fair play." />
+  <meta name="theme-color" content="#0a0a0c" />
+  <title>Endcity Survival — endcity.net</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="logo" href="#top">Endcity<span> Survival</span></a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#join">Join</a>
+      <a href="#about">About</a>
+      <a href="#rules">Rules</a>
+      <a href="#economy">Economy</a>
+      <a href="#donate">Donate</a>
+      <a href="commands.html">Commands</a>
+      <a class="nav-cta" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
+    </nav>
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-panel" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+  <div id="nav-panel" class="nav-panel" hidden>
+    <div class="nav-panel-group">
+      <a href="#join">Join</a>
+      <a href="#about">About</a>
+      <a href="#rules">Rules</a>
+      <a href="#economy">Economy</a>
+      <a href="#donate">Donate</a>
+      <a href="commands.html">Commands</a>
+      <a class="nav-cta nav-cta--panel" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
+    </div>
+  </div>
+
+  <main id="top">
+    <section class="hero-section" aria-labelledby="intro-heading">
+      <div class="hero-shell">
+        <div class="hero-primary">
+          <header class="hero-brand">
+            <p class="intro-eyebrow">endcity.net · Java &amp; Bedrock</p>
+            <h1 id="intro-heading" class="intro-title">Play together. <span class="intro-accent">Keep it fair.</span></h1>
+            <p class="hero-deck">Survival multiplayer with a player-run economy and a few conveniences—shop, auctions, homes—on a world we fund together. The core loop stays close to <strong>vanilla</strong>: we’re not chasing a modpack or minigame-server vibe.</p>
+          </header>
+
+          <div class="hero-about">
+            <p>
+              <strong>Endcity Survival</strong> is a community server: hosting is paid month to month with help from players who want the server to stay up.
+              There’s no pay-to-win—donations cover the bill, not perks.
+            </p>
+            <p>
+              Fair play matters—see <a class="domain-link" href="#rules">Rules</a> for how we handle cheats, mods, and community conduct. Everything else is normal survival: build, trade, explore.
+            </p>
+            <ul class="hero-highlights">
+              <li>Java <strong>1.21.11</strong>–latest and Bedrock via friend <strong class="join-gamertag" translate="no">joinendcity</strong></li>
+              <li>Economy, travel, and chat helpers sit on top of normal survival—not a reinvented game mode</li>
+              <li>Same address for everyone: <code class="hero-inline-code" translate="no">endcity.net</code></li>
+            </ul>
+          </div>
+
+          <div class="donor-strip-wrap">
+            <h2 class="donor-strip-title">Supporters</h2>
+            <div class="donor-strip" role="region" aria-label="Recent supporters" id="donor-strip-region">
+              <div class="donor-strip__track" id="donor-strip-track"></div>
+            </div>
+            <p class="donor-strip-empty" id="donor-strip-empty" hidden>
+              No supporters listed yet—thank you for helping keep Endcity online.
+            </p>
+          </div>
+
+          <div class="hero-actions hero-actions--primary">
+            <a class="btn btn-hero" href="#join">How to join</a>
+            <a class="btn btn-hero" href="#about">Community effort</a>
+            <a class="btn btn-hero" href="#rules">Rules</a>
+          </div>
+        </div>
+
+        <aside class="hero-aside" aria-label="Join and funding goal">
+          <div class="aside-panel aside-panel--join join-card">
+            <div class="join-card__head">
+              <h2 class="join-card__title">Join the server</h2>
+              <p class="join-card__deck">Same survival world — pick your edition.</p>
+            </div>
+            <div class="join-card__grid" role="group" aria-label="Java and Bedrock connection details">
+              <div class="join-card__col">
+                <p class="join-card__kicker">
+                  <span class="join-card__badge">Java</span>
+                  <span class="join-card__kicker-text">Server address</span>
+                </p>
+                <code class="join-card__value join-card__value--address" translate="no">endcity.net</code>
+                <p class="join-card__note">Versions 1.21.11–latest</p>
+              </div>
+              <div class="join-card__col join-card__col--bedrock">
+                <p class="join-card__kicker">
+                  <span class="join-card__badge">Bedrock</span>
+                  <span class="join-card__kicker-text">Crossplay friend</span>
+                </p>
+                <code class="join-card__value join-card__value--tag" translate="no">joinendcity</code>
+                <p class="join-card__note">Friends → their profile → Join</p>
+              </div>
+            </div>
+            <a class="join-card__link" href="#join">Versions &amp; troubleshooting</a>
+          </div>
+
+          <section id="donate" class="section-donate aside-fund" aria-labelledby="donate-heading">
+            <div class="donate-card donate-card--sidebar fund-card">
+              <div class="fund-card__head">
+                <h2 id="donate-heading" class="fund-card__title">Hosting</h2>
+                <p class="fund-card__deck">Community-funded — the server bill, not ranks or crates.</p>
+              </div>
+
+              <div class="fund-card__panel">
+                <p class="fund-card__period" id="goal-month">—</p>
+                <p class="fund-card__bill" id="bill-due-line"></p>
+                <p class="fund-card__billing-note" id="billing-note" hidden></p>
+
+                <div class="fund-card__grid">
+                  <div class="fund-card__col">
+                    <p class="fund-card__kicker">
+                      <span class="fund-card__badge">Goal</span>
+                      <span class="fund-card__kicker-text">Monthly target</span>
+                    </p>
+                    <p class="fund-card__figure" id="goal-amount">$0.00</p>
+                  </div>
+                  <div class="fund-card__col fund-card__col--split">
+                    <p class="fund-card__kicker">
+                      <span class="fund-card__badge">Progress</span>
+                      <span class="fund-card__kicker-text">Raised vs goal</span>
+                    </p>
+                    <p class="fund-card__figure fund-card__figure--progress" id="fund-raised-summary">—</p>
+                  </div>
+                </div>
+
+                <div
+                  class="progress-wrap progress-wrap--sidebar progress-wrap--fund"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow="0"
+                  aria-labelledby="goal-progress-label"
+                  id="goal-progressbar"
+                >
+                  <div class="progress-fill" id="progress-fill"></div>
+                  <span class="progress-label sr-only" id="goal-progress-label">$0.00 toward goal</span>
+                </div>
+
+                <p class="fund-card__status" id="goal-status"></p>
+                <p class="fund-card__rollover goal-rollover" id="goal-rollover" hidden></p>
+              </div>
+
+              <div class="fund-card__footer">
+                <a class="btn btn-primary btn-donate-sidebar" id="paypal-link" href="#" rel="noopener noreferrer" target="_blank">Donate</a>
+                <p class="fund-card__hint donate-instructions donate-instructions--compact">
+                  PayPal, Venmo, Apple Pay, or card — add your <strong>Minecraft username</strong> in the note.
+                </p>
+                <p class="fund-card__alts donate-alt-payments donate-alt-payments--compact" id="donate-alt-payments"></p>
+              </div>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </section>
+
+    <section id="join" class="section section-join">
+      <div class="section-inner">
+        <h2 class="section-title">How to join</h2>
+        <p class="section-intro join-lead">
+          One world for Java and Bedrock—same economy, same chat. Address for Java: <a class="domain-link" href="https://endcity.net">endcity.net</a>
+        </p>
+        <div class="join-grid">
+          <article class="join-card">
+            <h3 class="join-card-title">Java Edition</h3>
+            <p class="join-card-text">
+              Use <strong>1.21.11</strong> through <strong>latest</strong>. Add <code class="join-inline-code" translate="no">endcity.net</code> in Multiplayer—no port in the address field for the default.
+            </p>
+            <p class="join-address" translate="no"><code>endcity.net</code></p>
+          </article>
+          <article class="join-card">
+            <h3 class="join-card-title">Bedrock</h3>
+            <p class="join-card-text">
+              Open the <strong>Social</strong> tab, add <strong class="join-gamertag" translate="no">joinendcity</strong>, then join their game.
+            </p>
+          </article>
+        </div>
+        <div class="join-extra">
+          <h3 class="join-extra-title">First time or stuck?</h3>
+          <ul class="join-tips">
+            <li><strong>Wrong version:</strong> Java must be in the supported range—older clients won’t connect cleanly.</li>
+            <li><strong>Need help:</strong> Ping staff or players on <a class="domain-link" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a> with your edition (Java or Bedrock) and any error message.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section section-about">
+      <div class="section-inner">
+        <h2 class="section-title">How we run the server</h2>
+        <p class="section-intro">
+          Hosting costs land around <strong>$30 per month</strong>. Donations and the goal bar in the sidebar go straight toward that—<strong>not</strong> ranks, crates, or gameplay boosts. Surplus when we’re ahead <em>carries to the next bill</em> so the math stays transparent.
+        </p>
+        <p class="section-intro section-intro--tight">
+          <strong>Vanilla-first.</strong> Mining, building, and exploring stay the point. Plugins cover economy, crossplay, and quality-of-life (homes, warps, messaging)—enough to trade and travel together, not enough to replace the survival game underneath.
+        </p>
+        <div class="about-grid">
+          <article class="about-card">
+            <h3 class="about-card-title">Funding</h3>
+            <p class="about-card-text">The donate button opens PayPal checkout, which accepts PayPal, Venmo, Apple Pay, and card. For <strong>crypto</strong>, DM on Discord using the contact shown next to the donate card.</p>
+          </article>
+          <article class="about-card">
+            <h3 class="about-card-title">Crossplay</h3>
+            <p class="about-card-text">Bedrock connects through Geyser—you share the same survival world, economy, and warps as Java, not a separate lobby.</p>
+          </article>
+          <article class="about-card">
+            <h3 class="about-card-title">News &amp; votes</h3>
+            <p class="about-card-text">Announcements and support live on Discord. Voting links and the in-game Discord invite are there when you need them.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="rules" class="section section-rules">
+      <div class="section-inner narrow">
+        <h2 class="section-title">Rules</h2>
+        <p class="muted">Three principles—staff apply them with context, not robot bans.</p>
+        <ol class="rules-list">
+          <li><strong>No hacking or cheating</strong> — including x-ray, fly hacks, auto-clickers meant to bypass human play, or anything that mimics unfair client abilities.</li>
+          <li><strong>No unfair gameplay advantages</strong> — if it gives you an edge others can’t reasonably match, ask staff before using it.</li>
+          <li><strong>Respect the community</strong> — griefing or toxicity can still get you removed even if it isn’t “technical cheating.”</li>
+        </ol>
+        <div class="rules-extra">
+          <p><strong>Mods &amp; clients:</strong> Quality-of-life (e.g. zoom, minimaps without cave radar) is usually fine. Anything that reveals hidden ores, entities, or automates combat/building beyond fair human play is not.</p>
+          <p><strong>Enforcement:</strong> Staff may warn, mute, kick, or ban depending on severity and history. If you’re unsure whether something is allowed, ask before you rely on it in a competitive situation.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="economy" class="section section-economy">
+      <div class="section-inner">
+        <h2 class="section-title">Economy</h2>
+        <p class="section-intro">
+          Money is earned in-world—farming, selling, player trade—and spent at the server shop or with each other. Nothing here is bought with real money.
+        </p>
+        <div class="econ-grid">
+          <article class="econ-card">
+            <h3>Balances &amp; trade</h3>
+            <p>Pay other players, check your balance, see who’s richest, and choose whether you accept incoming payments—handy when you want privacy from tips or spam.</p>
+          </article>
+          <article class="econ-card">
+            <h3>Shop &amp; selling</h3>
+            <p>Buy from the server shop at listed prices, or turn loot into balance through the sell GUI and bulk-sell options so you’re not babysitting chests.</p>
+          </article>
+          <article class="econ-card">
+            <h3>Auction house</h3>
+            <p>List what you’re holding for a price, search what others listed, and track active sales, recent sales, and expired listings from one place.</p>
+          </article>
+        </div>
+        <p class="section-outro">Team systems and bounties are on the roadmap—watch Discord for when they go live.</p>
+      </div>
+    </section>
+
+    <section id="community" class="section section-community" aria-labelledby="community-heading">
+      <div class="section-inner section-inner--community">
+        <div class="community-copy">
+          <h2 id="community-heading" class="section-title">Community</h2>
+          <p class="section-intro community-lead">
+            Hang out on Discord for patch notes, build screenshots, and voice. In-game help and the rules screen are there when you need a quick reminder.
+          </p>
+        </div>
+        <div class="community-actions">
+          <a class="btn btn-primary btn-community" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Join Discord</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p><strong>Endcity Survival</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
+    <p class="footer-small">Not affiliated with Mojang or Microsoft. Minecraft is a trademark of Mojang Synergies AB.</p>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

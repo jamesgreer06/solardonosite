@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Endcity Survival — in-game commands, syntax, and Discord. Java &amp; Bedrock at endcity.net." />
+  <meta name="theme-color" content="#0a0a0c" />
+  <title>Commands &amp; help — Endcity Survival</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="logo" href="index.html">Endcity<span>Survival</span></a>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html#join">Join</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#rules">Rules</a>
+      <a href="index.html#economy">Economy</a>
+      <a href="index.html#donate">Donate</a>
+      <a href="commands.html" aria-current="page">Commands</a>
+      <a class="nav-cta" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
+    </nav>
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-panel" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+  <div id="nav-panel" class="nav-panel" hidden>
+    <div class="nav-panel-group">
+      <a href="index.html#join">Join</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#rules">Rules</a>
+      <a href="index.html#economy">Economy</a>
+      <a href="index.html#donate">Donate</a>
+      <a href="commands.html" aria-current="page">Commands</a>
+      <a class="nav-cta nav-cta--panel" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
+    </div>
+  </div>
+
+  <main class="page-commands-main" id="top">
+    <p class="intro-eyebrow">In-game</p>
+    <h1 class="intro-title">Commands &amp; help</h1>
+    <p class="page-commands-lead">
+      Command reference for <strong>endcity.net</strong>. Staff may adjust aliases or permissions over time—use <kbd>/help</kbd> in-game if something differs.
+    </p>
+
+    <section class="discord-card" id="discord" aria-labelledby="discord-heading">
+      <h2 id="discord-heading">Discord</h2>
+      <p>Announcements, support, and voice with the community. You can also run <kbd>/discord</kbd> in-game to copy the invite.</p>
+      <a id="discord-join-link" class="btn btn-primary" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Join Discord</a>
+    </section>
+
+    <section class="cmd-section" aria-labelledby="huskhomes-heading">
+      <h2 id="huskhomes-heading">Teleport, homes &amp; warps</h2>
+      <div class="cmd-table-wrap">
+        <table class="cmd-table">
+          <thead>
+            <tr>
+              <th scope="col">Command</th>
+              <th scope="col">What it does</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/spawn</code></td>
+              <td>Teleport to the world spawn.</td>
+            </tr>
+            <tr>
+              <td><code>/home [name]</code></td>
+              <td>Go to a saved home; omit <code>name</code> for the default home.</td>
+            </tr>
+            <tr>
+              <td><code>/sethome [name]</code></td>
+              <td>Save your current location as a home.</td>
+            </tr>
+            <tr>
+              <td><code>/delhome [name]</code></td>
+              <td>Remove a home. <code>/delhome all</code> removes every home.</td>
+            </tr>
+            <tr>
+              <td><code>/homes</code></td>
+              <td>List your homes (same as <code>/homelist</code>).</td>
+            </tr>
+            <tr>
+              <td><code>/tpa &lt;player&gt;</code></td>
+              <td>Ask to teleport to another player.</td>
+            </tr>
+            <tr>
+              <td><code>/tpaccept [user]</code></td>
+              <td>Accept a pending teleport request.</td>
+            </tr>
+            <tr>
+              <td><code>/tpdeny [user]</code></td>
+              <td>Decline a request (also <code>/tpdecline</code>, <code>/tpno</code>).</td>
+            </tr>
+            <tr>
+              <td><code>/rtp</code></td>
+              <td>Random teleport (arguments depend on server config).</td>
+            </tr>
+            <tr>
+              <td><code>/warp [name]</code></td>
+              <td>Teleport to a warp. <code>/warps</code> / <code>/warplist</code> lists them.</td>
+            </tr>
+            <tr>
+              <td><code>/back</code></td>
+              <td>Return to your previous location (e.g. after death or teleport).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="cmd-section" aria-labelledby="eco-heading">
+      <h2 id="eco-heading">Economy &amp; shop</h2>
+      <div class="cmd-table-wrap">
+        <table class="cmd-table">
+          <thead>
+            <tr>
+              <th scope="col">Command</th>
+              <th scope="col">What it does</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/pay &lt;player&gt; &lt;amount&gt;</code></td>
+              <td>Send currency to another player.</td>
+            </tr>
+            <tr>
+              <td><code>/bal [player]</code></td>
+              <td>Show balance (yours or another player’s if allowed).</td>
+            </tr>
+            <tr>
+              <td><code>/baltop [page]</code></td>
+              <td>Leaderboard of top balances.</td>
+            </tr>
+            <tr>
+              <td><code>/paytoggle</code></td>
+              <td>Toggle whether you can receive <code>/pay</code>.</td>
+            </tr>
+            <tr>
+              <td><code>/shop [section]</code></td>
+              <td>Open the server shop; optional section name.</td>
+            </tr>
+            <tr>
+              <td><code>/sell</code></td>
+              <td>Sell items by value. For bulk sales use <code>/sellall</code> or <code>/sellgui</code>.</td>
+            </tr>
+            <tr>
+              <td><code>/sellall</code> · <code>/sellall &lt;material&gt;</code> · <code>/sellall hand</code></td>
+              <td>Sell items from your inventory.</td>
+            </tr>
+            <tr>
+              <td><code>/sellgui</code></td>
+              <td>Open the graphical sell menu.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="cmd-section" aria-labelledby="chat-heading">
+      <h2 id="chat-heading">Chat &amp; messaging</h2>
+      <div class="cmd-table-wrap">
+        <table class="cmd-table">
+          <thead>
+            <tr>
+              <th scope="col">Command</th>
+              <th scope="col">What it does</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/msg &lt;player&gt; &lt;message&gt;</code></td>
+              <td>Private message (aliases often include <code>/tell</code>, <code>/m</code>, <code>/whisper</code>).</td>
+            </tr>
+            <tr>
+              <td><code>/r &lt;message&gt;</code></td>
+              <td>Reply to the last player who messaged you.</td>
+            </tr>
+            <tr>
+              <td><code>/ignore &lt;player&gt;</code></td>
+              <td>Hide chat from a player.</td>
+            </tr>
+            <tr>
+              <td><code>/ignorelist</code></td>
+              <td>List players you’re ignoring.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="cmd-section" aria-labelledby="ah-heading">
+      <h2 id="ah-heading">Auction house</h2>
+      <div class="cmd-table-wrap">
+        <table class="cmd-table">
+          <thead>
+            <tr>
+              <th scope="col">Command</th>
+              <th scope="col">What it does</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/ah</code></td>
+              <td>Open the auction house.</td>
+            </tr>
+            <tr>
+              <td><code>/ah search &lt;filter&gt;</code></td>
+              <td>View items matching the search filter.</td>
+            </tr>
+            <tr>
+              <td><code>/ah help</code></td>
+              <td>Show help for all auction commands.</td>
+            </tr>
+            <tr>
+              <td><code>/ah sell &lt;price&gt;</code></td>
+              <td>Sell the item you are holding in your hand.</td>
+            </tr>
+            <tr>
+              <td><code>/ah selling</code></td>
+              <td>View the items you are selling.</td>
+            </tr>
+            <tr>
+              <td><code>/ah sold</code></td>
+              <td>View items you have sold recently.</td>
+            </tr>
+            <tr>
+              <td><code>/ah expired</code></td>
+              <td>View your expired items to return.</td>
+            </tr>
+            <tr>
+              <td><code>/ah cancel</code></td>
+              <td>Cancel all your auctions.</td>
+            </tr>
+            <tr>
+              <td><code>/ah return</code></td>
+              <td>Return all your cancelled or expired items.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="cmd-section" aria-labelledby="ui-heading">
+      <h2 id="ui-heading">Scoreboard &amp; info</h2>
+      <div class="cmd-table-wrap">
+        <table class="cmd-table">
+          <thead>
+            <tr>
+              <th scope="col">Command</th>
+              <th scope="col">What it does</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/sb</code></td>
+              <td>Toggle the sidebar scoreboard. Requires permission.</td>
+            </tr>
+            <tr>
+              <td><code>/help</code></td>
+              <td>Server help and command list.</td>
+            </tr>
+            <tr>
+              <td><code>/rules</code></td>
+              <td>Display server rules.</td>
+            </tr>
+            <tr>
+              <td><code>/discord</code></td>
+              <td>Shows the Discord invite in chat.</td>
+            </tr>
+            <tr>
+              <td><code>/vote</code></td>
+              <td>Server voting links and rewards.</td>
+            </tr>
+            <tr>
+              <td><code>/suicide</code></td>
+              <td>Eliminate your character.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="cmd-section" aria-labelledby="teams-heading">
+      <h2 id="teams-heading">Teams</h2>
+      <p class="cmd-coming-soon">Coming soon.</p>
+    </section>
+
+    <section class="cmd-section" aria-labelledby="bounty-heading">
+      <h2 id="bounty-heading">Bounty</h2>
+      <p class="cmd-coming-soon">Coming soon.</p>
+    </section>
+
+    <p class="cmd-footnote">
+      References:
+      <a href="https://github.com/WiIIiam278/HuskHomes/wiki/Commands" rel="noopener noreferrer">Homes &amp; warps</a>,
+      <a href="https://wiki.gpplugins.com/economyshopgui/basics/commands" rel="noopener noreferrer">Shop &amp; sell</a>,
+      <a href="https://github.com/NEZNAMY/TAB/wiki/Feature-guide:-Scoreboard" rel="noopener noreferrer">Scoreboard</a>.
+    </p>
+  </main>
+
+  <footer class="site-footer">
+    <p><strong>Endcity Survival</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="index.html">Home</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
+    <p class="footer-small">Not affiliated with Mojang or Microsoft. Minecraft is a trademark of Mojang Synergies AB.</p>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
