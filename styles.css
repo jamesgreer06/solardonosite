@@ -349,10 +349,6 @@ main,
 }
 
 @media (max-width: 899px) {
-  .hero-aside {
-    order: -1;
-  }
-
   .hero-section {
     padding-bottom: 1.75rem;
   }
