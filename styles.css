@@ -1751,6 +1751,22 @@ main,
   line-height: 1.55;
 }
 
+.mods-policy-note {
+  margin: 0 0 0.85rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-width: 42rem;
+}
+
+.mods-policy-outro {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  max-width: 44rem;
+}
+
 .discord-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
