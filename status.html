@@ -87,7 +87,7 @@
           <button type="button" class="status-range__btn" data-range="12h">12h</button>
           <button type="button" class="status-range__btn is-active" data-range="24h">24h</button>
         </div>
-        <p class="status-meta status-range-note">Hover the graph for exact time and count.</p>
+        <p class="status-meta status-range-note" id="pc-graph-hint">Hover for time and count. Drag to zoom; double-click to reset.</p>
       </div>
       <div class="status-graph-wrap">
         <svg id="pc-graph" class="status-graph" viewBox="0 0 900 260" role="img" aria-labelledby="pc-graph-title pc-graph-desc">
@@ -96,9 +96,10 @@
           <g class="status-gridlines" id="pc-gridlines"></g>
           <g class="status-axis-labels status-axis-labels--y" id="pc-ylabels"></g>
           <g class="status-axis-labels status-axis-labels--x" id="pc-xlabels"></g>
-          <line id="pc-hover-line" class="status-hover-line" x1="0" x2="0" y1="18" y2="230" hidden></line>
           <path id="pc-line" class="status-line" d=""></path>
           <g class="status-points" id="pc-points"></g>
+          <line id="pc-hover-line" class="status-hover-line" x1="0" x2="0" y1="18" y2="230" hidden></line>
+          <rect id="pc-brush-rect" class="status-brush-rect" x="0" y="18" width="0" height="212" hidden></rect>
         </svg>
         <div class="status-tooltip" id="pc-tooltip" hidden>
           <p class="status-tooltip__time" id="pc-tooltip-time">--</p>

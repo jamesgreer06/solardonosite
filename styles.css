@@ -2046,6 +2046,8 @@ kbd {
   border-radius: var(--radius);
   background: linear-gradient(180deg, rgba(157, 139, 201, 0.06), rgba(20, 20, 24, 0.95));
   padding: 0.6rem;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .status-range {
@@ -2098,6 +2100,15 @@ kbd {
   width: 100%;
   height: auto;
   display: block;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.status-brush-rect {
+  fill: rgba(157, 139, 201, 0.22);
+  stroke: rgba(232, 230, 237, 0.35);
+  stroke-width: 1;
+  pointer-events: none;
 }
 
 .status-gridline {

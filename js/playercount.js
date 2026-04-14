@@ -18,6 +18,14 @@
   };
   var selectedRange = "24h";
   var MAX_POINTS = 5000;
+  var MIN_BRUSH_MS = 2 * 60 * 1000;
+  var MIN_DRAG_PX = 10;
+  var brushWindow = null;
+  var brushDrag = null;
+  var touchBrushPending = null;
+  var pointerOverGraph = false;
+  var lastPointerClientX = null;
+  var lastPointerClientY = null;
 
   var onlineEl = document.getElementById("pc-online");
   var maxEl = document.getElementById("pc-max");
@@ -42,6 +50,8 @@
   var tooltipEl = document.getElementById("pc-tooltip");
   var tooltipTimeEl = document.getElementById("pc-tooltip-time");
   var tooltipCountEl = document.getElementById("pc-tooltip-count");
+  var graphWrap = graph.closest(".status-graph-wrap");
+  var brushRectEl = document.getElementById("pc-brush-rect");
 
   var history = [];
   var allTimeHigh = { value: 0, timestamp: 0 };
@@ -91,25 +101,110 @@
     return new Date(ts).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
   }
 
-  function getRangeHistory() {
+  function getViewWindow() {
+    var now = Date.now();
+    if (brushWindow && brushWindow.startT != null && brushWindow.endT != null) {
+      var a = Math.min(brushWindow.startT, brushWindow.endT);
+      var b = Math.max(brushWindow.startT, brushWindow.endT);
+      b = Math.min(b, now);
+      var span = Math.max(MIN_BRUSH_MS, b - a);
+      return { minT: a, windowMs: span, mode: "brush" };
+    }
     var windowMs = RANGE_MS[selectedRange];
-    var cutoff = Date.now() - windowMs;
+    return { minT: now - windowMs, windowMs: windowMs, mode: "preset" };
+  }
+
+  function getRangeHistory() {
+    var vw = getViewWindow();
+    var minT = vw.minT;
+    var maxT = vw.minT + vw.windowMs;
     return history.filter(function (pt) {
-      return pt.t >= cutoff;
+      return pt.t >= minT && pt.t <= maxT;
     });
+  }
+
+  function updateGraphHeading() {
+    if (!graphHeading) return;
+    if (brushWindow && brushWindow.startT != null && brushWindow.endT != null) {
+      var a = Math.min(brushWindow.startT, brushWindow.endT);
+      var b = Math.max(brushWindow.startT, brushWindow.endT);
+      graphHeading.textContent = "Online trend (" + fmtDateTime(a) + " – " + fmtDateTime(b) + ")";
+      return;
+    }
+    var label =
+      selectedRange === "30m"
+        ? "30 Minutes"
+        : selectedRange === "6h"
+          ? "6 Hours"
+          : selectedRange === "12h"
+            ? "12 Hours"
+            : "24 Hours";
+    graphHeading.textContent = "Online Trend (Last " + label + ")";
   }
 
   function setRange(rangeKey) {
     if (!RANGE_MS[rangeKey]) return;
+    brushWindow = null;
     selectedRange = rangeKey;
     rangeButtons.forEach(function (btn) {
       btn.classList.toggle("is-active", btn.getAttribute("data-range") === rangeKey);
     });
-    if (graphHeading) {
-      var label = rangeKey === "30m" ? "30 Minutes" : rangeKey === "6h" ? "6 Hours" : rangeKey === "12h" ? "12 Hours" : "24 Hours";
-      graphHeading.textContent = "Online Trend (Last " + label + ")";
-    }
+    updateGraphHeading();
     drawGraph();
+  }
+
+  function clientXToSvgX(clientX) {
+    var rect = graph.getBoundingClientRect();
+    return ((clientX - rect.left) / Math.max(1, rect.width)) * 900;
+  }
+
+  function svgXToTime(svgX, geom) {
+    var pad = geom.pad;
+    var innerW = geom.width - pad.left - pad.right;
+    var ratio = (svgX - pad.left) / innerW;
+    ratio = Math.max(0, Math.min(1, ratio));
+    return geom.minT + ratio * geom.windowMs;
+  }
+
+  function timeToSvgX(t, geom) {
+    var pad = geom.pad;
+    var innerW = geom.width - pad.left - pad.right;
+    var ratio = (t - geom.minT) / geom.windowMs;
+    ratio = Math.max(0, Math.min(1, ratio));
+    return pad.left + ratio * innerW;
+  }
+
+  function clientXToTime(clientX, geom) {
+    return svgXToTime(clientXToSvgX(clientX), geom);
+  }
+
+  function updateBrushRect(clientX0, clientX1) {
+    if (!brushRectEl || !lastGeometry) return;
+    var sx0 = clientXToSvgX(clientX0);
+    var sx1 = clientXToSvgX(clientX1);
+    var pad = lastGeometry.pad;
+    var w = lastGeometry.width;
+    var innerW = w - pad.left - pad.right;
+    var left = Math.min(sx0, sx1);
+    var right = Math.max(sx0, sx1);
+    left = Math.max(pad.left, Math.min(pad.left + innerW, left));
+    right = Math.max(pad.left, Math.min(pad.left + innerW, right));
+    var rw = right - left;
+    brushRectEl.setAttribute("x", String(left));
+    brushRectEl.setAttribute("width", String(Math.max(0, rw)));
+    brushRectEl.hidden = rw < 2;
+  }
+
+  function hideBrushRect() {
+    if (!brushRectEl) return;
+    brushRectEl.hidden = true;
+    brushRectEl.setAttribute("width", "0");
+  }
+
+  function clearRangeButtonsActive() {
+    rangeButtons.forEach(function (btn) {
+      btn.classList.remove("is-active");
+    });
   }
 
   function addSample(value) {
@@ -165,10 +260,10 @@
     var pad = { top: 18, right: 24, bottom: 30, left: 24 };
     var innerW = width - pad.left - pad.right;
     var innerH = height - pad.top - pad.bottom;
+    var vw = getViewWindow();
+    var windowMs = vw.windowMs;
+    var minT = vw.minT;
     var rangeHistory = getRangeHistory();
-    var now = Date.now();
-    var windowMs = RANGE_MS[selectedRange];
-    var minT = now - windowMs;
     var maxY = rangeHistory.length
       ? Math.max(
           10,
@@ -225,6 +320,7 @@
       lineEl.setAttribute("d", "");
       lastGeometry = null;
       updatePeakCards();
+      hideTooltip();
       return;
     }
 
@@ -254,15 +350,16 @@
       innerW: innerW,
     };
     updatePeakCards();
+    if (pointerOverGraph && lastPointerClientX != null && !brushDrag) {
+      showTooltip(lastPointerClientX, lastPointerClientY);
+    } else if (!pointerOverGraph) {
+      hideTooltip();
+    }
   }
 
   function showTooltip(clientX, clientY) {
-    if (!lastGeometry || !lastRangeHistory.length) return;
-    var rect = graph.getBoundingClientRect();
-    var relX = clientX - rect.left;
-    var clamped = Math.max(lastGeometry.pad.left, Math.min(rect.width - lastGeometry.pad.right, relX));
-    var ratio = (clamped - lastGeometry.pad.left) / Math.max(1, rect.width - lastGeometry.pad.left - lastGeometry.pad.right);
-    var targetT = lastGeometry.minT + ratio * lastGeometry.windowMs;
+    if (!pointerOverGraph || brushDrag || !lastGeometry || !lastRangeHistory.length) return;
+    var targetT = clientXToTime(clientX, lastGeometry);
 
     var nearestIdx = 0;
     var nearestDiff = Number.POSITIVE_INFINITY;
@@ -274,19 +371,23 @@
       }
     }
     var point = lastRangeHistory[nearestIdx];
-    var px = lastGeometry.pad.left + ((point.t - lastGeometry.minT) / lastGeometry.windowMs) * (rect.width - lastGeometry.pad.left - lastGeometry.pad.right);
-    var py =
-      lastGeometry.pad.top +
-      (1 - point.v / Math.max(1, lastGeometry.maxY)) * (rect.height - lastGeometry.pad.top - lastGeometry.pad.bottom);
+    var rect = graph.getBoundingClientRect();
+    var svgX = timeToSvgX(point.t, lastGeometry);
+    var gh = lastGeometry.height;
+    var gpad = lastGeometry.pad;
+    var plotTopPx = (gpad.top / gh) * rect.height;
+    var plotHpx = ((gh - gpad.top - gpad.bottom) / gh) * rect.height;
+    var py = plotTopPx + (1 - point.v / Math.max(1, lastGeometry.maxY)) * plotHpx;
 
     hoverLineEl.hidden = false;
-    hoverLineEl.setAttribute("x1", String((px / rect.width) * 900));
-    hoverLineEl.setAttribute("x2", String((px / rect.width) * 900));
+    hoverLineEl.setAttribute("x1", String(svgX));
+    hoverLineEl.setAttribute("x2", String(svgX));
 
     tooltipTimeEl.textContent = fmtDateTime(point.t);
     tooltipCountEl.textContent = String(point.v);
 
     tooltipEl.hidden = false;
+    var px = (svgX / 900) * rect.width;
     var tipX = Math.min(rect.width - 190, Math.max(8, px + 10));
     var tipY = Math.max(8, py - 20);
     tooltipEl.style.transform = "translate(" + tipX.toFixed(0) + "px, " + tipY.toFixed(0) + "px)";
@@ -295,6 +396,31 @@
   function hideTooltip() {
     if (tooltipEl) tooltipEl.hidden = true;
     if (hoverLineEl) hoverLineEl.hidden = true;
+  }
+
+  function completeBrushDrag() {
+    if (!brushDrag) return;
+    var drag = brushDrag;
+    brushDrag = null;
+    hideBrushRect();
+    if (!lastGeometry) return;
+    if (!drag.moved && Math.abs(drag.x - drag.startX) < MIN_DRAG_PX) {
+      return;
+    }
+    var sx0 = clientXToSvgX(drag.startX);
+    var sx1 = clientXToSvgX(drag.x);
+    var geom = lastGeometry;
+    var t0 = svgXToTime(Math.min(sx0, sx1), geom);
+    var t1 = svgXToTime(Math.max(sx0, sx1), geom);
+    var now = Date.now();
+    t1 = Math.min(t1, now);
+    if (t1 - t0 < MIN_BRUSH_MS) {
+      return;
+    }
+    brushWindow = { startT: t0, endT: t1 };
+    clearRangeButtonsActive();
+    updateGraphHeading();
+    drawGraph();
   }
 
   function parseCurrentPayload(data) {
@@ -399,26 +525,138 @@
 
   Promise.all([loadSharedHistory(), loadStats()]).finally(function () {
     setRange(selectedRange);
-    drawGraph();
     fetchStatus();
     window.setInterval(fetchStatus, POLL_MS);
   });
 
-  graph.addEventListener("mousemove", function (event) {
-    showTooltip(event.clientX, event.clientY);
+  if (graphWrap) {
+    graphWrap.addEventListener("mouseenter", function () {
+      pointerOverGraph = true;
+    });
+    graphWrap.addEventListener("touchstart", function () {
+      pointerOverGraph = true;
+    }, { passive: true });
+    graphWrap.addEventListener("mouseleave", function () {
+      pointerOverGraph = false;
+      lastPointerClientX = null;
+      lastPointerClientY = null;
+      hideTooltip();
+      if (brushDrag) {
+        brushDrag = null;
+        hideBrushRect();
+      }
+      touchBrushPending = null;
+    });
+    graphWrap.addEventListener("mousemove", function (event) {
+      lastPointerClientX = event.clientX;
+      lastPointerClientY = event.clientY;
+      if (!brushDrag) {
+        showTooltip(event.clientX, event.clientY);
+      }
+    });
+    graphWrap.addEventListener(
+      "touchmove",
+      function (event) {
+        var t = event.touches && event.touches[0];
+        if (!t) return;
+        lastPointerClientX = t.clientX;
+        lastPointerClientY = t.clientY;
+        if (!brushDrag) {
+          showTooltip(t.clientX, t.clientY);
+        }
+      },
+      { passive: true }
+    );
+    graphWrap.addEventListener("touchend", function () {
+      pointerOverGraph = false;
+      lastPointerClientX = null;
+      lastPointerClientY = null;
+      hideTooltip();
+    });
+  }
+
+  graph.addEventListener("mousedown", function (event) {
+    if (event.button !== 0) return;
+    if (!lastGeometry) return;
+    if (brushDrag && brushDrag.isTouch) return;
+    event.preventDefault();
+    brushDrag = { startX: event.clientX, x: event.clientX, moved: false, isTouch: false };
+    hideTooltip();
   });
-  graph.addEventListener("mouseleave", hideTooltip);
-  graph.addEventListener("touchstart", function (event) {
-    if (event.touches && event.touches[0]) {
-      showTooltip(event.touches[0].clientX, event.touches[0].clientY);
+
+  window.addEventListener("mousemove", function (event) {
+    if (!brushDrag || brushDrag.isTouch) return;
+    brushDrag.x = event.clientX;
+    if (Math.abs(brushDrag.x - brushDrag.startX) >= MIN_DRAG_PX) {
+      brushDrag.moved = true;
     }
+    updateBrushRect(brushDrag.startX, brushDrag.x);
   });
-  graph.addEventListener("touchmove", function (event) {
-    if (event.touches && event.touches[0]) {
-      showTooltip(event.touches[0].clientX, event.touches[0].clientY);
-    }
+
+  window.addEventListener("mouseup", function () {
+    if (!brushDrag || brushDrag.isTouch) return;
+    completeBrushDrag();
   });
-  graph.addEventListener("touchend", hideTooltip);
+
+  graph.addEventListener(
+    "touchstart",
+    function (event) {
+      var t = event.touches && event.touches[0];
+      if (!t || !lastGeometry) return;
+      touchBrushPending = { startX: t.clientX };
+    },
+    { passive: true }
+  );
+
+  graph.addEventListener(
+    "touchmove",
+    function (event) {
+      var t = event.touches && event.touches[0];
+      if (!t || !lastGeometry) return;
+      if (touchBrushPending && !brushDrag) {
+        if (Math.abs(t.clientX - touchBrushPending.startX) >= MIN_DRAG_PX) {
+          brushDrag = { startX: touchBrushPending.startX, x: t.clientX, moved: true, isTouch: true };
+          touchBrushPending = null;
+          hideTooltip();
+        }
+      }
+      if (brushDrag && brushDrag.isTouch) {
+        event.preventDefault();
+        brushDrag.x = t.clientX;
+        brushDrag.moved = true;
+        updateBrushRect(brushDrag.startX, brushDrag.x);
+      }
+    },
+    { passive: false }
+  );
+
+  graph.addEventListener(
+    "touchend",
+    function (event) {
+      touchBrushPending = null;
+      if (!brushDrag || !brushDrag.isTouch) return;
+      var t = event.changedTouches && event.changedTouches[0];
+      if (t) {
+        brushDrag.x = t.clientX;
+      }
+      completeBrushDrag();
+    },
+    { passive: true }
+  );
+
+  graph.addEventListener("dblclick", function (event) {
+    event.preventDefault();
+    if (!brushWindow) return;
+    brushWindow = null;
+    brushDrag = null;
+    touchBrushPending = null;
+    hideBrushRect();
+    rangeButtons.forEach(function (btn) {
+      btn.classList.toggle("is-active", btn.getAttribute("data-range") === selectedRange);
+    });
+    updateGraphHeading();
+    drawGraph();
+  });
 
   var copyIpBtn = document.getElementById("pc-copy-ip");
   var copyIpLabel = document.getElementById("pc-copy-ip-label");
