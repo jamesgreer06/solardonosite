@@ -6,7 +6,7 @@ window.ENDCITY_CONFIG = {
   /** Label for the bill you’re raising toward (e.g. the upcoming month after the one that’s paid). */
   fundraisingForLabel: "May 2026",
 
-  monthlyBill: 30,
+  monthlyBill: 50,
 
   /** Day of the month the bill is due (shown on the page). */
   billDueDay: 1,
