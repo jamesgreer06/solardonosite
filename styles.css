@@ -1891,6 +1891,139 @@ kbd {
   font-weight: 600;
 }
 
+/* Playercount / status page */
+.page-status-main .intro-title {
+  margin-bottom: 0.25rem;
+}
+
+.page-status-main .page-commands-lead {
+  max-width: 52rem;
+  margin-bottom: 1.35rem;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1.4rem;
+}
+
+.status-card {
+  background: linear-gradient(160deg, rgba(157, 139, 201, 0.08), rgba(15, 15, 18, 0.9));
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 0.95rem 1rem;
+  box-shadow: var(--shadow);
+}
+
+.status-card h2 {
+  margin: 0 0 0.42rem;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.status-card--primary {
+  background: linear-gradient(165deg, rgba(157, 139, 201, 0.22), rgba(15, 15, 18, 0.9));
+}
+
+.status-value {
+  margin: 0 0 0.2rem;
+  font-size: 1.85rem;
+  line-height: 1.1;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.status-value--small {
+  font-size: 1.55rem;
+}
+
+.status-sep {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.status-state {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #98e9b8;
+}
+
+.status-state.is-offline {
+  color: #e8a0a0;
+}
+
+.status-meta {
+  margin: 0.15rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.status-graph-wrap {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(157, 139, 201, 0.06), rgba(20, 20, 24, 0.95));
+  padding: 0.6rem;
+}
+
+.status-graph {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.status-gridline {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+}
+
+.status-axis-label {
+  fill: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-sans);
+}
+
+.status-line {
+  fill: none;
+  stroke: #d2c6e8;
+  stroke-width: 2.25;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px rgba(196, 181, 224, 0.18));
+}
+
+.status-point--latest {
+  fill: var(--accent-bright);
+  stroke: var(--bg-card);
+  stroke-width: 1.5;
+}
+
+.status-player-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.status-player-list li {
+  border: 1px solid var(--border-strong);
+  background: linear-gradient(180deg, rgba(157, 139, 201, 0.14), rgba(15, 15, 18, 0.92));
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.38rem 0.7rem;
+  font-size: 0.86rem;
+  line-height: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
