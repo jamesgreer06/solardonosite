@@ -41,5 +41,5 @@ window.ENDCITY_CONFIG = {
    * Optional: deployed Cloudflare Worker base URL for playercount API.
    * Example: "https://endcity-playercount.your-subdomain.workers.dev"
    */
-  playercountApiBase: "https://solardonosite.admiralwhite334.workers.dev",
+  playercountApiBase: "https://endcity-playercount.admiralwhite334.workers.dev",
 };
