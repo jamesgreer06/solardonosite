@@ -1906,7 +1906,7 @@ kbd {
   grid-template-columns: minmax(260px, 1.2fr) minmax(240px, 1fr);
   gap: 0.75rem;
   margin: 0 0 1.4rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 .status-card {
@@ -1915,6 +1915,7 @@ kbd {
   border-radius: var(--radius-lg);
   padding: 0.95rem 1rem;
   box-shadow: var(--shadow);
+  height: 100%;
 }
 
 .status-card h2 {
@@ -1947,6 +1948,8 @@ kbd {
 /* Combined 24h + all-time peak — horizontal, no wasted height */
 .status-card--peaks {
   padding: 0.65rem 0.75rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .status-peaks {
@@ -1991,21 +1994,16 @@ kbd {
 }
 
 .status-quick-actions {
-  margin-top: 0.45rem;
-  padding-top: 0.45rem;
+  margin-top: auto;
+  padding-top: 0.55rem;
   border-top: 1px solid var(--border-strong);
 }
 
-.status-quick-actions__btn {
-  min-height: 0;
-  padding: 0.42rem 0.7rem;
-  font-size: 0.78rem;
-}
-
 .status-quick-actions__hint {
-  margin: 0.3rem 0 0;
+  margin: 0.32rem 0 0;
   font-size: 0.72rem;
   color: var(--text-muted);
+  line-height: 1.35;
 }
 
 @media (max-width: 380px) {
@@ -2194,9 +2192,11 @@ kbd {
 }
 
 .status-player-list__more {
-  border-style: dashed !important;
-  color: var(--accent-bright) !important;
-  font-weight: 600;
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--text-muted) !important;
+  font-weight: 500;
+  padding-left: 0.1rem;
 }
 
 @media (max-width: 700px) {
