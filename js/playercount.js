@@ -42,7 +42,6 @@
   var tooltipEl = document.getElementById("pc-tooltip");
   var tooltipTimeEl = document.getElementById("pc-tooltip-time");
   var tooltipCountEl = document.getElementById("pc-tooltip-count");
-  var tooltipDeltaEl = document.getElementById("pc-tooltip-delta");
 
   var history = [];
   var allTimeHigh = { value: 0, timestamp: 0 };
@@ -266,9 +265,6 @@
       }
     }
     var point = lastRangeHistory[nearestIdx];
-    var prev = nearestIdx > 0 ? lastRangeHistory[nearestIdx - 1] : null;
-    var delta = prev ? point.v - prev.v : 0;
-
     var px = lastGeometry.pad.left + ((point.t - lastGeometry.minT) / lastGeometry.windowMs) * (rect.width - lastGeometry.pad.left - lastGeometry.pad.right);
     var py =
       lastGeometry.pad.top +
@@ -280,8 +276,6 @@
 
     tooltipTimeEl.textContent = fmtDateTime(point.t);
     tooltipCountEl.textContent = String(point.v);
-    tooltipDeltaEl.textContent =
-      prev == null ? "Delta --" : "Delta " + (delta > 0 ? "+" : "") + delta;
 
     tooltipEl.hidden = false;
     var tipX = Math.min(rect.width - 190, Math.max(8, px + 10));

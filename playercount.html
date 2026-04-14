@@ -57,15 +57,20 @@
         <p class="status-meta" id="pc-server-version">Version: checking...</p>
         <p class="status-meta" id="pc-last-updated">Updated just now</p>
       </article>
-      <article class="status-card">
-        <h2>24h Peak</h2>
-        <p class="status-value status-value--small" id="pc-peak-24h">0</p>
-        <p class="status-meta" id="pc-peak-24h-time">24h peak time: --</p>
-      </article>
-      <article class="status-card">
-        <h2>All-Time High</h2>
-        <p class="status-value status-value--small" id="pc-alltime-high">0</p>
-        <p class="status-meta" id="pc-alltime-time">All-time peak time: --</p>
+      <article class="status-card status-card--peaks" aria-label="Peak player counts">
+        <div class="status-peaks">
+          <div class="status-peak-block">
+            <h2>24h peak</h2>
+            <p class="status-peak-value" id="pc-peak-24h">0</p>
+            <p class="status-peak-meta" id="pc-peak-24h-time">—</p>
+          </div>
+          <div class="status-peaks__rule" aria-hidden="true"></div>
+          <div class="status-peak-block">
+            <h2>All-time high</h2>
+            <p class="status-peak-value" id="pc-alltime-high">0</p>
+            <p class="status-peak-meta" id="pc-alltime-time">—</p>
+          </div>
+        </div>
       </article>
     </section>
 
@@ -94,7 +99,6 @@
         <div class="status-tooltip" id="pc-tooltip" hidden>
           <p class="status-tooltip__time" id="pc-tooltip-time">--</p>
           <p class="status-tooltip__count"><strong id="pc-tooltip-count">0</strong> online</p>
-          <p class="status-tooltip__delta" id="pc-tooltip-delta">--</p>
         </div>
       </div>
     </section>
