@@ -1973,6 +1973,35 @@ kbd {
   padding: 0.6rem;
 }
 
+.status-range {
+  display: inline-flex;
+  gap: 0.35rem;
+  margin: 0 0 0.6rem;
+  flex-wrap: wrap;
+}
+
+.status-range__btn {
+  border: 1px solid var(--border-strong);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.status-range__btn:hover {
+  color: var(--text);
+}
+
+.status-range__btn.is-active {
+  color: var(--text);
+  border-color: var(--accent-muted);
+  background: color-mix(in srgb, var(--accent-deep) 28%, var(--bg-card));
+}
+
 .status-graph {
   width: 100%;
   height: auto;

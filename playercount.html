@@ -74,6 +74,12 @@
 
     <section class="cmd-section" aria-labelledby="pc-graph-heading">
       <h2 id="pc-graph-heading">Online Trend (Last 24 Hours)</h2>
+      <div class="status-range" role="group" aria-label="Graph time range">
+        <button type="button" class="status-range__btn" data-range="30m">30m</button>
+        <button type="button" class="status-range__btn" data-range="6h">6h</button>
+        <button type="button" class="status-range__btn" data-range="12h">12h</button>
+        <button type="button" class="status-range__btn is-active" data-range="24h">24h</button>
+      </div>
       <div class="status-graph-wrap">
         <svg id="pc-graph" class="status-graph" viewBox="0 0 900 260" role="img" aria-labelledby="pc-graph-title pc-graph-desc">
           <title id="pc-graph-title">Player count history graph</title>

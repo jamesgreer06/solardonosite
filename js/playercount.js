@@ -4,13 +4,20 @@
 
   var cfg = window.ENDCITY_CONFIG || window.SOLAR_CONFIG || {};
   var apiBase = String(cfg.playercountApiBase || "").trim().replace(/\/+$/, "");
-  var API_URL = apiBase ? apiBase + "/current" : "https://api.mcsrvstat.us/3/endcity.net";
-  var HISTORY_URL = apiBase ? apiBase + "/history" : "data/playercount-history.json";
-  var STATS_URL = apiBase ? apiBase + "/stats" : "data/playercount-stats.json";
+  if (!apiBase) return;
+
+  var API_URL = apiBase + "/current";
+  var HISTORY_URL = apiBase + "/history";
+  var STATS_URL = apiBase + "/stats";
   var POLL_MS = 30 * 1000;
-  var HISTORY_WINDOW_MS = 24 * 60 * 60 * 1000;
-  var LOCAL_HISTORY_KEY = "endcity_playercount_history_local_v1";
-  var MAX_SAMPLES = 3000;
+  var RANGE_MS = {
+    "30m": 30 * 60 * 1000,
+    "6h": 6 * 60 * 60 * 1000,
+    "12h": 12 * 60 * 60 * 1000,
+    "24h": 24 * 60 * 60 * 1000,
+  };
+  var selectedRange = "24h";
+  var MAX_POINTS = 5000;
 
   var onlineEl = document.getElementById("pc-online");
   var maxEl = document.getElementById("pc-max");
@@ -29,6 +36,8 @@
   var gridlinesEl = document.getElementById("pc-gridlines");
   var yLabelsEl = document.getElementById("pc-ylabels");
   var xLabelsEl = document.getElementById("pc-xlabels");
+  var graphHeading = document.getElementById("pc-graph-heading");
+  var rangeButtons = Array.prototype.slice.call(document.querySelectorAll("[data-range]"));
 
   var history = [];
   var allTimeHigh = { value: 0, timestamp: 0 };
@@ -42,7 +51,7 @@
       .map(function (pt) {
         return { t: Number(pt.t), v: Number(pt.v) };
       })
-      .slice(-MAX_SAMPLES);
+      .slice(-MAX_POINTS);
   }
 
   function normalizePlayers(list) {
@@ -68,35 +77,6 @@
     );
   }
 
-  function loadLocalHistory() {
-    try {
-      var raw = window.localStorage.getItem(LOCAL_HISTORY_KEY);
-      return raw ? normalizeHistory(JSON.parse(raw)) : [];
-    } catch (err) {
-      return [];
-    }
-  }
-
-  function saveLocalHistory() {
-    try {
-      window.localStorage.setItem(LOCAL_HISTORY_KEY, JSON.stringify(history.slice(-MAX_SAMPLES)));
-    } catch (err) {
-      // ignore
-    }
-  }
-
-  function mergeHistory(baseList, extraList) {
-    var merged = new Map();
-    baseList.concat(extraList).forEach(function (pt) {
-      merged.set(String(pt.t), { t: pt.t, v: pt.v });
-    });
-    return Array.from(merged.values())
-      .sort(function (a, b) {
-        return a.t - b.t;
-      })
-      .slice(-MAX_SAMPLES);
-  }
-
   function fmtTime(ts) {
     return new Date(ts).toLocaleTimeString([], { hour: "numeric", minute: "2-digit", second: "2-digit" });
   }
@@ -105,14 +85,30 @@
     return new Date(ts).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
   }
 
-  function addSample(value) {
-    history.push({ t: Date.now(), v: value });
-    var cutoff = Date.now() - HISTORY_WINDOW_MS;
-    history = history.filter(function (pt) {
+  function getRangeHistory() {
+    var windowMs = RANGE_MS[selectedRange];
+    var cutoff = Date.now() - windowMs;
+    return history.filter(function (pt) {
       return pt.t >= cutoff;
     });
-    if (history.length > MAX_SAMPLES) history = history.slice(-MAX_SAMPLES);
-    saveLocalHistory();
+  }
+
+  function setRange(rangeKey) {
+    if (!RANGE_MS[rangeKey]) return;
+    selectedRange = rangeKey;
+    rangeButtons.forEach(function (btn) {
+      btn.classList.toggle("is-active", btn.getAttribute("data-range") === rangeKey);
+    });
+    if (graphHeading) {
+      var label = rangeKey === "30m" ? "30 Minutes" : rangeKey === "6h" ? "6 Hours" : rangeKey === "12h" ? "12 Hours" : "24 Hours";
+      graphHeading.textContent = "Online Trend (Last " + label + ")";
+    }
+    drawGraph();
+  }
+
+  function addSample(value) {
+    history.push({ t: Date.now(), v: value });
+    if (history.length > MAX_POINTS) history = history.slice(-MAX_POINTS);
   }
 
   function setPlayers(list) {
@@ -130,8 +126,12 @@
   }
 
   function updatePeakCards() {
-    if (history.length > 0) {
-      var peak24h = history.reduce(function (best, pt) {
+    var fullDayMs = RANGE_MS["24h"];
+    var daily = history.filter(function (pt) {
+      return pt.t >= Date.now() - fullDayMs;
+    });
+    if (daily.length > 0) {
+      var peak24h = daily.reduce(function (best, pt) {
         return !best || pt.v > best.v ? pt : best;
       }, null);
       peak24hEl.textContent = String(peak24h.v);
@@ -150,19 +150,21 @@
     var pad = { top: 18, right: 24, bottom: 30, left: 24 };
     var innerW = width - pad.left - pad.right;
     var innerH = height - pad.top - pad.bottom;
+    var rangeHistory = getRangeHistory();
     var now = Date.now();
-    var minT = now - HISTORY_WINDOW_MS;
-    var maxY = history.length
+    var windowMs = RANGE_MS[selectedRange];
+    var minT = now - windowMs;
+    var maxY = rangeHistory.length
       ? Math.max(
           10,
-          history.reduce(function (m, pt) {
+          rangeHistory.reduce(function (m, pt) {
             return Math.max(m, pt.v);
           }, 0) + 2
         )
       : 10;
 
     function xScale(t) {
-      return pad.left + ((t - minT) / HISTORY_WINDOW_MS) * innerW;
+      return pad.left + ((t - minT) / windowMs) * innerW;
     }
     function yScale(v) {
       return pad.top + (1 - v / Math.max(1, maxY)) * innerH;
@@ -192,7 +194,7 @@
     }
 
     for (var j = 0; j <= 8; j += 1) {
-      var tick = minT + (HISTORY_WINDOW_MS / 8) * j;
+      var tick = minT + (windowMs / 8) * j;
       var x = xScale(tick);
       var xLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
       xLabel.setAttribute("x", String(x));
@@ -203,18 +205,18 @@
       xLabelsEl.appendChild(xLabel);
     }
 
-    if (!history.length) {
+    if (!rangeHistory.length) {
       lineEl.setAttribute("d", "");
       updatePeakCards();
       return;
     }
 
     var d = "";
-    history.forEach(function (pt, idx) {
+    rangeHistory.forEach(function (pt, idx) {
       var x = xScale(pt.t);
       var y = yScale(pt.v);
       d += (idx === 0 ? "M" : " L") + x.toFixed(2) + " " + y.toFixed(2);
-      if (idx === history.length - 1) {
+      if (idx === rangeHistory.length - 1) {
         var dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         dot.setAttribute("cx", x.toFixed(2));
         dot.setAttribute("cy", y.toFixed(2));
@@ -228,21 +230,11 @@
   }
 
   function parseCurrentPayload(data) {
-    if (apiBase) {
-      return {
-        online: data && data.online === true,
-        onlineCount: Number((data && data.onlineCount) || 0),
-        maxCount: Number((data && data.maxCount) || 0),
-        players: normalizePlayers((data && data.players) || []),
-        version: (data && data.version) || "Unknown",
-      };
-    }
-    var players = (data && data.players) || {};
     return {
       online: data && data.online === true,
-      onlineCount: Number(players.online) || 0,
-      maxCount: Number(players.max) || 0,
-      players: normalizePlayers(players.list),
+      onlineCount: Number((data && data.onlineCount) || 0),
+      maxCount: Number((data && data.maxCount) || 0),
+      players: normalizePlayers((data && data.players) || []),
       version: (data && data.version) || "Unknown",
     };
   }
@@ -298,18 +290,17 @@
         return res.json();
       })
       .then(function (data) {
-        var sharedList = Array.isArray(data) ? data : data && Array.isArray(data.history) ? data.history : [];
-        history = mergeHistory(normalizeHistory(sharedList), loadLocalHistory());
+        var sharedList = data && Array.isArray(data.history) ? data.history : [];
+        history = normalizeHistory(sharedList);
         if (data && !Array.isArray(data)) {
           var ath = Number(data.allTimeHigh);
           var athAt = Number(data.allTimeHighAt);
           if (Number.isFinite(ath)) allTimeHigh.value = ath;
           if (Number.isFinite(athAt)) allTimeHigh.timestamp = athAt;
         }
-        saveLocalHistory();
       })
       .catch(function () {
-        history = loadLocalHistory();
+        history = [];
       });
   }
 
@@ -327,11 +318,18 @@
         if (Number.isFinite(at)) allTimeHigh.timestamp = at;
       })
       .catch(function () {
-        // keep existing
+        allTimeHigh = { value: 0, timestamp: 0 };
       });
   }
 
+  rangeButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      setRange(btn.getAttribute("data-range"));
+    });
+  });
+
   Promise.all([loadSharedHistory(), loadStats()]).finally(function () {
+    setRange(selectedRange);
     drawGraph();
     fetchStatus();
     window.setInterval(fetchStatus, POLL_MS);
