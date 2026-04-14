@@ -39,8 +39,6 @@
   var hoverLineEl = document.getElementById("pc-hover-line");
   var graphHeading = document.getElementById("pc-graph-heading");
   var rangeButtons = Array.prototype.slice.call(document.querySelectorAll("[data-range]"));
-  var rangeAvgEl = document.getElementById("pc-range-avg");
-  var rangeLowEl = document.getElementById("pc-range-low");
   var tooltipEl = document.getElementById("pc-tooltip");
   var tooltipTimeEl = document.getElementById("pc-tooltip-time");
   var tooltipCountEl = document.getElementById("pc-tooltip-count");
@@ -115,23 +113,6 @@
     drawGraph();
   }
 
-  function updateRangeSummary(rangeHistory) {
-    if (!rangeHistory.length) {
-      rangeAvgEl.textContent = "0";
-      rangeLowEl.textContent = "0";
-      return;
-    }
-    var total = rangeHistory.reduce(function (sum, pt) {
-      return sum + pt.v;
-    }, 0);
-    var avg = total / rangeHistory.length;
-    var low = rangeHistory.reduce(function (m, pt) {
-      return Math.min(m, pt.v);
-    }, rangeHistory[0].v);
-    rangeAvgEl.textContent = String(Math.round(avg * 10) / 10);
-    rangeLowEl.textContent = String(low);
-  }
-
   function addSample(value) {
     history.push({ t: Date.now(), v: value });
     if (history.length > MAX_POINTS) history = history.slice(-MAX_POINTS);
@@ -189,7 +170,6 @@
         )
       : 10;
     lastRangeHistory = rangeHistory.slice();
-    updateRangeSummary(rangeHistory);
 
     function xScale(t) {
       return pad.left + ((t - minT) / windowMs) * innerW;
