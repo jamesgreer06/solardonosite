@@ -236,6 +236,7 @@
       maxCount: Number((data && data.maxCount) || 0),
       players: normalizePlayers((data && data.players) || []),
       version: (data && data.version) || "Unknown",
+      stale: data && data.stale === true,
     };
   }
 
@@ -245,7 +246,7 @@
     if (parsed.online) {
       onlineEl.textContent = String(parsed.onlineCount);
       maxEl.textContent = String(parsed.maxCount);
-      stateEl.textContent = "Online";
+      stateEl.textContent = parsed.stale ? "Online (connection issue)" : "Online";
       stateEl.classList.remove("is-offline");
       versionEl.textContent = "Version: " + parsed.version;
       setPlayers(parsed.players);
