@@ -36,11 +36,22 @@
   var gridlinesEl = document.getElementById("pc-gridlines");
   var yLabelsEl = document.getElementById("pc-ylabels");
   var xLabelsEl = document.getElementById("pc-xlabels");
+  var hoverLineEl = document.getElementById("pc-hover-line");
   var graphHeading = document.getElementById("pc-graph-heading");
   var rangeButtons = Array.prototype.slice.call(document.querySelectorAll("[data-range]"));
+  var rangeAvgEl = document.getElementById("pc-range-avg");
+  var rangePeakEl = document.getElementById("pc-range-peak");
+  var rangeLowEl = document.getElementById("pc-range-low");
+  var rangeNowEl = document.getElementById("pc-range-now");
+  var tooltipEl = document.getElementById("pc-tooltip");
+  var tooltipTimeEl = document.getElementById("pc-tooltip-time");
+  var tooltipCountEl = document.getElementById("pc-tooltip-count");
+  var tooltipDeltaEl = document.getElementById("pc-tooltip-delta");
 
   var history = [];
   var allTimeHigh = { value: 0, timestamp: 0 };
+  var lastRangeHistory = [];
+  var lastGeometry = null;
 
   function normalizeHistory(list) {
     if (!Array.isArray(list)) return [];
@@ -106,6 +117,31 @@
     drawGraph();
   }
 
+  function updateRangeSummary(rangeHistory) {
+    if (!rangeHistory.length) {
+      rangeAvgEl.textContent = "0";
+      rangePeakEl.textContent = "0";
+      rangeLowEl.textContent = "0";
+      rangeNowEl.textContent = "0";
+      return;
+    }
+    var total = rangeHistory.reduce(function (sum, pt) {
+      return sum + pt.v;
+    }, 0);
+    var avg = total / rangeHistory.length;
+    var peak = rangeHistory.reduce(function (m, pt) {
+      return Math.max(m, pt.v);
+    }, 0);
+    var low = rangeHistory.reduce(function (m, pt) {
+      return Math.min(m, pt.v);
+    }, rangeHistory[0].v);
+    var now = rangeHistory[rangeHistory.length - 1].v;
+    rangeAvgEl.textContent = String(Math.round(avg * 10) / 10);
+    rangePeakEl.textContent = String(peak);
+    rangeLowEl.textContent = String(low);
+    rangeNowEl.textContent = String(now);
+  }
+
   function addSample(value) {
     history.push({ t: Date.now(), v: value });
     if (history.length > MAX_POINTS) history = history.slice(-MAX_POINTS);
@@ -162,6 +198,8 @@
           }, 0) + 2
         )
       : 10;
+    lastRangeHistory = rangeHistory.slice();
+    updateRangeSummary(rangeHistory);
 
     function xScale(t) {
       return pad.left + ((t - minT) / windowMs) * innerW;
@@ -207,6 +245,7 @@
 
     if (!rangeHistory.length) {
       lineEl.setAttribute("d", "");
+      lastGeometry = null;
       updatePeakCards();
       return;
     }
@@ -226,7 +265,63 @@
       }
     });
     lineEl.setAttribute("d", d);
+    lastGeometry = {
+      width: width,
+      height: height,
+      pad: pad,
+      minT: minT,
+      windowMs: windowMs,
+      maxY: maxY,
+      innerH: innerH,
+      innerW: innerW,
+    };
     updatePeakCards();
+  }
+
+  function showTooltip(clientX, clientY) {
+    if (!lastGeometry || !lastRangeHistory.length) return;
+    var rect = graph.getBoundingClientRect();
+    var relX = clientX - rect.left;
+    var clamped = Math.max(lastGeometry.pad.left, Math.min(rect.width - lastGeometry.pad.right, relX));
+    var ratio = (clamped - lastGeometry.pad.left) / Math.max(1, rect.width - lastGeometry.pad.left - lastGeometry.pad.right);
+    var targetT = lastGeometry.minT + ratio * lastGeometry.windowMs;
+
+    var nearestIdx = 0;
+    var nearestDiff = Number.POSITIVE_INFINITY;
+    for (var i = 0; i < lastRangeHistory.length; i += 1) {
+      var diff = Math.abs(lastRangeHistory[i].t - targetT);
+      if (diff < nearestDiff) {
+        nearestDiff = diff;
+        nearestIdx = i;
+      }
+    }
+    var point = lastRangeHistory[nearestIdx];
+    var prev = nearestIdx > 0 ? lastRangeHistory[nearestIdx - 1] : null;
+    var delta = prev ? point.v - prev.v : 0;
+
+    var px = lastGeometry.pad.left + ((point.t - lastGeometry.minT) / lastGeometry.windowMs) * (rect.width - lastGeometry.pad.left - lastGeometry.pad.right);
+    var py =
+      lastGeometry.pad.top +
+      (1 - point.v / Math.max(1, lastGeometry.maxY)) * (rect.height - lastGeometry.pad.top - lastGeometry.pad.bottom);
+
+    hoverLineEl.hidden = false;
+    hoverLineEl.setAttribute("x1", String((px / rect.width) * 900));
+    hoverLineEl.setAttribute("x2", String((px / rect.width) * 900));
+
+    tooltipTimeEl.textContent = fmtDateTime(point.t);
+    tooltipCountEl.textContent = String(point.v);
+    tooltipDeltaEl.textContent =
+      prev == null ? "Start of range" : delta === 0 ? "No change from previous sample" : (delta > 0 ? "+" : "") + delta + " from previous sample";
+
+    tooltipEl.hidden = false;
+    var tipX = Math.min(rect.width - 190, Math.max(8, px + 10));
+    var tipY = Math.max(8, py - 20);
+    tooltipEl.style.transform = "translate(" + tipX.toFixed(0) + "px, " + tipY.toFixed(0) + "px)";
+  }
+
+  function hideTooltip() {
+    if (tooltipEl) tooltipEl.hidden = true;
+    if (hoverLineEl) hoverLineEl.hidden = true;
   }
 
   function parseCurrentPayload(data) {
@@ -335,4 +430,20 @@
     fetchStatus();
     window.setInterval(fetchStatus, POLL_MS);
   });
+
+  graph.addEventListener("mousemove", function (event) {
+    showTooltip(event.clientX, event.clientY);
+  });
+  graph.addEventListener("mouseleave", hideTooltip);
+  graph.addEventListener("touchstart", function (event) {
+    if (event.touches && event.touches[0]) {
+      showTooltip(event.touches[0].clientX, event.touches[0].clientY);
+    }
+  });
+  graph.addEventListener("touchmove", function (event) {
+    if (event.touches && event.touches[0]) {
+      showTooltip(event.touches[0].clientX, event.touches[0].clientY);
+    }
+  });
+  graph.addEventListener("touchend", hideTooltip);
 })();

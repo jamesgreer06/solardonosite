@@ -74,11 +74,20 @@
 
     <section class="cmd-section" aria-labelledby="pc-graph-heading">
       <h2 id="pc-graph-heading">Online Trend (Last 24 Hours)</h2>
-      <div class="status-range" role="group" aria-label="Graph time range">
-        <button type="button" class="status-range__btn" data-range="30m">30m</button>
-        <button type="button" class="status-range__btn" data-range="6h">6h</button>
-        <button type="button" class="status-range__btn" data-range="12h">12h</button>
-        <button type="button" class="status-range__btn is-active" data-range="24h">24h</button>
+      <div class="status-range-wrap">
+        <div class="status-range" role="group" aria-label="Graph time range">
+          <button type="button" class="status-range__btn" data-range="30m">30m</button>
+          <button type="button" class="status-range__btn" data-range="6h">6h</button>
+          <button type="button" class="status-range__btn" data-range="12h">12h</button>
+          <button type="button" class="status-range__btn is-active" data-range="24h">24h</button>
+        </div>
+        <p class="status-meta status-range-note">Hover the graph for exact time and count.</p>
+      </div>
+      <div class="status-summary" aria-label="Selected range summary">
+        <p class="status-summary__item">Avg: <strong id="pc-range-avg">0</strong></p>
+        <p class="status-summary__item">Peak: <strong id="pc-range-peak">0</strong></p>
+        <p class="status-summary__item">Low: <strong id="pc-range-low">0</strong></p>
+        <p class="status-summary__item">Now: <strong id="pc-range-now">0</strong></p>
       </div>
       <div class="status-graph-wrap">
         <svg id="pc-graph" class="status-graph" viewBox="0 0 900 260" role="img" aria-labelledby="pc-graph-title pc-graph-desc">
@@ -87,9 +96,15 @@
           <g class="status-gridlines" id="pc-gridlines"></g>
           <g class="status-axis-labels status-axis-labels--y" id="pc-ylabels"></g>
           <g class="status-axis-labels status-axis-labels--x" id="pc-xlabels"></g>
+          <line id="pc-hover-line" class="status-hover-line" x1="0" x2="0" y1="18" y2="230" hidden></line>
           <path id="pc-line" class="status-line" d=""></path>
           <g class="status-points" id="pc-points"></g>
         </svg>
+        <div class="status-tooltip" id="pc-tooltip" hidden>
+          <p class="status-tooltip__time" id="pc-tooltip-time">--</p>
+          <p class="status-tooltip__count"><strong id="pc-tooltip-count">0</strong> online</p>
+          <p class="status-tooltip__delta" id="pc-tooltip-delta">--</p>
+        </div>
       </div>
     </section>
 

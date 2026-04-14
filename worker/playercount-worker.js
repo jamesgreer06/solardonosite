@@ -165,7 +165,6 @@ async function pingMinecraftStatus(host, port) {
 
     await writer.write(handshakePacket);
     await writer.write(requestPacket);
-    await writer.close();
 
     const responsePacket = await readPacket(reader, 7000);
     if (!responsePacket) throw new Error("No status response packet");
@@ -194,13 +193,15 @@ async function pingMinecraftStatus(host, port) {
 async function readPacket(reader, timeoutMs) {
   const chunks = [];
   let total = 0;
-  const started = Date.now();
-  while (Date.now() - started < timeoutMs) {
-    const { value, done } = await Promise.race([
-      reader.read(),
-      new Promise((_, reject) => setTimeout(() => reject(new Error("Timed out reading packet")), 1000)),
-    ]);
+  const deadline = Date.now() + timeoutMs;
+
+  while (Date.now() < deadline) {
+    const remaining = Math.max(1, deadline - Date.now());
+    const chunkResult = await readWithTimeout(reader, remaining);
+    if (!chunkResult) break;
+    const { value, done } = chunkResult;
     if (done) break;
+
     if (value && value.length) {
       chunks.push(value);
       total += value.length;
@@ -217,6 +218,17 @@ async function readPacket(reader, timeoutMs) {
     }
   }
   return null;
+}
+
+async function readWithTimeout(reader, timeoutMs) {
+  try {
+    return await Promise.race([
+      reader.read(),
+      new Promise((resolve) => setTimeout(() => resolve(null), timeoutMs)),
+    ]);
+  } catch {
+    return null;
+  }
 }
 
 function mergeChunks(chunks, totalLen) {
