@@ -55,20 +55,18 @@
         <p class="status-value"><span id="pc-online">0</span><span class="status-sep"> / </span><span id="pc-max">0</span></p>
         <p class="status-meta" id="pc-last-updated">Updated just now</p>
       </article>
-      <article class="status-card">
-        <h2>Server State</h2>
+      <article class="status-card status-card--overview">
+        <h2>At a Glance</h2>
         <p class="status-state" id="pc-online-state">Checking...</p>
         <p class="status-meta" id="pc-server-version">Version: checking...</p>
-      </article>
-      <article class="status-card">
-        <h2>24h Peak</h2>
-        <p class="status-value status-value--small" id="pc-peak-24h">0</p>
-        <p class="status-meta" id="pc-peak-24h-time">No samples yet</p>
-      </article>
-      <article class="status-card">
-        <h2>All-Time High</h2>
-        <p class="status-value status-value--small" id="pc-alltime-high">0</p>
-        <p class="status-meta" id="pc-alltime-time">No samples yet</p>
+        <div class="status-overview-grid" aria-label="Server metrics">
+          <p class="status-overview-item">Avg <strong id="pc-range-avg">0</strong></p>
+          <p class="status-overview-item">24h Peak <strong id="pc-peak-24h">0</strong></p>
+          <p class="status-overview-item">Low <strong id="pc-range-low">0</strong></p>
+          <p class="status-overview-item">All-time <strong id="pc-alltime-high">0</strong></p>
+        </div>
+        <p class="status-meta" id="pc-peak-24h-time">24h peak time: --</p>
+        <p class="status-meta" id="pc-alltime-time">All-time peak time: --</p>
       </article>
     </section>
 
@@ -82,12 +80,6 @@
           <button type="button" class="status-range__btn is-active" data-range="24h">24h</button>
         </div>
         <p class="status-meta status-range-note">Hover the graph for exact time and count.</p>
-      </div>
-      <div class="status-summary" aria-label="Selected range summary">
-        <p class="status-summary__item">Avg: <strong id="pc-range-avg">0</strong></p>
-        <p class="status-summary__item">Peak: <strong id="pc-range-peak">0</strong></p>
-        <p class="status-summary__item">Low: <strong id="pc-range-low">0</strong></p>
-        <p class="status-summary__item">Now: <strong id="pc-range-now">0</strong></p>
       </div>
       <div class="status-graph-wrap">
         <svg id="pc-graph" class="status-graph" viewBox="0 0 900 260" role="img" aria-labelledby="pc-graph-title pc-graph-desc">

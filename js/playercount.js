@@ -40,9 +40,7 @@
   var graphHeading = document.getElementById("pc-graph-heading");
   var rangeButtons = Array.prototype.slice.call(document.querySelectorAll("[data-range]"));
   var rangeAvgEl = document.getElementById("pc-range-avg");
-  var rangePeakEl = document.getElementById("pc-range-peak");
   var rangeLowEl = document.getElementById("pc-range-low");
-  var rangeNowEl = document.getElementById("pc-range-now");
   var tooltipEl = document.getElementById("pc-tooltip");
   var tooltipTimeEl = document.getElementById("pc-tooltip-time");
   var tooltipCountEl = document.getElementById("pc-tooltip-count");
@@ -120,26 +118,18 @@
   function updateRangeSummary(rangeHistory) {
     if (!rangeHistory.length) {
       rangeAvgEl.textContent = "0";
-      rangePeakEl.textContent = "0";
       rangeLowEl.textContent = "0";
-      rangeNowEl.textContent = "0";
       return;
     }
     var total = rangeHistory.reduce(function (sum, pt) {
       return sum + pt.v;
     }, 0);
     var avg = total / rangeHistory.length;
-    var peak = rangeHistory.reduce(function (m, pt) {
-      return Math.max(m, pt.v);
-    }, 0);
     var low = rangeHistory.reduce(function (m, pt) {
       return Math.min(m, pt.v);
     }, rangeHistory[0].v);
-    var now = rangeHistory[rangeHistory.length - 1].v;
     rangeAvgEl.textContent = String(Math.round(avg * 10) / 10);
-    rangePeakEl.textContent = String(peak);
     rangeLowEl.textContent = String(low);
-    rangeNowEl.textContent = String(now);
   }
 
   function addSample(value) {
@@ -311,7 +301,7 @@
     tooltipTimeEl.textContent = fmtDateTime(point.t);
     tooltipCountEl.textContent = String(point.v);
     tooltipDeltaEl.textContent =
-      prev == null ? "Start of range" : delta === 0 ? "No change from previous sample" : (delta > 0 ? "+" : "") + delta + " from previous sample";
+      prev == null ? "Delta --" : "Delta " + (delta > 0 ? "+" : "") + delta;
 
     tooltipEl.hidden = false;
     var tipX = Math.min(rect.width - 190, Math.max(8, px + 10));
