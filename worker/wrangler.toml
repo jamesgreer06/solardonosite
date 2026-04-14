@@ -1,0 +1,10 @@
+name = "endcity-playercount"
+main = "playercount-worker.js"
+compatibility_date = "2026-04-14"
+
+[triggers]
+crons = ["*/1 * * * *"]
+
+[[kv_namespaces]]
+binding = "PLAYERCOUNT_KV"
+id = "8e8b039af2624b0fa197b697aab5e6ac"

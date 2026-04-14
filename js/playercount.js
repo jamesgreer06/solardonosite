@@ -2,11 +2,14 @@
   var graph = document.getElementById("pc-graph");
   if (!graph) return;
 
-  var API_URL = "https://api.mcsrvstat.us/3/endcity.net";
+  var cfg = window.ENDCITY_CONFIG || window.SOLAR_CONFIG || {};
+  var apiBase = String(cfg.playercountApiBase || "").trim().replace(/\/+$/, "");
+  var API_URL = apiBase ? apiBase + "/current" : "https://api.mcsrvstat.us/3/endcity.net";
+  var HISTORY_URL = apiBase ? apiBase + "/history" : "data/playercount-history.json";
+  var STATS_URL = apiBase ? apiBase + "/stats" : "data/playercount-stats.json";
   var POLL_MS = 30 * 1000;
   var HISTORY_WINDOW_MS = 24 * 60 * 60 * 1000;
-  var SHARED_HISTORY_URL = "data/playercount-history.json";
-  var SHARED_STATS_URL = "data/playercount-stats.json";
+  var LOCAL_HISTORY_KEY = "endcity_playercount_history_local_v1";
   var MAX_SAMPLES = 3000;
 
   var onlineEl = document.getElementById("pc-online");
@@ -42,55 +45,74 @@
       .slice(-MAX_SAMPLES);
   }
 
-  function fmtTime(ts) {
-    return new Date(ts).toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-      second: "2-digit",
-    });
+  function normalizePlayers(list) {
+    if (!Array.isArray(list)) return [];
+    return Array.from(
+      new Set(
+        list
+          .map(function (entry) {
+            if (typeof entry === "string") return entry.trim();
+            if (!entry || typeof entry !== "object") return "";
+            return String(
+              entry.name_clean ||
+                entry.name_raw ||
+                entry.name ||
+                entry.username ||
+                entry.player ||
+                entry.id ||
+                ""
+            ).trim();
+          })
+          .filter(Boolean)
+      )
+    );
   }
 
-  function fmtDateTime(ts) {
-    return new Date(ts).toLocaleString([], {
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-    });
-  }
-
-  function addSample(value) {
-    var now = Date.now();
-    history.push({ t: now, v: value });
-    var cutoff = now - HISTORY_WINDOW_MS;
-    history = history.filter(function (pt) {
-      return pt.t >= cutoff;
-    });
-    if (history.length > MAX_SAMPLES) {
-      history = history.slice(-MAX_SAMPLES);
+  function loadLocalHistory() {
+    try {
+      var raw = window.localStorage.getItem(LOCAL_HISTORY_KEY);
+      return raw ? normalizeHistory(JSON.parse(raw)) : [];
+    } catch (err) {
+      return [];
     }
   }
 
-  function normalizePlayers(list) {
-    if (!Array.isArray(list)) return [];
-    var names = list
-      .map(function (entry) {
-        if (typeof entry === "string") return entry.trim();
-        if (!entry || typeof entry !== "object") return "";
-        return String(
-          entry.name_clean ||
-            entry.name_raw ||
-            entry.name ||
-            entry.username ||
-            entry.player ||
-            entry.id ||
-            ""
-        ).trim();
+  function saveLocalHistory() {
+    try {
+      window.localStorage.setItem(LOCAL_HISTORY_KEY, JSON.stringify(history.slice(-MAX_SAMPLES)));
+    } catch (err) {
+      // ignore
+    }
+  }
+
+  function mergeHistory(baseList, extraList) {
+    var merged = new Map();
+    baseList.concat(extraList).forEach(function (pt) {
+      merged.set(String(pt.t), { t: pt.t, v: pt.v });
+    });
+    return Array.from(merged.values())
+      .sort(function (a, b) {
+        return a.t - b.t;
       })
-      .filter(function (name) {
-        return name.length > 0;
-      });
-    return Array.from(new Set(names));
+      .slice(-MAX_SAMPLES);
+  }
+
+  function fmtTime(ts) {
+    return new Date(ts).toLocaleTimeString([], { hour: "numeric", minute: "2-digit", second: "2-digit" });
+  }
+
+  function fmtDateTime(ts) {
+    return new Date(ts).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+  }
+
+  function addSample(value) {
+    history.push({ t: Date.now(), v: value });
+    var cutoff = Date.now() - HISTORY_WINDOW_MS;
+    history = history.filter(function (pt) {
+      return pt.t >= cutoff;
+    });
+    if (history.length > MAX_SAMPLES) history = history.slice(-MAX_SAMPLES);
+    saveLocalHistory();
   }
 
   function setPlayers(list) {
@@ -110,22 +132,16 @@
   function updatePeakCards() {
     if (history.length > 0) {
       var peak24h = history.reduce(function (best, pt) {
-        if (!best || pt.v > best.v) return pt;
-        return best;
+        return !best || pt.v > best.v ? pt : best;
       }, null);
-      if (peak24hEl) peak24hEl.textContent = String(peak24h.v);
-      if (peak24hTimeEl) peak24hTimeEl.textContent = "at " + fmtDateTime(peak24h.t);
+      peak24hEl.textContent = String(peak24h.v);
+      peak24hTimeEl.textContent = "at " + fmtDateTime(peak24h.t);
     } else {
-      if (peak24hEl) peak24hEl.textContent = "0";
-      if (peak24hTimeEl) peak24hTimeEl.textContent = "No samples yet";
+      peak24hEl.textContent = "0";
+      peak24hTimeEl.textContent = "No data yet";
     }
-
-    if (allTimeEl) allTimeEl.textContent = String(allTimeHigh.value || 0);
-    if (allTimeTimeEl) {
-      allTimeTimeEl.textContent = allTimeHigh.timestamp
-        ? "at " + fmtDateTime(allTimeHigh.timestamp)
-        : "No samples yet";
-    }
+    allTimeEl.textContent = String(allTimeHigh.value || 0);
+    allTimeTimeEl.textContent = allTimeHigh.timestamp ? "at " + fmtDateTime(allTimeHigh.timestamp) : "No data yet";
   }
 
   function drawGraph() {
@@ -136,22 +152,20 @@
     var innerH = height - pad.top - pad.bottom;
     var now = Date.now();
     var minT = now - HISTORY_WINDOW_MS;
-    var minY = 0;
-    var maxY = 10;
-
-    if (history.length > 0) {
-      var peak = history.reduce(function (m, pt) {
-        return Math.max(m, pt.v);
-      }, 0);
-      maxY = Math.max(10, peak + 2);
-    }
+    var maxY = history.length
+      ? Math.max(
+          10,
+          history.reduce(function (m, pt) {
+            return Math.max(m, pt.v);
+          }, 0) + 2
+        )
+      : 10;
 
     function xScale(t) {
       return pad.left + ((t - minT) / HISTORY_WINDOW_MS) * innerW;
     }
-
     function yScale(v) {
-      return pad.top + (1 - (v - minY) / Math.max(1, maxY - minY)) * innerH;
+      return pad.top + (1 - v / Math.max(1, maxY)) * innerH;
     }
 
     gridlinesEl.innerHTML = "";
@@ -169,7 +183,6 @@
       line.setAttribute("y2", String(y));
       line.setAttribute("class", "status-gridline");
       gridlinesEl.appendChild(line);
-
       var yLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
       yLabel.setAttribute("x", String(width - pad.right + 4));
       yLabel.setAttribute("y", String(y + 4));
@@ -179,21 +192,18 @@
     }
 
     for (var j = 0; j <= 8; j += 1) {
-      var t = minT + (HISTORY_WINDOW_MS / 8) * j;
-      var x = xScale(t);
+      var tick = minT + (HISTORY_WINDOW_MS / 8) * j;
+      var x = xScale(tick);
       var xLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
       xLabel.setAttribute("x", String(x));
       xLabel.setAttribute("y", String(height - 8));
       xLabel.setAttribute("text-anchor", "middle");
       xLabel.setAttribute("class", "status-axis-label");
-      xLabel.textContent = new Date(t).toLocaleTimeString([], {
-        hour: "numeric",
-        minute: "2-digit",
-      });
+      xLabel.textContent = new Date(tick).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
       xLabelsEl.appendChild(xLabel);
     }
 
-    if (history.length === 0) {
+    if (!history.length) {
       lineEl.setAttribute("d", "");
       updatePeakCards();
       return;
@@ -204,7 +214,6 @@
       var x = xScale(pt.t);
       var y = yScale(pt.v);
       d += (idx === 0 ? "M" : " L") + x.toFixed(2) + " " + y.toFixed(2);
-
       if (idx === history.length - 1) {
         var dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         dot.setAttribute("cx", x.toFixed(2));
@@ -214,42 +223,47 @@
         pointsEl.appendChild(dot);
       }
     });
-
     lineEl.setAttribute("d", d);
     updatePeakCards();
   }
 
-  function updateStatus(data) {
-    var online = data && data.online === true;
+  function parseCurrentPayload(data) {
+    if (apiBase) {
+      return {
+        online: data && data.online === true,
+        onlineCount: Number((data && data.onlineCount) || 0),
+        maxCount: Number((data && data.maxCount) || 0),
+        players: normalizePlayers((data && data.players) || []),
+        version: (data && data.version) || "Unknown",
+      };
+    }
     var players = (data && data.players) || {};
-    var onlineCount = Number(players.online) || 0;
-    var maxCount = Number(players.max) || 0;
-    var list = normalizePlayers(players.list);
-    var version = (data && data.version) || "Unknown";
-    var nowTs = Date.now();
+    return {
+      online: data && data.online === true,
+      onlineCount: Number(players.online) || 0,
+      maxCount: Number(players.max) || 0,
+      players: normalizePlayers(players.list),
+      version: (data && data.version) || "Unknown",
+    };
+  }
 
-    if (online) {
-      onlineEl.textContent = String(onlineCount);
-      maxEl.textContent = String(maxCount);
+  function updateStatus(data) {
+    var parsed = parseCurrentPayload(data || {});
+    var nowTs = Date.now();
+    if (parsed.online) {
+      onlineEl.textContent = String(parsed.onlineCount);
+      maxEl.textContent = String(parsed.maxCount);
       stateEl.textContent = "Online";
       stateEl.classList.remove("is-offline");
-      versionEl.textContent = "Version: " + version;
-      setPlayers(list);
-      if (onlineCount > (allTimeHigh.value || 0)) {
-        allTimeHigh.value = onlineCount;
-        allTimeHigh.timestamp = nowTs;
+      versionEl.textContent = "Version: " + parsed.version;
+      setPlayers(parsed.players);
+      if (parsed.onlineCount > (allTimeHigh.value || 0)) {
+        allTimeHigh = { value: parsed.onlineCount, timestamp: nowTs };
       }
-      if (playerNoteEl) {
-        var missing = Math.max(0, onlineCount - list.length);
-        if (missing > 0) {
-          playerNoteEl.hidden = false;
-          playerNoteEl.textContent = "+" + missing + " more online";
-        } else {
-          playerNoteEl.hidden = true;
-          playerNoteEl.textContent = "";
-        }
-      }
-      addSample(onlineCount);
+      var missing = Math.max(0, parsed.onlineCount - parsed.players.length);
+      playerNoteEl.hidden = missing <= 0;
+      playerNoteEl.textContent = missing > 0 ? "+" + missing + " more online" : "";
+      addSample(parsed.onlineCount);
     } else {
       onlineEl.textContent = "0";
       maxEl.textContent = "0";
@@ -257,13 +271,10 @@
       stateEl.classList.add("is-offline");
       versionEl.textContent = "Version: unavailable";
       setPlayers([]);
-      if (playerNoteEl) {
-        playerNoteEl.hidden = true;
-        playerNoteEl.textContent = "";
-      }
+      playerNoteEl.hidden = true;
+      playerNoteEl.textContent = "";
       addSample(0);
     }
-
     updatedEl.textContent = "Last updated: " + fmtTime(nowTs);
     drawGraph();
   }
@@ -281,21 +292,29 @@
   }
 
   function loadSharedHistory() {
-    return fetch(SHARED_HISTORY_URL, { cache: "no-store" })
+    return fetch(HISTORY_URL, { cache: "no-store" })
       .then(function (res) {
-        if (!res.ok) return [];
+        if (!res.ok) return null;
         return res.json();
       })
       .then(function (data) {
-        history = normalizeHistory(data);
+        var sharedList = Array.isArray(data) ? data : data && Array.isArray(data.history) ? data.history : [];
+        history = mergeHistory(normalizeHistory(sharedList), loadLocalHistory());
+        if (data && !Array.isArray(data)) {
+          var ath = Number(data.allTimeHigh);
+          var athAt = Number(data.allTimeHighAt);
+          if (Number.isFinite(ath)) allTimeHigh.value = ath;
+          if (Number.isFinite(athAt)) allTimeHigh.timestamp = athAt;
+        }
+        saveLocalHistory();
       })
       .catch(function () {
-        history = [];
+        history = loadLocalHistory();
       });
   }
 
-  function loadSharedStats() {
-    return fetch(SHARED_STATS_URL, { cache: "no-store" })
+  function loadStats() {
+    return fetch(STATS_URL, { cache: "no-store" })
       .then(function (res) {
         if (!res.ok) return null;
         return res.json();
@@ -303,18 +322,16 @@
       .then(function (data) {
         if (!data || typeof data !== "object") return;
         var value = Number(data.allTimeHigh);
-        var timestamp = Number(data.allTimeHighAt);
-        allTimeHigh = {
-          value: Number.isFinite(value) ? value : 0,
-          timestamp: Number.isFinite(timestamp) ? timestamp : 0,
-        };
+        var at = Number(data.allTimeHighAt);
+        if (Number.isFinite(value)) allTimeHigh.value = value;
+        if (Number.isFinite(at)) allTimeHigh.timestamp = at;
       })
       .catch(function () {
-        allTimeHigh = { value: 0, timestamp: 0 };
+        // keep existing
       });
   }
 
-  Promise.all([loadSharedHistory(), loadSharedStats()]).finally(function () {
+  Promise.all([loadSharedHistory(), loadStats()]).finally(function () {
     drawGraph();
     fetchStatus();
     window.setInterval(fetchStatus, POLL_MS);

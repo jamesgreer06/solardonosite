@@ -36,4 +36,10 @@ window.ENDCITY_CONFIG = {
 
   /** Public Discord invite — also update any <a data-discord-invite> hrefs if you change it. */
   discordInviteUrl: "https://discord.gg/Z5sZx9cjsC",
+
+  /**
+   * Optional: deployed Cloudflare Worker base URL for playercount API.
+   * Example: "https://endcity-playercount.your-subdomain.workers.dev"
+   */
+  playercountApiBase: "https://solardonosite.admiralwhite334.workers.dev",
 };
