@@ -1990,6 +1990,24 @@ kbd {
   color: var(--text-muted);
 }
 
+.status-quick-actions {
+  margin-top: 0.45rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--border-strong);
+}
+
+.status-quick-actions__btn {
+  min-height: 0;
+  padding: 0.42rem 0.7rem;
+  font-size: 0.78rem;
+}
+
+.status-quick-actions__hint {
+  margin: 0.3rem 0 0;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
 @media (max-width: 380px) {
   .status-peaks {
     grid-template-columns: 1fr;
@@ -2173,6 +2191,12 @@ kbd {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.status-player-list__more {
+  border-style: dashed !important;
+  color: var(--accent-bright) !important;
+  font-weight: 600;
 }
 
 @media (max-width: 700px) {

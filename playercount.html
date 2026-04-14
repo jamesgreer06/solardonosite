@@ -2,122 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="0; url=status.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Endcity Survival — live player count and history graph for endcity.net." />
-  <meta name="theme-color" content="#0a0a0c" />
-  <title>Live player count — Endcity Survival</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <title>Redirecting to status...</title>
+  <script>
+    window.location.replace("status.html");
+  </script>
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
-  <header class="site-header">
-    <a class="logo" href="index.html">Endcity<span> Survival</span></a>
-    <nav class="nav" aria-label="Primary">
-      <a href="index.html#join">Join</a>
-      <a href="index.html#about">About</a>
-      <a href="index.html#rules">Rules</a>
-      <a href="index.html#economy">Economy</a>
-      <a href="index.html#donate">Donate</a>
-      <a href="commands.html">Commands</a>
-      <a href="playercount.html" aria-current="page">Status</a>
-      <a class="nav-cta" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
-    </nav>
-    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-panel" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
-  </header>
-  <div id="nav-panel" class="nav-panel" hidden>
-    <div class="nav-panel-group">
-      <a href="index.html#join">Join</a>
-      <a href="index.html#about">About</a>
-      <a href="index.html#rules">Rules</a>
-      <a href="index.html#economy">Economy</a>
-      <a href="index.html#donate">Donate</a>
-      <a href="commands.html">Commands</a>
-      <a href="playercount.html" aria-current="page">Status</a>
-      <a class="nav-cta nav-cta--panel" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
-    </div>
-  </div>
-
-  <main class="page-commands-main page-status-main" id="top">
-    <p class="intro-eyebrow">Live status</p>
-    <h1 class="intro-title">Server activity: <span class="intro-accent">endcity.net</span></h1>
-    <p class="page-commands-lead">
-      See who is online now and how activity has moved through the day.
-    </p>
-
-    <section class="status-grid" aria-label="Current server status">
-      <article class="status-card status-card--primary">
-        <h2>Server Overview</h2>
-        <p class="status-value"><span id="pc-online">0</span><span class="status-sep"> / </span><span id="pc-max">0</span></p>
-        <p class="status-state" id="pc-online-state">Checking...</p>
-        <p class="status-meta" id="pc-server-version">Version: checking...</p>
-        <p class="status-meta" id="pc-last-updated">Updated just now</p>
-      </article>
-      <article class="status-card status-card--peaks" aria-label="Peak player counts">
-        <div class="status-peaks">
-          <div class="status-peak-block">
-            <h2>24h peak</h2>
-            <p class="status-peak-value" id="pc-peak-24h">0</p>
-            <p class="status-peak-meta" id="pc-peak-24h-time">—</p>
-          </div>
-          <div class="status-peaks__rule" aria-hidden="true"></div>
-          <div class="status-peak-block">
-            <h2>All-time high</h2>
-            <p class="status-peak-value" id="pc-alltime-high">0</p>
-            <p class="status-peak-meta" id="pc-alltime-time">—</p>
-          </div>
-        </div>
-      </article>
-    </section>
-
-    <section class="cmd-section" aria-labelledby="pc-graph-heading">
-      <h2 id="pc-graph-heading">Online Trend (Last 24 Hours)</h2>
-      <div class="status-range-wrap">
-        <div class="status-range" role="group" aria-label="Graph time range">
-          <button type="button" class="status-range__btn" data-range="30m">30m</button>
-          <button type="button" class="status-range__btn" data-range="6h">6h</button>
-          <button type="button" class="status-range__btn" data-range="12h">12h</button>
-          <button type="button" class="status-range__btn is-active" data-range="24h">24h</button>
-        </div>
-        <p class="status-meta status-range-note">Hover the graph for exact time and count.</p>
-      </div>
-      <div class="status-graph-wrap">
-        <svg id="pc-graph" class="status-graph" viewBox="0 0 900 260" role="img" aria-labelledby="pc-graph-title pc-graph-desc">
-          <title id="pc-graph-title">Player count history graph</title>
-          <desc id="pc-graph-desc">A line chart of online players over time.</desc>
-          <g class="status-gridlines" id="pc-gridlines"></g>
-          <g class="status-axis-labels status-axis-labels--y" id="pc-ylabels"></g>
-          <g class="status-axis-labels status-axis-labels--x" id="pc-xlabels"></g>
-          <line id="pc-hover-line" class="status-hover-line" x1="0" x2="0" y1="18" y2="230" hidden></line>
-          <path id="pc-line" class="status-line" d=""></path>
-          <g class="status-points" id="pc-points"></g>
-        </svg>
-        <div class="status-tooltip" id="pc-tooltip" hidden>
-          <p class="status-tooltip__time" id="pc-tooltip-time">--</p>
-          <p class="status-tooltip__count"><strong id="pc-tooltip-count">0</strong> online</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="cmd-section" aria-labelledby="pc-players-heading">
-      <h2 id="pc-players-heading">Players currently online</h2>
-      <p class="mods-policy-note" id="pc-player-note" hidden></p>
-      <ul class="status-player-list" id="pc-player-list"></ul>
-      <p class="cmd-coming-soon" id="pc-player-empty" hidden>No players online right now.</p>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <p><strong>Endcity Survival</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="index.html">Home</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
-    <p class="footer-small">Not affiliated with Mojang or Microsoft. Minecraft is a trademark of Mojang Synergies AB.</p>
-  </footer>
-
-  <script src="js/config.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/playercount.js"></script>
+  <p>Redirecting to <a href="status.html">status</a>...</p>
 </body>
 </html>

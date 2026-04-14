@@ -117,18 +117,27 @@
     if (history.length > MAX_POINTS) history = history.slice(-MAX_POINTS);
   }
 
-  function setPlayers(list) {
+  function setPlayers(list, missingCount) {
     playerListEl.innerHTML = "";
-    if (!Array.isArray(list) || list.length === 0) {
+    var hasNames = Array.isArray(list) && list.length > 0;
+    if (!hasNames && missingCount <= 0) {
       playerEmptyEl.hidden = false;
       return;
     }
     playerEmptyEl.hidden = true;
-    list.forEach(function (name) {
-      var li = document.createElement("li");
-      li.textContent = String(name);
-      playerListEl.appendChild(li);
-    });
+    if (hasNames) {
+      list.forEach(function (name) {
+        var li = document.createElement("li");
+        li.textContent = String(name);
+        playerListEl.appendChild(li);
+      });
+    }
+    if (missingCount > 0) {
+      var moreLi = document.createElement("li");
+      moreLi.className = "status-player-list__more";
+      moreLi.textContent = "+" + String(missingCount) + " more online";
+      playerListEl.appendChild(moreLi);
+    }
   }
 
   function updatePeakCards() {
@@ -302,19 +311,19 @@
   function updateStatus(data) {
     var parsed = parseCurrentPayload(data || {});
     var nowTs = Date.now();
+    var missing = Math.max(0, parsed.onlineCount - parsed.players.length);
     if (parsed.online) {
       onlineEl.textContent = String(parsed.onlineCount);
       maxEl.textContent = String(parsed.maxCount);
       stateEl.textContent = parsed.stale ? "Online (connection issue)" : "Online";
       stateEl.classList.remove("is-offline");
       versionEl.textContent = "Version: " + parsed.version;
-      setPlayers(parsed.players);
+      setPlayers(parsed.players, missing);
       if (parsed.onlineCount > (allTimeHigh.value || 0)) {
         allTimeHigh = { value: parsed.onlineCount, timestamp: nowTs };
       }
-      var missing = Math.max(0, parsed.onlineCount - parsed.players.length);
-      playerNoteEl.hidden = missing <= 0;
-      playerNoteEl.textContent = missing > 0 ? "+" + missing + " more online" : "";
+      playerNoteEl.hidden = true;
+      playerNoteEl.textContent = "";
       addSample(parsed.onlineCount);
     } else {
       onlineEl.textContent = "0";
@@ -322,7 +331,7 @@
       stateEl.textContent = "Offline / unreachable";
       stateEl.classList.add("is-offline");
       versionEl.textContent = "Version: unavailable";
-      setPlayers([]);
+      setPlayers([], 0);
       playerNoteEl.hidden = true;
       playerNoteEl.textContent = "";
       addSample(0);
@@ -410,4 +419,25 @@
     }
   });
   graph.addEventListener("touchend", hideTooltip);
+
+  var copyIpBtn = document.getElementById("pc-copy-ip");
+  var copyIpLabel = document.getElementById("pc-copy-ip-label");
+  if (copyIpBtn && copyIpLabel && navigator.clipboard && navigator.clipboard.writeText) {
+    copyIpBtn.addEventListener("click", function () {
+      navigator.clipboard
+        .writeText("endcity.net")
+        .then(function () {
+          copyIpLabel.textContent = "Copied!";
+          window.setTimeout(function () {
+            copyIpLabel.textContent = "Copy server IP";
+          }, 1400);
+        })
+        .catch(function () {
+          copyIpLabel.textContent = "Copy failed";
+          window.setTimeout(function () {
+            copyIpLabel.textContent = "Copy server IP";
+          }, 1400);
+        });
+    });
+  }
 })();

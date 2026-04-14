@@ -1,0 +1,3 @@
+/status /status.html 200
+/playercount /status.html 301
+/playercount.html /status.html 301
