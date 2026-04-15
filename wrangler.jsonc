@@ -16,5 +16,12 @@
 			"binding": "PLAYERCOUNT_KV",
 			"id": "8e8b039af2624b0fa197b697aab5e6ac"
 		}
+	],
+	"d1_databases": [
+		{
+			"binding": "endcity_playercount",
+			"database_name": "endcity-playercount",
+			"database_id": "c6113ed5-4c17-4f04-aaf2-b435b3417d58"
+		}
 	]
 }

@@ -3,9 +3,6 @@ import { connect } from "cloudflare:sockets";
 const SERVER_HOST = "endcity.net";
 const SERVER_PORT = 25565;
 const STATUS_PROTOCOL_VERSION = 767;
-const HISTORY_KEY = "history";
-const STATS_KEY = "stats";
-const CURRENT_KEY = "current";
 const MAX_HISTORY_POINTS = 5000;
 const KEEP_MS = 14 * 24 * 60 * 60 * 1000;
 
@@ -66,48 +63,26 @@ export default {
 };
 
 async function collect(env) {
-  if (!env || !env.PLAYERCOUNT_KV) {
-    throw new Error("Missing PLAYERCOUNT_KV binding");
+  if (!env || !env.PLAYERCOUNT_DB) {
+    throw new Error("Missing PLAYERCOUNT_DB binding");
   }
   const now = Date.now();
   const snapshot = await fetchCurrentSafe();
-  const effectiveOnline = snapshot.online;
   const effectiveCount = snapshot.online ? snapshot.onlineCount : 0;
-  const effectiveMax = snapshot.online ? snapshot.maxCount : 0;
-  const effectivePlayers = snapshot.online ? snapshot.players : [];
-  const effectiveVersion = snapshot.version;
-
-  const history = await getHistory(env);
-  history.push({ t: now, v: effectiveCount });
-  const cutoff = now - KEEP_MS;
-  const pruned = history.filter((p) => p.t >= cutoff).slice(-MAX_HISTORY_POINTS);
-  await env.PLAYERCOUNT_KV.put(HISTORY_KEY, JSON.stringify(pruned));
-
-  const currentPayload = {
-    online: effectiveOnline,
-    onlineCount: effectiveCount,
-    maxCount: effectiveMax,
-    players: effectivePlayers,
-    version: effectiveVersion,
-    stale: false,
-    checkedAt: now,
-    updatedAt: now,
-  };
-  await env.PLAYERCOUNT_KV.put(CURRENT_KEY, JSON.stringify(currentPayload));
-
+  await insertHistoryPoint(env, now, effectiveCount);
+  const pruned = await pruneHistory(env, now - KEEP_MS);
+  const statsWriteOk = await upsertAllTimeHighIfHigher(env, effectiveCount, now);
   const stats = await getStats(env);
-  if (effectiveCount > (stats.allTimeHigh || 0)) {
-    stats.allTimeHigh = effectiveCount;
-    stats.allTimeHighAt = now;
-    await env.PLAYERCOUNT_KV.put(STATS_KEY, JSON.stringify(stats));
-  }
+  const totalPoints = await countHistoryPoints(env);
 
   return {
     ok: true,
     online: effectiveCount,
-    points: pruned.length,
+    points: totalPoints,
     allTimeHigh: stats.allTimeHigh || effectiveCount || 0,
     stale: false,
+    pruned,
+    persistedStats: statsWriteOk,
   };
 }
 
@@ -310,27 +285,33 @@ function concatBytes(...parts) {
 }
 
 async function getHistory(env) {
-  if (!env || !env.PLAYERCOUNT_KV) return [];
+  if (!env || !env.PLAYERCOUNT_DB) return [];
   try {
-    const raw = await env.PLAYERCOUNT_KV.get(HISTORY_KEY, "text");
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed.filter((p) => Number.isFinite(p.t) && Number.isFinite(p.v));
+    const rs = await env.PLAYERCOUNT_DB.prepare(
+      "SELECT t, v FROM playercount_history ORDER BY t DESC LIMIT ?1"
+    )
+      .bind(MAX_HISTORY_POINTS)
+      .all();
+    const rows = Array.isArray(rs.results) ? rs.results : [];
+    return rows
+      .map((r) => ({ t: Number(r.t), v: Number(r.v) }))
+      .filter((p) => Number.isFinite(p.t) && Number.isFinite(p.v))
+      .reverse();
   } catch {
     return [];
   }
 }
 
 async function getStats(env) {
-  if (!env || !env.PLAYERCOUNT_KV) return { allTimeHigh: 0, allTimeHighAt: 0 };
+  if (!env || !env.PLAYERCOUNT_DB) return { allTimeHigh: 0, allTimeHighAt: 0 };
   try {
-    const raw = await env.PLAYERCOUNT_KV.get(STATS_KEY, "text");
-    if (!raw) return { allTimeHigh: 0, allTimeHighAt: 0 };
-    const parsed = JSON.parse(raw);
+    const row = await env.PLAYERCOUNT_DB.prepare(
+      "SELECT all_time_high, all_time_high_at FROM playercount_stats WHERE id = 1"
+    ).first();
+    if (!row) return { allTimeHigh: 0, allTimeHighAt: 0 };
     return {
-      allTimeHigh: Number(parsed.allTimeHigh) || 0,
-      allTimeHighAt: Number(parsed.allTimeHighAt) || 0,
+      allTimeHigh: Number(row.all_time_high) || 0,
+      allTimeHighAt: Number(row.all_time_high_at) || 0,
     };
   } catch {
     return { allTimeHigh: 0, allTimeHighAt: 0 };
@@ -338,19 +319,6 @@ async function getStats(env) {
 }
 
 async function getCurrent(env) {
-  if (!env || !env.PLAYERCOUNT_KV) {
-    const snapshot = await fetchCurrentSafe();
-    return {
-      online: snapshot.online,
-      onlineCount: snapshot.onlineCount,
-      maxCount: snapshot.maxCount,
-      players: snapshot.players,
-      version: snapshot.version,
-      updatedAt: Date.now(),
-    };
-  }
-  const cachedObj = await getCachedCurrent(env);
-  if (cachedObj) return cachedObj;
   const snapshot = await fetchCurrentSafe();
   return {
     online: snapshot.online,
@@ -362,23 +330,10 @@ async function getCurrent(env) {
   };
 }
 
-async function getCurrentLive(env) {
-  if (!env || !env.PLAYERCOUNT_KV) {
-    const snapshot = await fetchCurrentSafe();
-    return {
-      online: snapshot.online,
-      onlineCount: snapshot.onlineCount,
-      maxCount: snapshot.maxCount,
-      players: snapshot.players,
-      version: snapshot.version,
-      stale: false,
-      checkedAt: Date.now(),
-      updatedAt: Date.now(),
-    };
-  }
+async function getCurrentLive(_env) {
   const now = Date.now();
   const snapshot = await fetchCurrentSafe();
-  const payload = {
+  return {
     online: snapshot.online,
     onlineCount: snapshot.onlineCount,
     maxCount: snapshot.maxCount,
@@ -388,18 +343,65 @@ async function getCurrentLive(env) {
     checkedAt: now,
     updatedAt: now,
   };
-  await env.PLAYERCOUNT_KV.put(CURRENT_KEY, JSON.stringify(payload));
-  return payload;
 }
 
-async function getCachedCurrent(env) {
-  if (!env || !env.PLAYERCOUNT_KV) return null;
-  const cached = await env.PLAYERCOUNT_KV.get(CURRENT_KEY, "text");
-  if (!cached) return null;
+async function insertHistoryPoint(env, t, v) {
+  if (!env || !env.PLAYERCOUNT_DB) return false;
   try {
-    return JSON.parse(cached);
+    await env.PLAYERCOUNT_DB.prepare(
+      "INSERT INTO playercount_history (t, v) VALUES (?1, ?2)"
+    )
+      .bind(Number(t), Number(v))
+      .run();
+    return true;
   } catch {
-    return null;
+    return false;
+  }
+}
+
+async function pruneHistory(env, cutoffMs) {
+  if (!env || !env.PLAYERCOUNT_DB) return 0;
+  try {
+    const rs = await env.PLAYERCOUNT_DB.prepare(
+      "DELETE FROM playercount_history WHERE t < ?1"
+    )
+      .bind(Number(cutoffMs))
+      .run();
+    return Number(rs.meta && rs.meta.changes) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+async function upsertAllTimeHighIfHigher(env, value, at) {
+  if (!env || !env.PLAYERCOUNT_DB) return false;
+  try {
+    await env.PLAYERCOUNT_DB.prepare(
+      "INSERT OR IGNORE INTO playercount_stats (id, all_time_high, all_time_high_at) VALUES (1, 0, 0)"
+    ).run();
+    await env.PLAYERCOUNT_DB.prepare(
+      `UPDATE playercount_stats
+       SET all_time_high = ?1,
+           all_time_high_at = ?2
+       WHERE id = 1 AND ?1 > all_time_high`
+    )
+      .bind(Number(value), Number(at))
+      .run();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function countHistoryPoints(env) {
+  if (!env || !env.PLAYERCOUNT_DB) return 0;
+  try {
+    const row = await env.PLAYERCOUNT_DB.prepare(
+      "SELECT COUNT(*) AS c FROM playercount_history"
+    ).first();
+    return Number(row && row.c) || 0;
+  } catch {
+    return 0;
   }
 }
 
