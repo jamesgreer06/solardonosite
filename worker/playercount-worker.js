@@ -8,7 +8,6 @@ const STATS_KEY = "stats";
 const CURRENT_KEY = "current";
 const MAX_HISTORY_POINTS = 5000;
 const KEEP_MS = 14 * 24 * 60 * 60 * 1000;
-const TRANSIENT_HOLD_MS = 10 * 60 * 1000;
 
 export default {
   async fetch(request, env) {
@@ -53,31 +52,12 @@ export default {
 
 async function collect(env) {
   const now = Date.now();
-  const lastCurrent = await getCachedCurrent(env);
-  const snapshot = await fetchCurrent();
-  const looksTransient =
-    snapshot.online === false &&
-    lastCurrent &&
-    lastCurrent.online === true &&
-    now - (Number(lastCurrent.updatedAt) || 0) <= TRANSIENT_HOLD_MS;
-
-  const effectiveOnline = looksTransient ? true : snapshot.online;
-  const effectiveCount = looksTransient
-    ? Number(lastCurrent.onlineCount) || 0
-    : snapshot.online
-      ? snapshot.onlineCount
-      : 0;
-  const effectiveMax = looksTransient
-    ? Number(lastCurrent.maxCount) || snapshot.maxCount || 0
-    : snapshot.maxCount;
-  const effectivePlayers = looksTransient
-    ? Array.isArray(lastCurrent.players)
-      ? lastCurrent.players
-      : snapshot.players
-    : snapshot.players;
-  const effectiveVersion = looksTransient
-    ? lastCurrent.version || snapshot.version
-    : snapshot.version;
+  const snapshot = await fetchCurrentSafe();
+  const effectiveOnline = snapshot.online;
+  const effectiveCount = snapshot.online ? snapshot.onlineCount : 0;
+  const effectiveMax = snapshot.online ? snapshot.maxCount : 0;
+  const effectivePlayers = snapshot.online ? snapshot.players : [];
+  const effectiveVersion = snapshot.version;
 
   const history = await getHistory(env);
   history.push({ t: now, v: effectiveCount });
@@ -91,7 +71,7 @@ async function collect(env) {
     maxCount: effectiveMax,
     players: effectivePlayers,
     version: effectiveVersion,
-    stale: looksTransient,
+    stale: false,
     checkedAt: now,
     updatedAt: now,
   };
@@ -109,7 +89,7 @@ async function collect(env) {
     online: effectiveCount,
     points: pruned.length,
     allTimeHigh: stats.allTimeHigh || effectiveCount || 0,
-    stale: looksTransient,
+    stale: false,
   };
 }
 
@@ -123,6 +103,20 @@ async function fetchCurrent() {
     players: normalizePlayers(players.sample),
     version: (data.version && data.version.name) || "Unknown",
   };
+}
+
+async function fetchCurrentSafe() {
+  try {
+    return await fetchCurrent();
+  } catch {
+    return {
+      online: false,
+      onlineCount: 0,
+      maxCount: 0,
+      players: [],
+      version: "Unknown",
+    };
+  }
 }
 
 function normalizePlayers(list) {
@@ -326,7 +320,7 @@ async function getStats(env) {
 async function getCurrent(env) {
   const cachedObj = await getCachedCurrent(env);
   if (cachedObj) return cachedObj;
-  const snapshot = await fetchCurrent();
+  const snapshot = await fetchCurrentSafe();
   return {
     online: snapshot.online,
     onlineCount: snapshot.onlineCount,
@@ -339,40 +333,19 @@ async function getCurrent(env) {
 
 async function getCurrentLive(env) {
   const now = Date.now();
-  try {
-    const snapshot = await fetchCurrent();
-    const payload = {
-      online: snapshot.online,
-      onlineCount: snapshot.onlineCount,
-      maxCount: snapshot.maxCount,
-      players: snapshot.players,
-      version: snapshot.version,
-      stale: false,
-      checkedAt: now,
-      updatedAt: now,
-    };
-    await env.PLAYERCOUNT_KV.put(CURRENT_KEY, JSON.stringify(payload));
-    return payload;
-  } catch {
-    const cached = await getCachedCurrent(env);
-    if (cached) {
-      return {
-        ...cached,
-        stale: true,
-        checkedAt: now,
-      };
-    }
-    return {
-      online: false,
-      onlineCount: 0,
-      maxCount: 0,
-      players: [],
-      version: "Unknown",
-      stale: true,
-      checkedAt: now,
-      updatedAt: now,
-    };
-  }
+  const snapshot = await fetchCurrentSafe();
+  const payload = {
+    online: snapshot.online,
+    onlineCount: snapshot.onlineCount,
+    maxCount: snapshot.maxCount,
+    players: snapshot.players,
+    version: snapshot.version,
+    stale: false,
+    checkedAt: now,
+    updatedAt: now,
+  };
+  await env.PLAYERCOUNT_KV.put(CURRENT_KEY, JSON.stringify(payload));
+  return payload;
 }
 
 async function getCachedCurrent(env) {

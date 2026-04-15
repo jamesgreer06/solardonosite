@@ -441,7 +441,7 @@
     if (parsed.online) {
       onlineEl.textContent = String(parsed.onlineCount);
       maxEl.textContent = String(parsed.maxCount);
-      stateEl.textContent = parsed.stale ? "Online (connection issue)" : "Online";
+      stateEl.textContent = "Online";
       stateEl.classList.remove("is-offline");
       versionEl.textContent = "Version: " + parsed.version;
       setPlayers(parsed.players, missing);
