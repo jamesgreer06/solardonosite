@@ -11,46 +11,64 @@ const KEEP_MS = 14 * 24 * 60 * 60 * 1000;
 
 export default {
   async fetch(request, env) {
-    const url = new URL(request.url);
+    try {
+      const url = new URL(request.url);
 
-    if (url.pathname === "/current") {
-      return json(await getCurrentLive(env));
+      if (url.pathname === "/current") {
+        return json(await getCurrentLive(env));
+      }
+
+      if (url.pathname === "/history") {
+        const history = await getHistory(env);
+        const stats = await getStats(env);
+        return json({
+          history,
+          allTimeHigh: stats.allTimeHigh || 0,
+          allTimeHighAt: stats.allTimeHighAt || 0,
+        });
+      }
+
+      if (url.pathname === "/stats") {
+        return json(await getStats(env));
+      }
+
+      if (url.pathname === "/collect" && request.method === "POST") {
+        const result = await collect(env);
+        return json(result);
+      }
+
+      return json(
+        {
+          ok: true,
+          message: "Use /current, /history, /stats",
+        },
+        200
+      );
+    } catch (err) {
+      return json(
+        {
+          ok: false,
+          error: "worker_exception",
+          message: err && err.message ? String(err.message) : "Unknown worker exception",
+        },
+        500
+      );
     }
-
-    if (url.pathname === "/history") {
-      const history = await getHistory(env);
-      const stats = await getStats(env);
-      return json({
-        history,
-        allTimeHigh: stats.allTimeHigh || 0,
-        allTimeHighAt: stats.allTimeHighAt || 0,
-      });
-    }
-
-    if (url.pathname === "/stats") {
-      return json(await getStats(env));
-    }
-
-    if (url.pathname === "/collect" && request.method === "POST") {
-      const result = await collect(env);
-      return json(result);
-    }
-
-    return json(
-      {
-        ok: true,
-        message: "Use /current, /history, /stats",
-      },
-      200
-    );
   },
 
   async scheduled(_event, env) {
-    await collect(env);
+    try {
+      await collect(env);
+    } catch (err) {
+      console.error("scheduled collect failed", err);
+    }
   },
 };
 
 async function collect(env) {
+  if (!env || !env.PLAYERCOUNT_KV) {
+    throw new Error("Missing PLAYERCOUNT_KV binding");
+  }
   const now = Date.now();
   const snapshot = await fetchCurrentSafe();
   const effectiveOnline = snapshot.online;
@@ -292,6 +310,7 @@ function concatBytes(...parts) {
 }
 
 async function getHistory(env) {
+  if (!env || !env.PLAYERCOUNT_KV) return [];
   try {
     const raw = await env.PLAYERCOUNT_KV.get(HISTORY_KEY, "text");
     if (!raw) return [];
@@ -304,6 +323,7 @@ async function getHistory(env) {
 }
 
 async function getStats(env) {
+  if (!env || !env.PLAYERCOUNT_KV) return { allTimeHigh: 0, allTimeHighAt: 0 };
   try {
     const raw = await env.PLAYERCOUNT_KV.get(STATS_KEY, "text");
     if (!raw) return { allTimeHigh: 0, allTimeHighAt: 0 };
@@ -318,6 +338,17 @@ async function getStats(env) {
 }
 
 async function getCurrent(env) {
+  if (!env || !env.PLAYERCOUNT_KV) {
+    const snapshot = await fetchCurrentSafe();
+    return {
+      online: snapshot.online,
+      onlineCount: snapshot.onlineCount,
+      maxCount: snapshot.maxCount,
+      players: snapshot.players,
+      version: snapshot.version,
+      updatedAt: Date.now(),
+    };
+  }
   const cachedObj = await getCachedCurrent(env);
   if (cachedObj) return cachedObj;
   const snapshot = await fetchCurrentSafe();
@@ -332,6 +363,19 @@ async function getCurrent(env) {
 }
 
 async function getCurrentLive(env) {
+  if (!env || !env.PLAYERCOUNT_KV) {
+    const snapshot = await fetchCurrentSafe();
+    return {
+      online: snapshot.online,
+      onlineCount: snapshot.onlineCount,
+      maxCount: snapshot.maxCount,
+      players: snapshot.players,
+      version: snapshot.version,
+      stale: false,
+      checkedAt: Date.now(),
+      updatedAt: Date.now(),
+    };
+  }
   const now = Date.now();
   const snapshot = await fetchCurrentSafe();
   const payload = {
@@ -349,6 +393,7 @@ async function getCurrentLive(env) {
 }
 
 async function getCachedCurrent(env) {
+  if (!env || !env.PLAYERCOUNT_KV) return null;
   const cached = await env.PLAYERCOUNT_KV.get(CURRENT_KEY, "text");
   if (!cached) return null;
   try {
