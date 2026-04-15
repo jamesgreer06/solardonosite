@@ -48,7 +48,7 @@ window.ENDCITY_CONFIG = {
    * Set enabled: true to show it on every page.
    */
   siteNotice: {
-    enabled: true,
+    enabled: false,
     text: "Minecraft server is under maintenance. It should be back around 11:30 AM CST.",
   },
 };
