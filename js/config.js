@@ -42,4 +42,13 @@ window.ENDCITY_CONFIG = {
    * Example: "https://endcity-playercount.your-subdomain.workers.dev"
    */
   playercountApiBase: "https://endcity-playercount.admiralwhite334.workers.dev",
+
+  /**
+   * Optional sitewide banner.
+   * Set enabled: true to show it on every page.
+   */
+  siteNotice: {
+    enabled: false,
+    text: "Minecraft server is under maintenance. It should be back around 11:30 AM CST.",
+  },
 };

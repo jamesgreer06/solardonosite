@@ -30,6 +30,24 @@
   var donorTrack = document.getElementById("donor-strip-track");
   var donorEmpty = document.getElementById("donor-strip-empty");
 
+  var siteNotice = cfg.siteNotice && typeof cfg.siteNotice === "object" ? cfg.siteNotice : null;
+  if (siteNotice && siteNotice.enabled) {
+    var txt = String(siteNotice.text || "").trim();
+    if (txt) {
+      var headerEl = document.querySelector(".site-header");
+      var noticeEl = document.createElement("div");
+      noticeEl.className = "site-maintenance-banner";
+      noticeEl.setAttribute("role", "status");
+      noticeEl.setAttribute("aria-live", "polite");
+      noticeEl.textContent = txt;
+      if (headerEl && headerEl.parentNode) {
+        headerEl.parentNode.insertBefore(noticeEl, headerEl.nextSibling);
+      } else {
+        document.body.insertBefore(noticeEl, document.body.firstChild);
+      }
+    }
+  }
+
   function fmt(n) {
     return "$" + (Math.round(n * 100) / 100).toFixed(2);
   }
