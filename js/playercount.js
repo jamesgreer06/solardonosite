@@ -54,6 +54,8 @@
   var brushRectEl = document.getElementById("pc-brush-rect");
 
   var history = [];
+  /** Latest /current poll — used to draw a line to the right edge when server samples lag (idle tab). */
+  var liveSample = { at: 0, v: 0 };
   var allTimeHigh = { value: 0, timestamp: 0 };
   var lastRangeHistory = [];
   var lastGeometry = null;
@@ -121,6 +123,33 @@
     return history.filter(function (pt) {
       return pt.t >= minT && pt.t <= maxT;
     });
+  }
+
+  var BRIDGE_AFTER_MS = 75 * 1000;
+
+  function mergeHistoryForDraw(base) {
+    var vw = getViewWindow();
+    var endT = vw.minT + vw.windowMs;
+    var now = Date.now();
+    var plotEnd = Math.min(now, endT);
+    if (vw.mode === "brush") {
+      if (now < vw.minT || now > endT) {
+        return base;
+      }
+    }
+    if (liveSample.at <= 0) {
+      return base;
+    }
+    if (!base.length) {
+      return [{ t: plotEnd, v: liveSample.v }];
+    }
+    var last = base[base.length - 1];
+    if (plotEnd - last.t <= BRIDGE_AFTER_MS) {
+      return base;
+    }
+    var out = base.slice();
+    out.push({ t: plotEnd, v: liveSample.v });
+    return out;
   }
 
   function updateGraphHeading() {
@@ -263,7 +292,7 @@
     var vw = getViewWindow();
     var windowMs = vw.windowMs;
     var minT = vw.minT;
-    var rangeHistory = getRangeHistory();
+    var rangeHistory = mergeHistoryForDraw(getRangeHistory());
     var maxY = rangeHistory.length
       ? Math.max(
           10,
@@ -437,6 +466,8 @@
   function updateStatus(data) {
     var parsed = parseCurrentPayload(data || {});
     var nowTs = Date.now();
+    liveSample.at = nowTs;
+    liveSample.v = parsed.online ? parsed.onlineCount : 0;
     var missing = Math.max(0, parsed.onlineCount - parsed.players.length);
     if (parsed.online) {
       onlineEl.textContent = String(parsed.onlineCount);
@@ -520,7 +551,6 @@
   var lastServerResyncAt = 0;
   function resyncHistoryFromServer() {
     return Promise.all([loadSharedHistory(), loadStats()]).then(function () {
-      drawGraph();
       fetchStatus();
     });
   }
