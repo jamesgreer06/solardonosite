@@ -517,6 +517,31 @@
       });
   }
 
+  var lastServerResyncAt = 0;
+  function resyncHistoryFromServer() {
+    return Promise.all([loadSharedHistory(), loadStats()]).then(function () {
+      drawGraph();
+      fetchStatus();
+    });
+  }
+  function scheduleResyncAfterIdle() {
+    var now = Date.now();
+    if (now - lastServerResyncAt < 1500) return;
+    lastServerResyncAt = now;
+    resyncHistoryFromServer();
+  }
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") {
+      scheduleResyncAfterIdle();
+    }
+  });
+  window.addEventListener("pageshow", function (ev) {
+    if (ev.persisted) {
+      scheduleResyncAfterIdle();
+    }
+  });
+
   rangeButtons.forEach(function (btn) {
     btn.addEventListener("click", function () {
       setRange(btn.getAttribute("data-range"));
