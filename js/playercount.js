@@ -103,15 +103,17 @@
 
   function getViewWindow() {
     var now = Date.now();
+    var latestDataT = history.length ? Number(history[history.length - 1].t) || 0 : 0;
+    var anchorNow = Math.max(now, latestDataT);
     if (brushWindow && brushWindow.startT != null && brushWindow.endT != null) {
       var a = Math.min(brushWindow.startT, brushWindow.endT);
       var b = Math.max(brushWindow.startT, brushWindow.endT);
-      b = Math.min(b, now);
+      b = Math.min(b, anchorNow);
       var span = Math.max(MIN_BRUSH_MS, b - a);
       return { minT: a, windowMs: span, mode: "brush" };
     }
     var windowMs = RANGE_MS[selectedRange];
-    return { minT: now - windowMs, windowMs: windowMs, mode: "preset" };
+    return { minT: anchorNow - windowMs, windowMs: windowMs, mode: "preset" };
   }
 
   function getRangeHistory() {
