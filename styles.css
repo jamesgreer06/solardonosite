@@ -1817,6 +1817,14 @@ main,
   color: var(--accent-muted);
 }
 
+.cmd-section-lead {
+  margin: 0 0 0.85rem;
+  max-width: 52rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
 .cmd-coming-soon {
   margin: 0;
   color: var(--text-muted);

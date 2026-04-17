@@ -263,10 +263,6 @@
           </thead>
           <tbody>
             <tr>
-              <td><code>/sb</code></td>
-              <td>Toggle the sidebar scoreboard. Requires permission.</td>
-            </tr>
-            <tr>
               <td><code>/help</code></td>
               <td>Server help and command list.</td>
             </tr>
@@ -297,12 +293,125 @@
 
     <section class="cmd-section" aria-labelledby="teams-heading">
       <h2 id="teams-heading">Teams</h2>
-      <p class="cmd-coming-soon">Coming soon.</p>
+      <p class="cmd-section-lead">
+        Use <code>/team</code> to create and manage teams, members, allies, homes, economy, and permissions.
+      </p>
+      <div class="cmd-table-wrap">
+        <table class="cmd-table">
+          <thead>
+            <tr>
+              <th scope="col">Command</th>
+              <th scope="col">What it does</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/team create &lt;name&gt;</code></td>
+              <td>Create a new team if you are not already in one.</td>
+            </tr>
+            <tr>
+              <td><code>/team disband</code></td>
+              <td>If you are the team owner, destroy your team.</td>
+            </tr>
+            <tr>
+              <td><code>/team leave</code></td>
+              <td>Leave the team you are in.</td>
+            </tr>
+            <tr>
+              <td><code>/team invite &lt;player&gt;</code></td>
+              <td>Invite a player who is not already in a team.</td>
+            </tr>
+            <tr>
+              <td><code>/team join</code></td>
+              <td>Join a team you have been invited to.</td>
+            </tr>
+            <tr>
+              <td><code>/team kick &lt;player&gt;</code></td>
+              <td>Remove a player from your team.</td>
+            </tr>
+            <tr>
+              <td><code>/team info</code></td>
+              <td>Show information about your current team.</td>
+            </tr>
+            <tr>
+              <td><code>/team list</code></td>
+              <td>List all teams on the server.</td>
+            </tr>
+            <tr>
+              <td><code>/team prefix &lt;prefix&gt;</code></td>
+              <td>Change your team’s chat prefix.</td>
+            </tr>
+            <tr>
+              <td><code>/team ally [add|remove] &lt;team-name&gt;</code></td>
+              <td>Add or remove an allied team.</td>
+            </tr>
+            <tr>
+              <td><code>/team enemy [add|remove] &lt;team-name&gt;</code></td>
+              <td>Add or remove an enemy team.</td>
+            </tr>
+            <tr>
+              <td><code>/team pvp</code></td>
+              <td>Toggle friendly fire for your team.</td>
+            </tr>
+            <tr>
+              <td><code>/team sethome</code> / <code>/team home</code></td>
+              <td>Set a team home or teleport you and your members there.</td>
+            </tr>
+            <tr>
+              <td><code>/team promote &lt;player&gt;</code> / <code>/team demote &lt;player&gt;</code></td>
+              <td>Promote or demote a member to or from team manager.</td>
+            </tr>
+            <tr>
+              <td><code>/team permission [add|remove] &lt;permission&gt;</code></td>
+              <td>Grant or remove permissions so managers can use specific team commands.</td>
+            </tr>
+            <tr>
+              <td><code>/team deposit &lt;amount&gt;</code></td>
+              <td>Deposit money into the team bank.</td>
+            </tr>
+            <tr>
+              <td><code>/team withdraw &lt;amount&gt;</code></td>
+              <td>Withdraw money from the team bank.</td>
+            </tr>
+            <tr>
+              <td><code>/team fee [set|disable] [amount]</code></td>
+              <td>View, disable, or set the team join fee.</td>
+            </tr>
+            <tr>
+              <td><code>/invites &lt;enable|disable&gt;</code></td>
+              <td>Enable or disable invites from teams.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section class="cmd-section" aria-labelledby="bounty-heading">
-      <h2 id="bounty-heading">Bounty</h2>
-      <p class="cmd-coming-soon">Coming soon.</p>
+      <h2 id="bounty-heading">Bounties</h2>
+      <div class="cmd-table-wrap">
+        <table class="cmd-table">
+          <thead>
+            <tr>
+              <th scope="col">Command</th>
+              <th scope="col">What it does</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>/bounty</code></td>
+              <td>Open the bounties GUI.</td>
+            </tr>
+            <tr>
+              <td><code>/bounty add &lt;player&gt; &lt;amount&gt;</code></td>
+              <td>Start the confirm flow to add to a player's bounty.</td>
+            </tr>
+            <tr>
+              <td><code>/bounty remove &lt;player&gt;</code></td>
+              <td>Remove a player's bounty.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <p class="cmd-footnote">
