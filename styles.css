@@ -1945,6 +1945,15 @@ main,
   background: var(--bg-elevated);
 }
 
+/*
+ * Horizontal scroll without making this box a vertical scroll container.
+ * Otherwise thead { position: sticky } sticks to this wrapper, not the viewport,
+ * so the header row sits wrong and can overlap the first data row.
+ */
+.shop-changes-wrap.cmd-table-wrap {
+  overflow-y: clip;
+}
+
 .cmd-table {
   width: 100%;
   border-collapse: collapse;
@@ -2345,9 +2354,14 @@ kbd {
 }
 
 /* Economy guide (economy.html) */
+.page-economy-main {
+  /* Clearance below sticky .site-header — tune if nav height changes */
+  --economy-sticky-top: 3rem;
+}
+
 /* Deep link economy.html#view — offset for sticky .site-header */
 .page-economy-main #view {
-  scroll-margin-top: calc(0.75rem + 0.75rem + 1.2rem + 1px + 0.5rem);
+  scroll-margin-top: calc(var(--economy-sticky-top) + 0.5rem);
 }
 
 .page-economy-main .econ-guide-h2 {
@@ -2459,15 +2473,18 @@ kbd {
 
 .shop-changes-table {
   min-width: 640px;
+  /* collapse + sticky thead is unreliable in WebKit; separate keeps sticky aligned */
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-/* Sticky header: stays visible while scrolling (below sticky .site-header) */
+/* Sticky header: follows page scroll, sits below site nav */
 .shop-changes-table thead th {
   position: sticky;
-  /* ~padding + logo line + border; keeps row under the nav */
-  top: calc(0.75rem + 0.75rem + 1.2rem + 1px);
+  top: var(--economy-sticky-top);
   z-index: 10;
   background: var(--bg-elevated);
+  box-shadow: 0 1px 0 var(--border);
 }
 
 .shop-changes-table .shop-path {
