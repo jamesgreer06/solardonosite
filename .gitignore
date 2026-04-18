@@ -4,3 +4,6 @@
 !.dev.vars.example
 .env*
 !.env.example
+
+# Local copy of economy ingest secret (same value is in Cloudflare; do not commit)
+worker/.economy-ingest-secret.txt

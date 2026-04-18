@@ -44,8 +44,9 @@ window.ENDCITY_CONFIG = {
   playercountApiBase: "https://endcity-playercount.admiralwhite334.workers.dev",
 
   /**
-   * JSON URL for the economy guide’s “recent shop price changes” table (defaults to data/shop-price-changes.json).
-   * Point this at a Worker or static file you regenerate from server exports.
+   * Economy shop snapshot JSON for the guide page. If empty, uses playercountApiBase + "/economy" (same Worker as
+   * live status when KV is configured); if playercountApiBase is also empty, falls back to data/shop-price-changes.json.
+   * Set an explicit URL (or "data/shop-price-changes.json") to override.
    */
   shopPriceChangesUrl: "",
 

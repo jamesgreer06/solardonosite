@@ -9,3 +9,8 @@ crons = ["*/2 * * * *"]
 binding = "PLAYERCOUNT_DB"
 database_name = "endcity-playercount"
 database_id = "c6113ed5-4c17-4f04-aaf2-b435b3417d58"
+
+# Shop economy JSON — GET/PUT /economy (see playercount-worker.js)
+[[kv_namespaces]]
+binding = "ECONOMY_KV"
+id = "e9db4d89bf9e4df488184851bd1fcfbf"

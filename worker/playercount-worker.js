@@ -6,6 +6,9 @@ const STATUS_PROTOCOL_VERSION = 767;
 const MAX_HISTORY_POINTS = 5000;
 const KEEP_MS = 14 * 24 * 60 * 60 * 1000;
 
+/** KV key for shop economy JSON (same shape as data/shop-price-changes.json). */
+const ECONOMY_KV_KEY = "shop_economy_snapshot_v1";
+
 export default {
   async fetch(request, env) {
     try {
@@ -34,10 +37,20 @@ export default {
         return json(result);
       }
 
+      if (url.pathname === "/economy" || url.pathname === "/shop-price-changes.json") {
+        if (request.method === "GET" || request.method === "HEAD") {
+          return economyGet(env, request.method === "HEAD");
+        }
+        if (request.method === "PUT" || request.method === "POST") {
+          return economyIngest(request, env);
+        }
+        return json({ ok: false, error: "method_not_allowed" }, 405);
+      }
+
       return json(
         {
           ok: true,
-          message: "Use /current, /history, /stats",
+          message: "Use /current, /history, /stats, /economy",
         },
         200
       );
@@ -414,4 +427,79 @@ function json(payload, status = 200) {
       "access-control-allow-origin": "*",
     },
   });
+}
+
+function corsJsonHeaders() {
+  return {
+    "content-type": "application/json; charset=utf-8",
+    "cache-control": "public, max-age=60",
+    "access-control-allow-origin": "*",
+  };
+}
+
+/**
+ * Public read: latest shop snapshot written by your plugin (PUT /economy).
+ */
+async function economyGet(env, headOnly) {
+  if (!env || !env.ECONOMY_KV) {
+    return json(
+      {
+        ok: false,
+        error: "economy_kv_not_configured",
+        message: "Add a KV namespace binding ECONOMY_KV in wrangler.toml",
+      },
+      503
+    );
+  }
+  const raw = await env.ECONOMY_KV.get(ECONOMY_KV_KEY);
+  if (!raw) {
+    return json({ ok: false, error: "no_economy_snapshot" }, 404);
+  }
+  if (headOnly) {
+    return new Response(null, {
+      status: 200,
+      headers: corsJsonHeaders(),
+    });
+  }
+  return new Response(raw, {
+    status: 200,
+    headers: corsJsonHeaders(),
+  });
+}
+
+/**
+ * Ingest from Minecraft plugin only. Set secret: wrangler secret put ECONOMY_INGEST_SECRET
+ * Header: Authorization: Bearer <same secret>
+ */
+async function economyIngest(request, env) {
+  if (!env || !env.ECONOMY_KV) {
+    return json({ ok: false, error: "economy_kv_not_configured" }, 503);
+  }
+  const secret = env.ECONOMY_INGEST_SECRET;
+  if (!secret || typeof secret !== "string") {
+    return json(
+      {
+        ok: false,
+        error: "economy_secret_not_configured",
+        message: "Set ECONOMY_INGEST_SECRET with wrangler secret put ECONOMY_INGEST_SECRET",
+      },
+      503
+    );
+  }
+  const auth = request.headers.get("Authorization") || "";
+  const expected = "Bearer " + secret;
+  if (auth !== expected) {
+    return json({ ok: false, error: "unauthorized" }, 401);
+  }
+  const body = await request.text();
+  if (!body || body.length > 2_000_000) {
+    return json({ ok: false, error: "body_too_large_or_empty" }, 400);
+  }
+  try {
+    JSON.parse(body);
+  } catch {
+    return json({ ok: false, error: "invalid_json" }, 400);
+  }
+  await env.ECONOMY_KV.put(ECONOMY_KV_KEY, body);
+  return json({ ok: true, saved: true, bytes: body.length });
 }

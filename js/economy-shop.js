@@ -8,15 +8,14 @@
   metaEl.textContent = "Loading snapshot…";
 
   var cfg = window.ENDCITY_CONFIG || window.SOLAR_CONFIG || {};
-  var url = String(cfg.shopPriceChangesUrl || "data/shop-price-changes.json").trim();
+  var url = String(cfg.shopPriceChangesUrl || "").trim();
   if (!url) {
-    metaEl.textContent = "";
-    if (emptyEl) {
-      emptyEl.hidden = false;
-      emptyEl.textContent = "Price snapshots are not configured for this site build.";
+    var apiBase = String(cfg.playercountApiBase || "").trim().replace(/\/+$/, "");
+    if (apiBase) {
+      url = apiBase + "/economy";
+    } else {
+      url = "data/shop-price-changes.json";
     }
-    if (wrap) wrap.hidden = true;
-    return;
   }
 
   function formatItemName(row) {
@@ -77,6 +76,108 @@
   function fmtVolumeMain(n) {
     if (n == null || !Number.isFinite(Number(n))) return null;
     return Number(n).toLocaleString();
+  }
+
+  function pctDelta(before, after) {
+    if (before == null || after == null) return null;
+    var b = Number(before);
+    var a = Number(after);
+    if (!Number.isFinite(b) || !Number.isFinite(a)) return null;
+    if (b === 0) return a === 0 ? 0 : null;
+    return ((a - b) / b) * 100;
+  }
+
+  function pressureTypeFromScore(p) {
+    if (!Number.isFinite(Number(p))) return "mixed";
+    var v = Number(p);
+    if (v > 0.52) return "supply";
+    if (v < 0.48) return "demand";
+    return "mixed";
+  }
+
+  /**
+   * Worker/plugin payload uses `changes[]` + numeric `generatedAt`.
+   * Legacy static JSON uses `rows[]` + ISO `generatedAt`.
+   */
+  function normalizeEconomyPayload(data) {
+    if (!data || typeof data !== "object") {
+      return { rows: [], generatedAt: null, periodNote: "" };
+    }
+
+    var gen = data.generatedAt;
+    if (typeof gen === "number" && Number.isFinite(gen)) {
+      gen = new Date(gen).toISOString();
+    } else if (gen != null) {
+      var d0 = new Date(String(gen));
+      gen = !isNaN(d0.getTime()) ? d0.toISOString() : null;
+    } else {
+      gen = null;
+    }
+
+    var periodParts = [];
+    if (Number.isFinite(Number(data.changeCount))) {
+      periodParts.push(String(data.changeCount) + " changes");
+    }
+    if (Number.isFinite(Number(data.aggregatedItemCount))) {
+      periodParts.push(String(data.aggregatedItemCount) + " items in window");
+    }
+    var periodNote = periodParts.length ? periodParts.join(" · ") : "";
+
+    if (Array.isArray(data.changes)) {
+      var rows = data.changes.map(function (ch) {
+        var buyW;
+        var buyN;
+        var buyD;
+        var sellW;
+        var sellN;
+        var sellD;
+        if (ch.updateBuy !== false) {
+          buyW = ch.buyBefore != null ? Number(ch.buyBefore) : null;
+          buyN = ch.buyAfter != null ? Number(ch.buyAfter) : null;
+          buyD = buyW != null && buyN != null ? pctDelta(buyW, buyN) : null;
+        } else {
+          buyW = buyN = buyD = null;
+        }
+        if (ch.updateSell !== false) {
+          sellW = ch.sellBefore != null ? Number(ch.sellBefore) : null;
+          sellN = ch.sellAfter != null ? Number(ch.sellAfter) : null;
+          sellD = sellW != null && sellN != null ? pctDelta(sellW, sellN) : null;
+        } else {
+          sellW = sellN = sellD = null;
+        }
+
+        var path = ch.itemPath ? String(ch.itemPath) : "";
+        var sec = ch.section ? String(ch.section) : "";
+        var display = sec && path ? sec + " · " + path : path || sec || "—";
+
+        return {
+          item: path,
+          displayName: display,
+          shopPath: path,
+          priceChangedAt: gen,
+          pressureType: pressureTypeFromScore(ch.pressure),
+          pressureScore: Number.isFinite(Number(ch.pressure)) ? Number(ch.pressure) : null,
+          volume: Number.isFinite(Number(ch.volume)) ? Number(ch.volume) : null,
+          buyWas: buyW,
+          buyNew: buyN,
+          buyDeltaPct: buyD,
+          sellWas: sellW,
+          sellNew: sellN,
+          sellDeltaPct: sellD,
+        };
+      });
+      return { rows: rows, generatedAt: gen, periodNote: periodNote };
+    }
+
+    if (Array.isArray(data.rows)) {
+      return {
+        rows: data.rows,
+        generatedAt: gen || data.generatedAt,
+        periodNote: data.periodNote != null ? String(data.periodNote) : periodNote,
+      };
+    }
+
+    return { rows: [], generatedAt: gen, periodNote: periodNote };
   }
 
   function pressureLabel(row) {
@@ -211,8 +312,9 @@
       return res.json();
     })
     .then(function (data) {
-      var rows = data && Array.isArray(data.rows) ? data.rows : [];
-      setMeta(data && data.generatedAt, data && data.periodNote);
+      var norm = normalizeEconomyPayload(data);
+      var rows = norm.rows;
+      setMeta(norm.generatedAt, norm.periodNote);
       if (rows.length === 0) {
         if (emptyEl) {
           emptyEl.hidden = false;

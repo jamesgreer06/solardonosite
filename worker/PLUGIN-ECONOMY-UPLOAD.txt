@@ -1,0 +1,73 @@
+Economy snapshot — Worker + Minecraft plugin
+==============================================
+
+Worker URL (same as playercount API base):
+  https://endcity-playercount.admiralwhite334.workers.dev
+
+Endpoints:
+  GET  /economy                    — public JSON (website uses this)
+  PUT  /economy                    — plugin upload (requires secret)
+  POST /economy                    — same as PUT
+
+Header for uploads:
+  Authorization: Bearer <ECONOMY_INGEST_SECRET>
+  Content-Type: application/json; charset=utf-8
+
+Body: raw JSON file bytes (same shape as data/shop-price-changes.json).
+
+Secret:
+  A 64-character hex string was generated and stored in Cloudflare as ECONOMY_INGEST_SECRET.
+  Your local copy (for the plugin — do NOT commit to git):
+    worker/.economy-ingest-secret.txt
+
+  If you lose it: generate a new random string, run:
+    cd worker
+    npx wrangler secret put ECONOMY_INGEST_SECRET --config wrangler.toml
+  and update the plugin config to match.
+
+Deploy playercount worker (from repo):
+  cd worker
+  npx wrangler deploy --config wrangler.toml
+
+  (Use --config so the root wrangler.jsonc “solardonosite” project is not used by mistake.)
+
+Website:
+  js/config.js — shopPriceChangesUrl empty + playercountApiBase set loads .../economy automatically.
+
+
+Java (Java 11+) — example after your plugin writes the JSON file
+-------------------------------------------------------------------
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
+
+void pushEconomySnapshot(Path jsonFile, String ingestSecret) throws Exception {
+    String body = Files.readString(jsonFile, StandardCharsets.UTF_8);
+    String url = "https://endcity-playercount.admiralwhite334.workers.dev/economy";
+
+    HttpRequest req = HttpRequest.newBuilder()
+        .uri(URI.create(url))
+        .timeout(Duration.ofSeconds(30))
+        .header("Authorization", "Bearer " + ingestSecret)
+        .header("Content-Type", "application/json; charset=utf-8")
+        .PUT(HttpRequest.BodyPublishers.ofString(body))
+        .build();
+
+    HttpResponse<String> res = HttpClient.newBuilder()
+        .connectTimeout(Duration.ofSeconds(15))
+        .build()
+        .send(req, HttpResponse.BodyHandlers.ofString());
+
+    if (res.statusCode() < 200 || res.statusCode() >= 300) {
+        throw new IllegalStateException("Economy upload failed: HTTP " + res.statusCode() + " " + res.body());
+    }
+}
+
+Load ingestSecret from a server-only config file (e.g. plugins/YourPlugin/economy-ingest-secret.txt),
+not from the jar you distribute to players.
