@@ -2345,6 +2345,11 @@ kbd {
 }
 
 /* Economy guide (economy.html) */
+/* Deep link economy.html#view — offset for sticky .site-header */
+.page-economy-main #view {
+  scroll-margin-top: calc(0.75rem + 0.75rem + 1.2rem + 1px + 0.5rem);
+}
+
 .page-economy-main .econ-guide-h2 {
   font-family: var(--font-display);
   font-size: 1.2rem;
@@ -2454,6 +2459,15 @@ kbd {
 
 .shop-changes-table {
   min-width: 640px;
+}
+
+/* Sticky header: stays visible while scrolling (below sticky .site-header) */
+.shop-changes-table thead th {
+  position: sticky;
+  /* ~padding + logo line + border; keeps row under the nav */
+  top: calc(0.75rem + 0.75rem + 1.2rem + 1px);
+  z-index: 10;
+  background: var(--bg-elevated);
 }
 
 .shop-changes-table .shop-path {
