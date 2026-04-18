@@ -2345,7 +2345,7 @@ kbd {
 }
 
 /* Economy guide (economy.html) */
-/* Deep link economy.html#view — offset for sticky .site-header */
+/* economy.html#view — scroll offset when linking straight to the snapshot table */
 .page-economy-main #view {
   scroll-margin-top: calc(0.75rem + 0.75rem + 1.2rem + 1px + 0.5rem);
 }
