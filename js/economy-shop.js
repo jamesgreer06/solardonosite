@@ -31,6 +31,26 @@
       });
   }
 
+  /** ISO date string for when this row’s prices last changed (preferred over shopPath in the UI). */
+  function formatChangedLine(row) {
+    var raw = row && (row.priceChangedAt || row.changedAt);
+    if (raw) {
+      var d = new Date(String(raw));
+      if (!isNaN(d.getTime())) {
+        var label = d.toLocaleDateString([], {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+        return { iso: String(raw), text: "Changed " + label };
+      }
+    }
+    if (row && row.shopPath) {
+      return { iso: null, text: String(row.shopPath), isPath: true };
+    }
+    return { iso: null, text: "—" };
+  }
+
   function fmtPrice(n) {
     if (n == null || !Number.isFinite(Number(n))) return "—";
     var v = Number(n);
@@ -104,11 +124,20 @@
       strong.textContent = formatItemName(row);
       tdItem.appendChild(strong);
       tdItem.appendChild(document.createElement("br"));
-      var code = document.createElement("code");
-      code.className = "shop-path";
-      code.setAttribute("translate", "no");
-      code.textContent = row.shopPath || "—";
-      tdItem.appendChild(code);
+      var ch = formatChangedLine(row);
+      if (ch.iso) {
+        var timeEl = document.createElement("time");
+        timeEl.className = "shop-item-changed";
+        timeEl.setAttribute("datetime", ch.iso);
+        timeEl.textContent = ch.text;
+        tdItem.appendChild(timeEl);
+      } else {
+        var sub = document.createElement(ch.isPath ? "code" : "span");
+        sub.className = ch.isPath ? "shop-path shop-path--fallback" : "shop-item-changed";
+        if (ch.isPath) sub.setAttribute("translate", "no");
+        sub.textContent = ch.text;
+        tdItem.appendChild(sub);
+      }
 
       var tdPress = document.createElement("td");
       var spanP = document.createElement("span");

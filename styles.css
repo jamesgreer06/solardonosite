@@ -2417,6 +2417,20 @@ kbd {
   margin-top: 0.25rem;
 }
 
+.shop-item-changed {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.shop-path--fallback {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
 .shop-change-cell {
   vertical-align: top;
 }

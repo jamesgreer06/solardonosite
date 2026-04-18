@@ -5,7 +5,7 @@
     {
       "item": "SUGAR_CANE",
       "displayName": "Sugar cane",
-      "shopPath": "Farming.page1.items.25",
+      "priceChangedAt": "2026-04-15T08:30:00.000Z",
       "pressureType": "demand",
       "pressureScore": 0.002,
       "volume": 329437,
@@ -14,13 +14,12 @@
       "buyDeltaPct": 20,
       "sellWas": 0.03,
       "sellNew": 0.04,
-      "sellDeltaPct": 33.33,
-      "why": "High demand: most activity is players buying from the shop — raise prices or seller payouts to balance scarcity."
+      "sellDeltaPct": 33.33
     },
     {
       "item": "PACKED_ICE",
       "displayName": "Packed ice",
-      "shopPath": "Blocks.page1.items.6",
+      "priceChangedAt": "2026-04-14T18:00:00.000Z",
       "pressureType": "supply",
       "pressureScore": 1,
       "volume": 59852,
@@ -29,8 +28,7 @@
       "buyDeltaPct": -20.96,
       "sellWas": 3.38,
       "sellNew": 2.57,
-      "sellDeltaPct": -23.96,
-      "why": "High supply: most activity is players selling to the shop — reduce payouts / buy-from-shop prices to steer farms elsewhere."
+      "sellDeltaPct": -23.96
     }
   ]
 }
