@@ -48,6 +48,14 @@
         <div class="hero-primary">
           <header class="hero-brand">
             <p class="intro-eyebrow">endcity.net · Java &amp; Bedrock</p>
+            <p class="hero-playercount" id="hero-playercount" aria-live="polite">
+              <span class="hero-playercount__dot" id="hero-playercount-dot" aria-hidden="true"></span>
+              <span class="hero-playercount__nums">
+                <span id="hero-playercount-online">—</span><span class="hero-playercount__sep" aria-hidden="true"> / </span><span id="hero-playercount-max">—</span>
+              </span>
+              <span class="hero-playercount__suffix">players online</span>
+              <a class="domain-link hero-playercount__link" href="/status">Live graph</a>
+            </p>
             <h1 id="intro-heading" class="intro-title">Play together. <span class="intro-accent">Keep it fair.</span></h1>
             <p class="hero-deck">Survival multiplayer with a player-run economy and a few conveniences—shop, auctions, homes—on a world we fund together. The core loop stays close to <strong>vanilla</strong>: we’re not chasing a modpack or minigame-server vibe.</p>
           </header>
@@ -256,14 +264,21 @@
           </article>
           <article class="econ-card">
             <h3>Shop &amp; selling</h3>
-            <p>Buy from the server shop at listed prices, or turn loot into balance through the sell GUI and bulk-sell options so you’re not babysitting chests.</p>
+            <p>Buy from the server shop and sell through the sell GUI and bulk-sell options so you’re not babysitting chests. Prices aren’t frozen in place—see below.</p>
+          </article>
+          <article class="econ-card econ-card--feature">
+            <h3>Supply &amp; demand pricing</h3>
+            <p>
+              The shop uses <strong>dynamic pricing</strong>: buy and sell values move with how players actually trade. Sell a lot of the same item and its sell price drifts down; sell less and it drifts up.
+              Buying works the opposite—heavy buying pushes buy prices up. When inflows and outflows balance, prices stay steadier. It’s a living economy, not a static spreadsheet.
+            </p>
           </article>
           <article class="econ-card">
             <h3>Auction house</h3>
             <p>List what you’re holding for a price, search what others listed, and track active sales, recent sales, and expired listings from one place.</p>
           </article>
         </div>
-        <p class="section-outro">Team systems and bounties are on the roadmap—watch Discord for when they go live.</p>
+        <p class="section-outro">Teams, bounties, and full command syntax are on the <a class="domain-link" href="commands.html">commands</a> page.</p>
       </div>
     </section>
 
@@ -289,5 +304,6 @@
 
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/hero-playercount.js"></script>
 </body>
 </html>
