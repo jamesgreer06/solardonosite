@@ -112,14 +112,6 @@
   function tdPriceBlock(was, neu, pct) {
     var td = document.createElement("td");
     td.className = "shop-change-cell";
-    var pNum = pct != null && Number.isFinite(Number(pct)) ? Number(pct) : null;
-    if (pNum == null || pNum === 0) {
-      td.classList.add("shop-change-cell--neutral");
-    } else if (pNum > 0) {
-      td.classList.add("shop-change-cell--up");
-    } else {
-      td.classList.add("shop-change-cell--down");
-    }
 
     var prices = document.createElement("div");
     prices.className = "shop-change-cell__prices";
@@ -181,7 +173,7 @@
         tdVol.appendChild(document.createTextNode(volMain));
         var volUnit = document.createElement("span");
         volUnit.className = "shop-vol__unit";
-        volUnit.textContent = "items / blocks";
+        volUnit.textContent = "items";
         tdVol.appendChild(volUnit);
       }
 

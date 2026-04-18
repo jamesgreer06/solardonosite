@@ -32,12 +32,17 @@
   --scrollbar-thumb-hover: #b5a6d4;
   --scrollbar-thumb-active: #5c4f75;
 
-  /* Shop snapshot table — clear up/down */
+  /* Shop snapshot table — % up/down */
   --shop-up: #6ee7a8;
-  --shop-up-muted: color-mix(in srgb, #6ee7a8 55%, var(--text-muted));
-  --shop-down: #fb923c;
   --shop-down-bright: #fca5a5;
   --shop-neutral: var(--text-muted);
+  /* Pressure badges */
+  --shop-pressure-demand-bg: rgba(34, 197, 94, 0.14);
+  --shop-pressure-demand-fg: #86efac;
+  --shop-pressure-supply-bg: rgba(248, 113, 113, 0.14);
+  --shop-pressure-supply-fg: #fca5a5;
+  --shop-pressure-mixed-bg: rgba(245, 158, 11, 0.12);
+  --shop-pressure-mixed-fg: #fcd34d;
 }
 
 *,
@@ -2474,23 +2479,11 @@ kbd {
   vertical-align: top;
 }
 
-.shop-change-cell--up .shop-change-cell__prices {
-  color: var(--shop-up-muted);
-}
-
-.shop-change-cell--down .shop-change-cell__prices {
-  color: color-mix(in srgb, var(--shop-down-bright) 75%, var(--text-muted));
-}
-
-.shop-change-cell--neutral .shop-change-cell__prices {
-  color: var(--text-muted);
-}
-
 .shop-change-cell__prices {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   font-size: 0.9rem;
-  color: var(--text);
+  color: var(--text-muted);
 }
 
 .shop-change-cell__pct {
@@ -2516,18 +2509,18 @@ kbd {
 }
 
 .shop-pressure--demand {
-  background: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: var(--accent-bright);
+  background: var(--shop-pressure-demand-bg);
+  color: var(--shop-pressure-demand-fg);
 }
 
 .shop-pressure--supply {
-  background: rgba(120, 140, 160, 0.14);
-  color: color-mix(in srgb, var(--text) 88%, var(--accent-muted));
+  background: var(--shop-pressure-supply-bg);
+  color: var(--shop-pressure-supply-fg);
 }
 
 .shop-pressure--mixed {
-  background: color-mix(in srgb, var(--accent-muted) 12%, transparent);
-  color: var(--text-muted);
+  background: var(--shop-pressure-mixed-bg);
+  color: var(--shop-pressure-mixed-fg);
 }
 
 .shop-delta {
