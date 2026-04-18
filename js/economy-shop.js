@@ -20,7 +20,7 @@
 
   function formatItemName(row) {
     var dn = row && row.displayName;
-    if (dn && String(dn).trim()) return String(dn).trim();
+    if (dn != null && String(dn).trim() !== "") return String(dn).trim();
     var id = row && row.item;
     if (!id) return "—";
     return String(id)
@@ -30,7 +30,7 @@
       });
   }
 
-  /** ISO date string for when this row’s prices last changed (preferred over shopPath in the UI). */
+  /** Second line under item: snapshot time only. */
   function formatChangedLine(row) {
     var raw = row && (row.priceChangedAt || row.changedAt);
     if (raw) {
@@ -45,9 +45,6 @@
         });
         return { iso: String(raw), text: "Changed " + label };
       }
-    }
-    if (row && row.shopPath) {
-      return { iso: null, text: String(row.shopPath), isPath: true };
     }
     return { iso: null, text: "—" };
   }
@@ -146,14 +143,14 @@
           sellW = sellN = sellD = null;
         }
 
-        var path = ch.itemPath ? String(ch.itemPath) : "";
-        var sec = ch.section ? String(ch.section) : "";
-        var display = sec && path ? sec + " · " + path : path || sec || "—";
+        var name =
+          ch.itemName != null && String(ch.itemName).trim() !== ""
+            ? String(ch.itemName).trim()
+            : "—";
 
         return {
-          item: path,
-          displayName: display,
-          shopPath: path,
+          item: name,
+          displayName: name,
           priceChangedAt: gen,
           pressureType: pressureTypeFromScore(ch.pressure),
           pressureScore: Number.isFinite(Number(ch.pressure)) ? Number(ch.pressure) : null,
@@ -252,9 +249,8 @@
         timeEl.textContent = ch.text;
         tdItem.appendChild(timeEl);
       } else {
-        var sub = document.createElement(ch.isPath ? "code" : "span");
-        sub.className = ch.isPath ? "shop-path shop-path--fallback" : "shop-item-changed";
-        if (ch.isPath) sub.setAttribute("translate", "no");
+        var sub = document.createElement("span");
+        sub.className = "shop-item-changed";
         sub.textContent = ch.text;
         tdItem.appendChild(sub);
       }
