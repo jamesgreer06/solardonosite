@@ -20,7 +20,6 @@
       <a href="#about">About</a>
       <a href="#rules">Rules</a>
       <a href="#economy">Economy</a>
-      <a href="economy.html">Economy guide</a>
       <a href="#donate">Donate</a>
       <a href="commands.html">Commands</a>
       <a href="/status">Status</a>
@@ -36,7 +35,6 @@
       <a href="#about">About</a>
       <a href="#rules">Rules</a>
       <a href="#economy">Economy</a>
-      <a href="economy.html">Economy guide</a>
       <a href="#donate">Donate</a>
       <a href="commands.html">Commands</a>
       <a href="/status">Status</a>
@@ -259,30 +257,34 @@
         <p class="section-intro">
           Money is earned in-world—farming, selling, player trade—and spent at the server shop or with each other. Nothing here is bought with real money.
         </p>
-        <div class="econ-grid">
-          <article class="econ-card">
-            <h3>Balances &amp; trade</h3>
-            <p>Pay other players, check your balance, see who’s richest, and choose whether you accept incoming payments—handy when you want privacy from tips or spam.</p>
-          </article>
-          <article class="econ-card">
-            <h3>Shop &amp; selling</h3>
-            <p>Buy from the server shop and sell through the sell GUI and bulk-sell options so you’re not babysitting chests. Prices aren’t frozen in place—see below.</p>
-          </article>
-          <article class="econ-card econ-card--feature">
-            <h3>Supply &amp; demand pricing</h3>
-            <p>
-              The shop uses <strong>dynamic pricing</strong>: buy and sell values move with how players actually trade. Sell a lot of the same item and its sell price drifts down; sell less and it drifts up.
-              Buying works the opposite—heavy buying pushes buy prices up. When inflows and outflows balance, prices stay steadier. It’s a living economy, not a static spreadsheet.
-            </p>
-          </article>
-          <article class="econ-card">
-            <h3>Auction house</h3>
-            <p>List what you’re holding for a price, search what others listed, and track active sales, recent sales, and expired listings from one place.</p>
-          </article>
+        <div class="econ-stack">
+          <div class="econ-grid">
+            <article class="econ-card">
+              <h3>Balances &amp; trade</h3>
+              <p>Pay players, check your balance, and toggle who can pay you—useful when you want privacy from tips or spam.</p>
+            </article>
+            <article class="econ-card">
+              <h3>Shop &amp; selling</h3>
+              <p>Buy from the server shop; sell through the sell GUI or bulk—prices shift over time, not fixed forever.</p>
+            </article>
+            <article class="econ-card econ-card--feature">
+              <h3>Supply &amp; demand pricing</h3>
+              <p>
+                <strong>Dynamic pricing:</strong> lots of selling to the shop pushes sell payouts down; lots of buying pulls buy prices up. When activity balances, prices settle more.
+              </p>
+            </article>
+            <article class="econ-card">
+              <h3>Auction house</h3>
+              <p>List items, search listings, and follow active, recent, and expired auctions in one place.</p>
+            </article>
+          </div>
+          <footer class="econ-section-footer">
+            <a class="domain-link" href="economy.html">How shop prices move</a>
+            <span class="econ-section-footer__sep" aria-hidden="true">·</span>
+            <a class="domain-link" href="commands.html">Commands</a>
+            <span class="econ-section-footer__rest">— teams, bounties, and syntax</span>
+          </footer>
         </div>
-        <p class="section-outro">
-          <a class="domain-link" href="economy.html">How shop prices move</a> (full guide, kid-friendly + detailed) — teams, bounties, and commands are on the <a class="domain-link" href="commands.html">commands</a> page.
-        </p>
       </div>
     </section>
 
