@@ -44,6 +44,12 @@ window.ENDCITY_CONFIG = {
   playercountApiBase: "https://endcity-playercount.admiralwhite334.workers.dev",
 
   /**
+   * JSON URL for the economy guide’s “recent shop price changes” table (defaults to data/shop-price-changes.json).
+   * Point this at a Worker or static file you regenerate from server exports.
+   */
+  shopPriceChangesUrl: "",
+
+  /**
    * Optional sitewide banner.
    * Set enabled: true to show it on every page.
    */

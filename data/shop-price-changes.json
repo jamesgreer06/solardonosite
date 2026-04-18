@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-04-16T00:00:00.000Z",
+  "periodNote": "Snapshot from the server shop tracker — replace this file when you export new data.",
+  "rows": [
+    {
+      "item": "SUGAR_CANE",
+      "displayName": "Sugar cane",
+      "shopPath": "Farming.page1.items.25",
+      "pressureType": "demand",
+      "pressureScore": 0.002,
+      "volume": 329437,
+      "buyWas": 0.1,
+      "buyNew": 0.12,
+      "buyDeltaPct": 20,
+      "sellWas": 0.03,
+      "sellNew": 0.04,
+      "sellDeltaPct": 33.33,
+      "why": "High demand: most activity is players buying from the shop — raise prices or seller payouts to balance scarcity."
+    },
+    {
+      "item": "PACKED_ICE",
+      "displayName": "Packed ice",
+      "shopPath": "Blocks.page1.items.6",
+      "pressureType": "supply",
+      "pressureScore": 1,
+      "volume": 59852,
+      "buyWas": 13.5,
+      "buyNew": 10.67,
+      "buyDeltaPct": -20.96,
+      "sellWas": 3.38,
+      "sellNew": 2.57,
+      "sellDeltaPct": -23.96,
+      "why": "High supply: most activity is players selling to the shop — reduce payouts / buy-from-shop prices to steer farms elsewhere."
+    }
+  ]
+}
