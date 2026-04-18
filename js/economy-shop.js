@@ -2,8 +2,7 @@
   var tbody = document.getElementById("shop-changes-tbody");
   var metaEl = document.getElementById("shop-changes-meta");
   var emptyEl = document.getElementById("shop-changes-empty");
-  var wrap = document.getElementById("shop-changes-wrap");
-  var toolbarEl = document.getElementById("shop-changes-toolbar");
+  var panelEl = document.getElementById("shop-changes-panel");
   var sortSelect = document.getElementById("shop-changes-sort");
   if (!tbody || !metaEl) return;
 
@@ -227,6 +226,38 @@
     return tiebreakName(a, b);
   }
 
+  function buyNewNum(r) {
+    if (!r || r.buyNew == null || !Number.isFinite(Number(r.buyNew))) return null;
+    return Number(r.buyNew);
+  }
+
+  function sellNewNum(r) {
+    if (!r || r.sellNew == null || !Number.isFinite(Number(r.sellNew))) return null;
+    return Number(r.sellNew);
+  }
+
+  /** Current buy-from-shop price (after change), high → low */
+  function cmpBuyHigh(a, b) {
+    var va = buyNewNum(a);
+    var vb = buyNewNum(b);
+    if (va == null && vb == null) return tiebreakName(a, b);
+    if (va == null) return 1;
+    if (vb == null) return -1;
+    if (vb !== va) return vb - va;
+    return tiebreakName(a, b);
+  }
+
+  /** Current sell-to-shop payout (after change), high → low */
+  function cmpSellHigh(a, b) {
+    var va = sellNewNum(a);
+    var vb = sellNewNum(b);
+    if (va == null && vb == null) return tiebreakName(a, b);
+    if (va == null) return 1;
+    if (vb == null) return -1;
+    if (vb !== va) return vb - va;
+    return tiebreakName(a, b);
+  }
+
   /** Lower score = more demand-heavy */
   function cmpDemandStrong(a, b) {
     var sa = scoreNum(a);
@@ -265,7 +296,9 @@
   function sortRows(rows, mode) {
     var out = rows.slice();
     var cmp = cmpVolumeDesc;
-    if (mode === "demand-strong") cmp = cmpDemandStrong;
+    if (mode === "buy-desc") cmp = cmpBuyHigh;
+    else if (mode === "sell-desc") cmp = cmpSellHigh;
+    else if (mode === "demand-strong") cmp = cmpDemandStrong;
     else if (mode === "supply-strong") cmp = cmpSupplyStrong;
     else if (mode === "balanced") cmp = cmpBalanced;
     out.sort(cmp);
@@ -386,31 +419,28 @@
       setMeta(norm.generatedAt, norm.periodNote);
       if (rows.length === 0) {
         allRows = [];
-        if (toolbarEl) toolbarEl.hidden = true;
+        if (panelEl) panelEl.hidden = true;
         if (emptyEl) {
           emptyEl.hidden = false;
           emptyEl.textContent = "This snapshot has no rows yet—check back after the next export.";
         }
-        if (wrap) wrap.hidden = true;
         return;
       }
       allRows = rows;
       if (emptyEl) emptyEl.hidden = true;
-      if (wrap) wrap.hidden = false;
-      if (toolbarEl) toolbarEl.hidden = false;
+      if (panelEl) panelEl.hidden = false;
       var mode = sortSelect && sortSelect.value ? sortSelect.value : "volume-desc";
       renderRows(sortRows(allRows, mode));
     })
     .catch(function () {
       allRows = [];
-      if (toolbarEl) toolbarEl.hidden = true;
+      if (panelEl) panelEl.hidden = true;
       metaEl.textContent = "";
       if (emptyEl) {
         emptyEl.hidden = false;
         emptyEl.textContent =
           "We couldn’t load the price snapshot (offline or updating). Try again in a moment.";
       }
-      if (wrap) wrap.hidden = true;
     });
 
   if (sortSelect) {

@@ -102,30 +102,41 @@
         Snapshot of items whose shop prices moved recently. <strong>Volume</strong> counts items traded in the window we measure (in-game only, not real money). Staff refresh this when they export new data.
       </p>
       <p class="shop-changes-meta" id="shop-changes-meta"></p>
-      <div class="shop-changes-toolbar" id="shop-changes-toolbar" hidden>
-        <label class="shop-changes-sort-label" for="shop-changes-sort">Sort by</label>
-        <select id="shop-changes-sort" class="shop-changes-sort">
-          <option value="volume-desc" selected>Volume (high → low)</option>
-          <option value="demand-strong">Strongest demand</option>
-          <option value="supply-strong">Strongest supply</option>
-          <option value="balanced">Most balanced pressure</option>
-        </select>
-      </div>
       <p class="shop-changes-empty" id="shop-changes-empty" hidden>This snapshot isn’t available right now.</p>
-      <div class="shop-changes-wrap cmd-table-wrap" id="shop-changes-wrap" hidden>
-        <table class="shop-changes-table cmd-table" aria-describedby="shop-changes-meta">
-          <caption class="sr-only">Items with recent buy and sell price adjustments</caption>
-          <thead>
-            <tr>
-              <th scope="col">Item <span class="th-hint">(price changed)</span></th>
-              <th scope="col">Pressure</th>
-              <th scope="col">Volume <span class="th-hint">(items)</span></th>
-              <th scope="col">Buy</th>
-              <th scope="col">Sell</th>
-            </tr>
-          </thead>
-          <tbody id="shop-changes-tbody"></tbody>
-        </table>
+      <div class="shop-changes-panel" id="shop-changes-panel" hidden>
+        <div class="shop-changes-toolbar" id="shop-changes-toolbar" role="region" aria-label="Sort snapshot table">
+          <span class="shop-changes-toolbar__title">Snapshot table</span>
+          <div class="shop-changes-toolbar__control">
+            <label class="shop-changes-sort-label" for="shop-changes-sort">Order by</label>
+            <select id="shop-changes-sort" class="shop-changes-sort" aria-controls="shop-changes-tbody">
+              <optgroup label="Volume &amp; price">
+                <option value="volume-desc" selected>Volume (high → low)</option>
+                <option value="buy-desc">Buy price (high → low)</option>
+                <option value="sell-desc">Sell price (high → low)</option>
+              </optgroup>
+              <optgroup label="Pressure">
+                <option value="demand-strong">Strongest demand</option>
+                <option value="supply-strong">Strongest supply</option>
+                <option value="balanced">Most balanced</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+        <div class="shop-changes-wrap cmd-table-wrap shop-changes-wrap--in-panel" id="shop-changes-wrap">
+          <table class="shop-changes-table cmd-table" aria-describedby="shop-changes-meta">
+            <caption class="sr-only">Items with recent buy and sell price adjustments</caption>
+            <thead>
+              <tr>
+                <th scope="col">Item <span class="th-hint">(price changed)</span></th>
+                <th scope="col">Pressure</th>
+                <th scope="col">Volume <span class="th-hint">(items)</span></th>
+                <th scope="col">Buy</th>
+                <th scope="col">Sell</th>
+              </tr>
+            </thead>
+            <tbody id="shop-changes-tbody"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
