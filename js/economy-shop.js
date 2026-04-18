@@ -61,6 +61,12 @@
     return v.toFixed(d);
   }
 
+  /** In-game currency display */
+  function fmtMoney(n) {
+    if (n == null || !Number.isFinite(Number(n))) return "—";
+    return "$" + fmtPrice(n);
+  }
+
   function fmtPct(n) {
     if (n == null || !Number.isFinite(Number(n))) return "—";
     var v = Number(n);
@@ -68,8 +74,8 @@
     return (v > 0 ? "+" : "") + v.toFixed(decimals) + "%";
   }
 
-  function fmtVolume(n) {
-    if (n == null || !Number.isFinite(Number(n))) return "—";
+  function fmtVolumeMain(n) {
+    if (n == null || !Number.isFinite(Number(n))) return null;
     return Number(n).toLocaleString();
   }
 
@@ -97,12 +103,24 @@
 
   function deltaClass(n) {
     if (n == null || !Number.isFinite(Number(n))) return "shop-delta";
-    return Number(n) >= 0 ? "shop-delta shop-delta--up" : "shop-delta shop-delta--down";
+    var v = Number(n);
+    if (v > 0) return "shop-delta shop-delta--up";
+    if (v < 0) return "shop-delta shop-delta--down";
+    return "shop-delta shop-delta--flat";
   }
 
   function tdPriceBlock(was, neu, pct) {
     var td = document.createElement("td");
     td.className = "shop-change-cell";
+    var pNum = pct != null && Number.isFinite(Number(pct)) ? Number(pct) : null;
+    if (pNum == null || pNum === 0) {
+      td.classList.add("shop-change-cell--neutral");
+    } else if (pNum > 0) {
+      td.classList.add("shop-change-cell--up");
+    } else {
+      td.classList.add("shop-change-cell--down");
+    }
+
     var prices = document.createElement("div");
     prices.className = "shop-change-cell__prices";
     var wOk = was != null && Number.isFinite(Number(was));
@@ -110,7 +128,7 @@
     if (!wOk && !nOk) {
       prices.textContent = "—";
     } else {
-      prices.textContent = fmtPrice(was) + " → " + fmtPrice(neu);
+      prices.textContent = fmtMoney(was) + " → " + fmtMoney(neu);
     }
     var pctRow = document.createElement("div");
     pctRow.className = "shop-change-cell__pct";
@@ -156,7 +174,16 @@
 
       var tdVol = document.createElement("td");
       tdVol.className = "shop-vol";
-      tdVol.textContent = fmtVolume(row.volume);
+      var volMain = fmtVolumeMain(row.volume);
+      if (volMain == null) {
+        tdVol.textContent = "—";
+      } else {
+        tdVol.appendChild(document.createTextNode(volMain));
+        var volUnit = document.createElement("span");
+        volUnit.className = "shop-vol__unit";
+        volUnit.textContent = "items / blocks";
+        tdVol.appendChild(volUnit);
+      }
 
       var tdBuy = tdPriceBlock(row.buyWas, row.buyNew, row.buyDeltaPct);
       var tdSell = tdPriceBlock(row.sellWas, row.sellNew, row.sellDeltaPct);
