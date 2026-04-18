@@ -1,0 +1,63 @@
+SUGAR_CANE	Farming.page1.items.25	0.002	Demand	329437	0.1	0.12	20	0.03	0.04	33.33
+PACKED_ICE	Blocks.page1.items.6	1	Supply	59852	13.5	10.67	-20.96	3.38	2.57	-23.96
+STRING	Mobs.page1.items.18	0.996	Supply	59220	7	5.54	-20.86	1.75	1.33	-24
+SPIDER_EYE	Mobs.page1.items.17	1	Supply	51363	7	5.53	-21	1.75	1.33	-24
+SAND	Blocks.page1.items.150	0.983	Supply	51947	6	4.78	-20.33	1.5	1.15	-23.33
+ROTTEN_FLESH	Mobs.page1.items.15	0.998	Supply	19802	5	3.95	-21	1.25	0.95	-24
+BASALT	Blocks.page1.items.53	1	Supply	14193	40	31.6	-21	1	0.76	-24
+COBBLESTONE	Blocks.page1.items.54	0.953	Supply	13109	0.68	0.55	-19.12	0.17	0.13	-23.53
+GUNPOWDER	Mobs.page1.items.9	0.025	Demand	9215	15.5	18.59	19.94	3.88	4.76	22.68
+DEEPSLATE	Blocks.page1.items.92	0.981	Supply	8807	0.72	0.57	-20.83	0.18	0.14	-22.22
+BONE	Mobs.page1.items.4	0.977	Supply	8545	6	4.8	-20	1.5	1.16	-22.67
+OAK_LOG	Blocks.page1.items.206	0.211	Demand	13448	3	3.36	12	0.75	0.85	13.33
+ARROW	Mobs.page1.items.1	0.994	Supply	7889	2.26	1.79	-20.8	0.57	0.43	-24.56
+GRASS_BLOCK	Blocks.page1.items.103	0.986	Supply	7182	8	6.37	-20.37	2	1.53	-23.5
+WHITE_WOOL	Blocks.page1.items.237	0.978	Supply	6639	29.4	23.5	-20.07	3.35	2.58	-22.99
+EMERALD	Ores.page1.items.11	0.912	Supply	7148				9.85	7.9	-19.8
+COOKED_BEEF	Food.page1.items.11	0.13	Demand	7313	6.3	7.28	15.56	1.58	1.86	17.72
+BLAZE_POWDER	Mobs.page1.items.2	0.927	Supply	6151	2.63	2.16	-17.87	0.66	0.52	-21.21
+EGG	Farming.page1.items.13	0.917	Supply	5564	5	4.12	-17.6	1.25	1	-20
+GRAVEL	Blocks.page1.items.104	0.991	Supply	4211	8	6.35	-20.63	2	1.53	-23.5
+REDSTONE	Ores.page1.items.23	0.996	Supply	3962				0.88	0.67	-23.86
+CARROT	Farming.page1.items.8	0.066	Demand	4106	5	5.91	18.2	1.25	1.51	20.8
+LAPIS_LAZULI	Ores.page1.items.18	0.998	Supply	3525				1.81	1.38	-23.76
+STONE	Blocks.page1.items.11	0.938	Supply	3592	0.72	0.59	-18.06	0.18	0.14	-22.22
+WHEAT	Farming.page1.items.28	0.742	Supply	6388	5	4.49	-10.2	1.25	1.1	-12
+KELP	Farming.page1.items.14	0.997	Supply	2907	0.1	0.08	-20	0.03	0.02	-33.33
+DIAMOND	Ores.page1.items.9	0.949	Supply	2820				13.13	10.3	-21.55
+BLACKSTONE	Blocks.page1.items.33	0.097	Demand	2533	0.75	0.88	17.33	0.19	0.23	21.05
+COPPER_INGOT	Ores.page1.items.7	1	Supply	1956				0.23	0.17	-26.09
+WHEAT_SEEDS	Farming.page1.items.29	0.83	Supply	2808	3	2.58	-14	0.75	0.63	-16
+GOLD_INGOT	Ores.page1.items.14	0.273	Demand	3083				2.07	2.3	11.11
+ENDER_PEARL	Mobs.page1.items.5	0.027	Demand	1433	7	8.39	19.86	1.75	2.15	22.86
+COCOA_BEANS	Farming.page1.items.11	1	Supply	1171	6	4.74	-21	1.5	1.14	-24
+IRON_INGOT	Ores.page1.items.16	0.886	Supply	1214				1.38	1.12	-18.84
+APPLE	Food.page1.items.1	0.098	Demand	939	10	11.69	16.9	2.5	2.98	19.2
+MOSSY_COBBLESTONE	Blocks.page1.items.55	0.946	Supply	745	8.07	6.56	-18.71	2.02	1.59	-21.29
+SNOW_BLOCK	Blocks.page1.items.9	0.952	Supply	712	12.6	10.21	-18.97	3.15	2.47	-21.59
+SLIME_BALL	Mobs.page1.items.16	0.993	Supply	611	5	3.96	-20.8	1.25	0.95	-24
+MELON_SEEDS	Farming.page1.items.17	0.998	Supply	550	3	2.37	-21	0.75	0.57	-24
+BAKED_POTATO	Food.page1.items.10	0.154	Demand	383	5.25	6.01	14.48	1.32	1.54	16.67
+TUFF	Blocks.page1.items.13	0.474	Mixed	3526	2	2.02	1	0.5	0.51	2
+COOKED_PORKCHOP	Food.page1.items.14	0.186	Demand	311	6.3	7.13	13.17	1.58	1.82	15.19
+GLOWSTONE	Blocks.page1.items.14	0.601	Mixed	781	29.4	28.15	-4.25	7.35	6.99	-4.9
+BROWN_MUSHROOM	Farming.page1.items.6	0.995	Supply	188	2	1.58	-21	0.5	0.38	-24
+NETHER_WART	Farming.page1.items.19	0.219	Demand	265	3	3.35	11.67	0.75	0.85	13.33
+HAY_BLOCK	Blocks.page1.items.3	0.884	Supply	181	47.25	39.63	-16.13	1.82	1.48	-18.68
+HOPPER	Redstone.page1.items.5	0.061	Demand	147	38.67	45.8	18.44	3.67	4.44	20.98
+BOOKSHELF	Blocks.page1.items.38	0.551	Mixed	635	119.12	116.57	-2.14	5.78	5.64	-2.42
+POTATO	Farming.page1.items.21	0.768	Supply	142	5	4.44	-11.2	1.25	1.09	-12.8
+CACTUS	Farming.page1.items.7	0.974	Supply	77	0.1	0.08	-20	0.03	0.02	-33.33
+STONE_BRICKS	Blocks.page1.items.165	0.424	Mixed	337	0.75	0.77	2.67	0.19	0.2	5.26
+DROPPER	Redstone.page1.items.4	0.027	Demand	73	8.68	10.4	19.82	2.17	2.66	22.58
+PISTON	Redstone.page1.items.22	0.015	Demand	65	15.8	19.02	20.38	3.95	4.87	23.29
+MAGMA_CREAM	Mobs.page1.items.10	0.113	Demand	71	8.01	9.31	16.23	2.01	2.38	18.41
+BEETROOT_SEEDS	Farming.page1.items.5	1	Supply	55	3	2.37	-21	0.75	0.57	-24
+PUMPKIN_SEEDS	Farming.page1.items.23	0.807	Supply	83	1.19	1.04	-12.61	0.3	0.26	-13.33
+FEATHER	Mobs.page1.items.6	0.488	Mixed	506	6	6.03	0.5	1.5	1.51	0.67
+COOKED_CHICKEN	Food.page1.items.12	0.363	Mixed	113	6.3	6.66	5.71	1.58	1.68	6.33
+JUKEBOX	Redstone.page1.items.7	1	Supply	25	64.39	50.87	-21	6.1	4.64	-23.93
+TARGET	Redstone.page1.items.15	1	Supply	15	64.32	50.81	-21	16.08	12.22	-24
+REPEATER	Redstone.page1.items.18	0.125	Demand	16	14.92	17.27	15.75	3.73	4.4	17.96
+BAMBOO_BLOCK	Blocks.page1.items.19	0.867	Supply	15	0.95	0.8	-15.79	0.24	0.2	-16.67
+DISPENSER	Redstone.page1.items.3	0	Demand	11	33.74	40.83	21.01	4.44	5.51	24.1

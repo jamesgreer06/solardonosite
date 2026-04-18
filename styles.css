@@ -2474,6 +2474,11 @@ kbd {
   color: color-mix(in srgb, var(--text) 88%, var(--accent-muted));
 }
 
+.shop-pressure--mixed {
+  background: color-mix(in srgb, var(--accent-muted) 12%, transparent);
+  color: var(--text-muted);
+}
+
 .shop-delta {
   font-weight: 600;
   font-variant-numeric: tabular-nums;

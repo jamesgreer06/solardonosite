@@ -37,10 +37,12 @@
     if (raw) {
       var d = new Date(String(raw));
       if (!isNaN(d.getTime())) {
-        var label = d.toLocaleDateString([], {
+        var label = d.toLocaleString([], {
           month: "short",
           day: "numeric",
           year: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
         });
         return { iso: String(raw), text: "Changed " + label };
       }
@@ -74,8 +76,8 @@
   function pressureLabel(row) {
     var t = row && row.pressureType;
     var s = row && row.pressureScore;
-    if (t === "demand" || t === "supply") {
-      var label = t === "demand" ? "Demand" : "Supply";
+    if (t === "demand" || t === "supply" || t === "mixed") {
+      var label = t === "demand" ? "Demand" : t === "supply" ? "Supply" : "Mixed";
       if (Number.isFinite(Number(s))) {
         return String(s) + " · " + label;
       }
@@ -89,6 +91,7 @@
     var t = row && row.pressureType;
     if (t === "demand") return "shop-pressure shop-pressure--demand";
     if (t === "supply") return "shop-pressure shop-pressure--supply";
+    if (t === "mixed") return "shop-pressure shop-pressure--mixed";
     return "shop-pressure";
   }
 
@@ -102,7 +105,13 @@
     td.className = "shop-change-cell";
     var prices = document.createElement("div");
     prices.className = "shop-change-cell__prices";
-    prices.textContent = fmtPrice(was) + " → " + fmtPrice(neu);
+    var wOk = was != null && Number.isFinite(Number(was));
+    var nOk = neu != null && Number.isFinite(Number(neu));
+    if (!wOk && !nOk) {
+      prices.textContent = "—";
+    } else {
+      prices.textContent = fmtPrice(was) + " → " + fmtPrice(neu);
+    }
     var pctRow = document.createElement("div");
     pctRow.className = "shop-change-cell__pct";
     var sp = document.createElement("span");
