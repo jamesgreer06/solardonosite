@@ -2409,12 +2409,29 @@ kbd {
 }
 
 .shop-changes-table {
-  min-width: 960px;
+  min-width: 640px;
 }
 
 .shop-changes-table .shop-path {
   display: inline-block;
-  margin-top: 0.2rem;
+  margin-top: 0.25rem;
+}
+
+.shop-change-cell {
+  vertical-align: top;
+}
+
+.shop-change-cell__prices {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.shop-change-cell__pct {
+  margin-top: 0.22rem;
+  font-size: 0.82rem;
+  line-height: 1.2;
 }
 
 .th-hint {
@@ -2457,17 +2474,6 @@ kbd {
 }
 
 .shop-vol {
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.shop-why {
-  min-width: 11rem;
-  max-width: 22rem;
-  line-height: 1.45;
-}
-
-.shop-price-pair {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }

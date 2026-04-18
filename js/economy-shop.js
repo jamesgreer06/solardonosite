@@ -77,19 +77,20 @@
     return Number(n) >= 0 ? "shop-delta shop-delta--up" : "shop-delta shop-delta--down";
   }
 
-  function tdPriceArrow(was, neu) {
+  function tdPriceBlock(was, neu, pct) {
     var td = document.createElement("td");
-    td.className = "shop-price-pair";
-    td.textContent = fmtPrice(was) + " → " + fmtPrice(neu);
-    return td;
-  }
-
-  function tdDelta(pct) {
-    var td = document.createElement("td");
+    td.className = "shop-change-cell";
+    var prices = document.createElement("div");
+    prices.className = "shop-change-cell__prices";
+    prices.textContent = fmtPrice(was) + " → " + fmtPrice(neu);
+    var pctRow = document.createElement("div");
+    pctRow.className = "shop-change-cell__pct";
     var sp = document.createElement("span");
     sp.className = deltaClass(pct);
     sp.textContent = fmtPct(pct);
-    td.appendChild(sp);
+    pctRow.appendChild(sp);
+    td.appendChild(prices);
+    td.appendChild(pctRow);
     return td;
   }
 
@@ -119,23 +120,14 @@
       tdVol.className = "shop-vol";
       tdVol.textContent = fmtVolume(row.volume);
 
-      var tdBuy = tdPriceArrow(row.buyWas, row.buyNew);
-      var tdBuyD = tdDelta(row.buyDeltaPct);
-      var tdSell = tdPriceArrow(row.sellWas, row.sellNew);
-      var tdSellD = tdDelta(row.sellDeltaPct);
-
-      var tdWhy = document.createElement("td");
-      tdWhy.className = "shop-why";
-      tdWhy.textContent = row.why || "—";
+      var tdBuy = tdPriceBlock(row.buyWas, row.buyNew, row.buyDeltaPct);
+      var tdSell = tdPriceBlock(row.sellWas, row.sellNew, row.sellDeltaPct);
 
       tr.appendChild(tdItem);
       tr.appendChild(tdPress);
       tr.appendChild(tdVol);
       tr.appendChild(tdBuy);
-      tr.appendChild(tdBuyD);
       tr.appendChild(tdSell);
-      tr.appendChild(tdSellD);
-      tr.appendChild(tdWhy);
       tbody.appendChild(tr);
     });
   }
