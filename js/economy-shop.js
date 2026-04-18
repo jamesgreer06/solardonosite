@@ -3,7 +3,11 @@
   var metaEl = document.getElementById("shop-changes-meta");
   var emptyEl = document.getElementById("shop-changes-empty");
   var wrap = document.getElementById("shop-changes-wrap");
+  var toolbarEl = document.getElementById("shop-changes-toolbar");
+  var sortSelect = document.getElementById("shop-changes-sort");
   if (!tbody || !metaEl) return;
+
+  var allRows = [];
 
   metaEl.textContent = "Loading snapshot…";
 
@@ -199,6 +203,75 @@
     return "shop-pressure";
   }
 
+  function volNum(r) {
+    if (!r || r.volume == null || !Number.isFinite(Number(r.volume))) return null;
+    return Number(r.volume);
+  }
+
+  function scoreNum(r) {
+    if (!r || r.pressureScore == null || !Number.isFinite(Number(r.pressureScore))) return null;
+    return Number(r.pressureScore);
+  }
+
+  function tiebreakName(a, b) {
+    return formatItemName(a).localeCompare(formatItemName(b));
+  }
+
+  function cmpVolumeDesc(a, b) {
+    var va = volNum(a);
+    var vb = volNum(b);
+    if (va == null && vb == null) return tiebreakName(a, b);
+    if (va == null) return 1;
+    if (vb == null) return -1;
+    if (vb !== va) return vb - va;
+    return tiebreakName(a, b);
+  }
+
+  /** Lower score = more demand-heavy */
+  function cmpDemandStrong(a, b) {
+    var sa = scoreNum(a);
+    var sb = scoreNum(b);
+    if (sa == null && sb == null) return cmpVolumeDesc(a, b);
+    if (sa == null) return 1;
+    if (sb == null) return -1;
+    if (sa !== sb) return sa - sb;
+    return cmpVolumeDesc(a, b);
+  }
+
+  /** Higher score = more supply-heavy */
+  function cmpSupplyStrong(a, b) {
+    var sa = scoreNum(a);
+    var sb = scoreNum(b);
+    if (sa == null && sb == null) return cmpVolumeDesc(a, b);
+    if (sa == null) return 1;
+    if (sb == null) return -1;
+    if (sb !== sa) return sb - sa;
+    return cmpVolumeDesc(a, b);
+  }
+
+  function distFromBalanced(r) {
+    var s = scoreNum(r);
+    if (s == null) return 999;
+    return Math.abs(s - 0.5);
+  }
+
+  function cmpBalanced(a, b) {
+    var da = distFromBalanced(a);
+    var db = distFromBalanced(b);
+    if (da !== db) return da - db;
+    return cmpVolumeDesc(a, b);
+  }
+
+  function sortRows(rows, mode) {
+    var out = rows.slice();
+    var cmp = cmpVolumeDesc;
+    if (mode === "demand-strong") cmp = cmpDemandStrong;
+    else if (mode === "supply-strong") cmp = cmpSupplyStrong;
+    else if (mode === "balanced") cmp = cmpBalanced;
+    out.sort(cmp);
+    return out;
+  }
+
   function deltaClass(n) {
     if (n == null || !Number.isFinite(Number(n))) return "shop-delta";
     var v = Number(n);
@@ -312,6 +385,8 @@
       var rows = norm.rows;
       setMeta(norm.generatedAt, norm.periodNote);
       if (rows.length === 0) {
+        allRows = [];
+        if (toolbarEl) toolbarEl.hidden = true;
         if (emptyEl) {
           emptyEl.hidden = false;
           emptyEl.textContent = "This snapshot has no rows yet—check back after the next export.";
@@ -319,11 +394,16 @@
         if (wrap) wrap.hidden = true;
         return;
       }
+      allRows = rows;
       if (emptyEl) emptyEl.hidden = true;
       if (wrap) wrap.hidden = false;
-      renderRows(rows);
+      if (toolbarEl) toolbarEl.hidden = false;
+      var mode = sortSelect && sortSelect.value ? sortSelect.value : "volume-desc";
+      renderRows(sortRows(allRows, mode));
     })
     .catch(function () {
+      allRows = [];
+      if (toolbarEl) toolbarEl.hidden = true;
       metaEl.textContent = "";
       if (emptyEl) {
         emptyEl.hidden = false;
@@ -332,4 +412,11 @@
       }
       if (wrap) wrap.hidden = true;
     });
+
+  if (sortSelect) {
+    sortSelect.addEventListener("change", function () {
+      if (!allRows.length) return;
+      renderRows(sortRows(allRows, sortSelect.value));
+    });
+  }
 })();

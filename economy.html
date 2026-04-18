@@ -102,6 +102,15 @@
         Snapshot of items whose shop prices moved recently. <strong>Volume</strong> counts items traded in the window we measure (in-game only, not real money). Staff refresh this when they export new data.
       </p>
       <p class="shop-changes-meta" id="shop-changes-meta"></p>
+      <div class="shop-changes-toolbar" id="shop-changes-toolbar" hidden>
+        <label class="shop-changes-sort-label" for="shop-changes-sort">Sort by</label>
+        <select id="shop-changes-sort" class="shop-changes-sort">
+          <option value="volume-desc" selected>Volume (high → low)</option>
+          <option value="demand-strong">Strongest demand</option>
+          <option value="supply-strong">Strongest supply</option>
+          <option value="balanced">Most balanced pressure</option>
+        </select>
+      </div>
       <p class="shop-changes-empty" id="shop-changes-empty" hidden>This snapshot isn’t available right now.</p>
       <div class="shop-changes-wrap cmd-table-wrap" id="shop-changes-wrap" hidden>
         <table class="shop-changes-table cmd-table" aria-describedby="shop-changes-meta">
