@@ -58,7 +58,6 @@ const rows = lines.map((line) => {
 
 const out = {
   generatedAt,
-  periodNote: "Prices from the latest shop adjustment pass (snapshot ~15 min before this file was generated).",
   rows,
 };
 
