@@ -33,11 +33,28 @@
       });
   }
 
-  /** Second line under item: snapshot time only. */
+  /** Parse plugin/Worker time: ISO string, or Unix ms / s. */
+  function parseChangedAtToIso(raw) {
+    if (raw == null) return null;
+    if (typeof raw === "number" && Number.isFinite(raw)) {
+      var ms = raw < 1e12 ? raw * 1000 : raw;
+      var d = new Date(ms);
+      return isNaN(d.getTime()) ? null : d.toISOString();
+    }
+    var s = String(raw).trim();
+    if (!s) return null;
+    var d2 = new Date(s);
+    return isNaN(d2.getTime()) ? null : d2.toISOString();
+  }
+
+  /** Second line under item: per-row changedAt when present. */
   function formatChangedLine(row) {
-    var raw = row && (row.priceChangedAt || row.changedAt);
-    if (raw) {
-      var d = new Date(String(raw));
+    var iso =
+      (row && row.changedAtIso) ||
+      parseChangedAtToIso(row && row.changedAt) ||
+      parseChangedAtToIso(row && row.priceChangedAt);
+    if (iso) {
+      var d = new Date(iso);
       if (!isNaN(d.getTime())) {
         var label = d.toLocaleString([], {
           month: "short",
@@ -46,7 +63,7 @@
           hour: "numeric",
           minute: "2-digit",
         });
-        return { iso: String(raw), text: "Changed " + label };
+        return { iso: iso, text: "Changed " + label };
       }
     }
     return { iso: null, text: "—" };
@@ -76,6 +93,17 @@
   function fmtVolumeMain(n) {
     if (n == null || !Number.isFinite(Number(n))) return null;
     return Number(n).toLocaleString();
+  }
+
+  function fmtVolumeMoney(n) {
+    if (n == null || !Number.isFinite(Number(n))) return null;
+    return (
+      "$" +
+      Number(n).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    );
   }
 
   function pctDelta(before, after) {
@@ -154,10 +182,11 @@
         return {
           item: name,
           displayName: name,
-          priceChangedAt: gen,
+          changedAtIso: parseChangedAtToIso(ch.changedAt),
           pressureType: pressureTypeFromScore(ch.pressure),
           pressureScore: Number.isFinite(Number(ch.pressure)) ? Number(ch.pressure) : null,
           volume: Number.isFinite(Number(ch.volume)) ? Number(ch.volume) : null,
+          volumeMoney: Number.isFinite(Number(ch.volumeMoney)) ? Number(ch.volumeMoney) : null,
           buyWas: buyW,
           buyNew: buyN,
           buyDeltaPct: buyD,
@@ -170,8 +199,22 @@
     }
 
     if (Array.isArray(data.rows)) {
+      var mappedRows = data.rows.map(function (r) {
+        var iso =
+          (r && r.changedAtIso) ||
+          parseChangedAtToIso(r && r.changedAt) ||
+          parseChangedAtToIso(r && r.priceChangedAt);
+        var vm =
+          r && r.volumeMoney != null && Number.isFinite(Number(r.volumeMoney))
+            ? Number(r.volumeMoney)
+            : null;
+        return Object.assign({}, r, {
+          changedAtIso: iso || undefined,
+          volumeMoney: vm,
+        });
+      });
       return {
-        rows: data.rows,
+        rows: mappedRows,
         generatedAt: gen || data.generatedAt,
         periodNote: data.periodNote != null ? String(data.periodNote) : periodNote,
       };
@@ -370,14 +413,24 @@
       var tdVol = document.createElement("td");
       tdVol.className = "shop-vol";
       var volMain = fmtVolumeMain(row.volume);
-      if (volMain == null) {
+      var volMoney = fmtVolumeMoney(row.volumeMoney);
+      if (volMain == null && volMoney == null) {
         tdVol.textContent = "—";
       } else {
-        tdVol.appendChild(document.createTextNode(volMain));
-        var volUnit = document.createElement("span");
-        volUnit.className = "shop-vol__unit";
-        volUnit.textContent = "items";
-        tdVol.appendChild(volUnit);
+        if (volMain != null) {
+          tdVol.appendChild(document.createTextNode(volMain));
+          var volUnit = document.createElement("span");
+          volUnit.className = "shop-vol__unit";
+          volUnit.textContent = "items";
+          tdVol.appendChild(volUnit);
+        }
+        if (volMoney != null) {
+          tdVol.appendChild(document.createElement("br"));
+          var volMoneyEl = document.createElement("span");
+          volMoneyEl.className = "shop-vol__money";
+          volMoneyEl.textContent = volMoney;
+          tdVol.appendChild(volMoneyEl);
+        }
       }
 
       var tdBuy = tdPriceBlock(row.buyWas, row.buyNew, row.buyDeltaPct);
