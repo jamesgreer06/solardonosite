@@ -336,11 +336,35 @@
     return cmpVolumeDesc(a, b);
   }
 
+  /** Same instant resolution as formatChangedLine — ms since epoch, or null */
+  function changedTimestampMs(r) {
+    if (!r) return null;
+    var iso =
+      r.changedAtIso ||
+      parseChangedAtToIso(r.changedAt) ||
+      parseChangedAtToIso(r.priceChangedAt);
+    if (!iso) return null;
+    var t = new Date(iso).getTime();
+    return isNaN(t) ? null : t;
+  }
+
+  /** Most recently changed first */
+  function cmpChangedRecent(a, b) {
+    var ta = changedTimestampMs(a);
+    var tb = changedTimestampMs(b);
+    if (ta == null && tb == null) return tiebreakName(a, b);
+    if (ta == null) return 1;
+    if (tb == null) return -1;
+    if (tb !== ta) return tb - ta;
+    return tiebreakName(a, b);
+  }
+
   function sortRows(rows, mode) {
     var out = rows.slice();
     var cmp = cmpVolumeDesc;
     if (mode === "buy-desc") cmp = cmpBuyHigh;
     else if (mode === "sell-desc") cmp = cmpSellHigh;
+    else if (mode === "changed-desc") cmp = cmpChangedRecent;
     else if (mode === "demand-strong") cmp = cmpDemandStrong;
     else if (mode === "supply-strong") cmp = cmpSupplyStrong;
     else if (mode === "balanced") cmp = cmpBalanced;
