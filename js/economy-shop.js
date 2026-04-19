@@ -153,26 +153,18 @@
 
     if (Array.isArray(data.changes)) {
       var rows = data.changes.map(function (ch) {
-        var buyW;
-        var buyN;
-        var buyD;
-        var sellW;
-        var sellN;
-        var sellD;
-        if (ch.updateBuy !== false) {
-          buyW = ch.buyBefore != null ? Number(ch.buyBefore) : null;
-          buyN = ch.buyAfter != null ? Number(ch.buyAfter) : null;
-          buyD = buyW != null && buyN != null ? pctDelta(buyW, buyN) : null;
-        } else {
-          buyW = buyN = buyD = null;
-        }
-        if (ch.updateSell !== false) {
-          sellW = ch.sellBefore != null ? Number(ch.sellBefore) : null;
-          sellN = ch.sellAfter != null ? Number(ch.sellAfter) : null;
-          sellD = sellW != null && sellN != null ? pctDelta(sellW, sellN) : null;
-        } else {
-          sellW = sellN = sellD = null;
-        }
+        var buyW = ch.buyBefore != null ? Number(ch.buyBefore) : null;
+        var buyN = ch.buyAfter != null ? Number(ch.buyAfter) : null;
+        var buyD =
+          buyW != null && buyN != null && Number.isFinite(buyW) && Number.isFinite(buyN)
+            ? pctDelta(buyW, buyN)
+            : null;
+        var sellW = ch.sellBefore != null ? Number(ch.sellBefore) : null;
+        var sellN = ch.sellAfter != null ? Number(ch.sellAfter) : null;
+        var sellD =
+          sellW != null && sellN != null && Number.isFinite(sellW) && Number.isFinite(sellN)
+            ? pctDelta(sellW, sellN)
+            : null;
 
         var name =
           ch.itemName != null && String(ch.itemName).trim() !== ""
