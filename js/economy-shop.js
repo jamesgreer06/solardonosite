@@ -129,7 +129,7 @@
    */
   function normalizeEconomyPayload(data) {
     if (!data || typeof data !== "object") {
-      return { rows: [], generatedAt: null, periodNote: "" };
+      return { rows: [], generatedAt: null };
     }
 
     var gen = data.generatedAt;
@@ -141,15 +141,6 @@
     } else {
       gen = null;
     }
-
-    var periodParts = [];
-    if (Number.isFinite(Number(data.changeCount))) {
-      periodParts.push(String(data.changeCount) + " changes");
-    }
-    if (Number.isFinite(Number(data.aggregatedItemCount))) {
-      periodParts.push(String(data.aggregatedItemCount) + " items in window");
-    }
-    var periodNote = periodParts.length ? periodParts.join(" · ") : "";
 
     if (Array.isArray(data.changes)) {
       var rows = data.changes.map(function (ch) {
@@ -187,7 +178,7 @@
           sellDeltaPct: sellD,
         };
       });
-      return { rows: rows, generatedAt: gen, periodNote: periodNote };
+      return { rows: rows, generatedAt: gen };
     }
 
     if (Array.isArray(data.rows)) {
@@ -208,11 +199,10 @@
       return {
         rows: mappedRows,
         generatedAt: gen || data.generatedAt,
-        periodNote: data.periodNote != null ? String(data.periodNote) : periodNote,
       };
     }
 
-    return { rows: [], generatedAt: gen, periodNote: periodNote };
+    return { rows: [], generatedAt: gen };
   }
 
   function pressureLabel(row) {
@@ -461,20 +451,19 @@
     });
   }
 
-  function setMeta(iso, note) {
-    var parts = [];
-    if (iso) {
-      try {
-        var d = new Date(iso);
-        if (!isNaN(d.getTime())) {
-          parts.push("Snapshot: " + d.toLocaleString());
-        }
-      } catch (e) {
-        parts.push("Snapshot: " + iso);
-      }
+  function setMeta(iso) {
+    if (!iso) {
+      metaEl.textContent = "";
+      return;
     }
-    if (note && String(note).trim()) parts.push(String(note).trim());
-    metaEl.textContent = parts.join(" · ");
+    try {
+      var d = new Date(iso);
+      if (!isNaN(d.getTime())) {
+        metaEl.textContent = "Last updated " + d.toLocaleString();
+        return;
+      }
+    } catch (e) {}
+    metaEl.textContent = "Last updated " + iso;
   }
 
   fetch(url, { cache: "no-store" })
@@ -485,7 +474,7 @@
     .then(function (data) {
       var norm = normalizeEconomyPayload(data);
       var rows = norm.rows;
-      setMeta(norm.generatedAt, norm.periodNote);
+      setMeta(norm.generatedAt);
       if (rows.length === 0) {
         allRows = [];
         if (panelEl) panelEl.hidden = true;
