@@ -246,6 +246,16 @@
     return tiebreakName(a, b);
   }
 
+  function cmpVolumeAsc(a, b) {
+    var va = volNum(a);
+    var vb = volNum(b);
+    if (va == null && vb == null) return tiebreakName(a, b);
+    if (va == null) return 1;
+    if (vb == null) return -1;
+    if (va !== vb) return va - vb;
+    return tiebreakName(a, b);
+  }
+
   function cmpBuyHigh(a, b) {
     var va = buyNewNum(a);
     var vb = buyNewNum(b);
@@ -253,6 +263,16 @@
     if (va == null) return 1;
     if (vb == null) return -1;
     if (vb !== va) return vb - va;
+    return tiebreakName(a, b);
+  }
+
+  function cmpBuyLow(a, b) {
+    var va = buyNewNum(a);
+    var vb = buyNewNum(b);
+    if (va == null && vb == null) return tiebreakName(a, b);
+    if (va == null) return 1;
+    if (vb == null) return -1;
+    if (va !== vb) return va - vb;
     return tiebreakName(a, b);
   }
 
@@ -264,6 +284,24 @@
     if (vb == null) return -1;
     if (vb !== va) return vb - va;
     return tiebreakName(a, b);
+  }
+
+  function cmpSellLow(a, b) {
+    var va = sellNewNum(a);
+    var vb = sellNewNum(b);
+    if (va == null && vb == null) return tiebreakName(a, b);
+    if (va == null) return 1;
+    if (vb == null) return -1;
+    if (va !== vb) return va - vb;
+    return tiebreakName(a, b);
+  }
+
+  function cmpItemAsc(a, b) {
+    return tiebreakName(a, b);
+  }
+
+  function cmpItemDesc(a, b) {
+    return tiebreakName(b, a);
   }
 
   function cmpDemandStrong(a, b) {
@@ -319,8 +357,13 @@
   function sortRows(rows, mode) {
     var out = rows.slice();
     var cmp = cmpVolumeDesc;
-    if (mode === "buy-desc") cmp = cmpBuyHigh;
+    if (mode === "volume-asc") cmp = cmpVolumeAsc;
+    else if (mode === "buy-desc") cmp = cmpBuyHigh;
+    else if (mode === "buy-asc") cmp = cmpBuyLow;
     else if (mode === "sell-desc") cmp = cmpSellHigh;
+    else if (mode === "sell-asc") cmp = cmpSellLow;
+    else if (mode === "item-asc") cmp = cmpItemAsc;
+    else if (mode === "item-desc") cmp = cmpItemDesc;
     else if (mode === "changed-desc") cmp = cmpChangedRecent;
     else if (mode === "demand-strong") cmp = cmpDemandStrong;
     else if (mode === "supply-strong") cmp = cmpSupplyStrong;
@@ -429,21 +472,37 @@
     var volumeText = fmtVolumeMain(sumFinite(rows, volNum));
     var cards = [
       {
+        key: "volume",
         label: "Volume (14d)",
         value: volumeText != null ? volumeText + " items" : "—",
+        note: "Items traded in this window",
       },
-      { label: "Volume value (14d)", value: fmtVolumeMoney(sumFinite(rows, function (r) { return Number(r && r.volumeMoney); })) || "—" },
+      {
+        key: "value",
+        label: "Volume value (14d)",
+        value:
+          fmtVolumeMoney(
+            sumFinite(rows, function (r) {
+              return Number(r && r.volumeMoney);
+            })
+          ) || "—",
+        note: "Estimated total turnover",
+      },
     ];
     kpiWrap.innerHTML = "";
     cards.forEach(function (card) {
       var article = document.createElement("article");
-      article.className = "econ-dash-kpi";
+      article.className = "econ-dash-kpi econ-dash-kpi--" + card.key;
       var h = document.createElement("h3");
       h.textContent = card.label;
       var p = document.createElement("p");
       p.textContent = card.value;
+      var note = document.createElement("span");
+      note.className = "econ-dash-kpi__note";
+      note.textContent = card.note;
       article.appendChild(h);
       article.appendChild(p);
+      article.appendChild(note);
       kpiWrap.appendChild(article);
     });
   }
