@@ -50,16 +50,24 @@
     return { iso: null, text: "—" };
   }
 
-  function formatItemName(row) {
-    var dn = row && row.displayName;
-    if (dn != null && String(dn).trim() !== "") return String(dn).trim();
-    var id = row && row.item;
-    if (!id) return "—";
-    return String(id)
+  function humanizeItemName(raw) {
+    if (raw == null) return "—";
+    var text = String(raw).trim();
+    if (!text) return "—";
+    var looksLikeId = text.indexOf("_") >= 0 || /^[A-Z0-9]+$/.test(text);
+    if (!looksLikeId) return text;
+    return text
       .replace(/_/g, " ")
       .replace(/\b\w/g, function (c) {
         return c.toUpperCase();
       });
+  }
+
+  function formatItemName(row) {
+    var dn = row && row.displayName;
+    if (dn != null && String(dn).trim() !== "") return humanizeItemName(dn);
+    var id = row && row.item;
+    return humanizeItemName(id);
   }
 
   function fmtPrice(n) {
@@ -458,9 +466,9 @@
   function renderOpportunityList(target, rows, formatter) {
     if (!target) return;
     target.innerHTML = "";
-    rows.slice(0, 8).forEach(function (row) {
+    rows.slice(0, 8).forEach(function (row, idx) {
       var li = document.createElement("li");
-      li.innerHTML = formatter(row);
+      li.innerHTML = formatter(row, idx);
       target.appendChild(li);
     });
     if (!target.children.length) {
@@ -468,6 +476,42 @@
       empty.textContent = "No qualifying rows right now.";
       target.appendChild(empty);
     }
+  }
+
+  function pressureBadge(row) {
+    var t = row && row.pressureType;
+    var label = t === "demand" ? "Demand" : t === "supply" ? "Supply" : "Mixed";
+    var cls = pressureClass(row);
+    return '<span class="' + cls + '">' + label + "</span>";
+  }
+
+  function metricChip(label, value) {
+    return (
+      '<span class="econ-dash-chip"><span class="econ-dash-chip__label">' +
+      label +
+      '</span><span class="econ-dash-chip__value">' +
+      value +
+      "</span></span>"
+    );
+  }
+
+  function renderOpportunityRow(rank, row, chipsHtml) {
+    return (
+      '<span class="econ-dash-row">' +
+      '<span class="econ-dash-rank">#' +
+      rank +
+      "</span>" +
+      '<span class="econ-dash-row__main">' +
+      '<span class="econ-dash-row__item">' +
+      formatItemName(row) +
+      "</span>" +
+      '<span class="econ-dash-row__meta">' +
+      pressureBadge(row) +
+      chipsHtml +
+      "</span>" +
+      "</span>" +
+      "</span>"
+    );
   }
 
   function renderOpportunities(rows) {
@@ -499,35 +543,23 @@
       .slice()
       .sort(cmpSupplyStrong);
 
-    renderOpportunityList(bestSellEl, bestSell, function (r) {
-      return (
-        "<strong>" +
-        formatItemName(r) +
-        "</strong> · sell " +
-        fmtMoney(r.sellNew) +
-        " · pressure " +
-        pressureLabel(r)
-      );
+    renderOpportunityList(bestSellEl, bestSell, function (r, i) {
+      var chips =
+        metricChip("Sell", fmtMoney(r.sellNew)) +
+        metricChip("Volume", fmtVolumeMain(r.volume) || "—");
+      return renderOpportunityRow(i + 1, r, chips);
     });
-    renderOpportunityList(demandEl, demand, function (r) {
-      return (
-        "<strong>" +
-        formatItemName(r) +
-        "</strong> · pressure " +
-        pressureLabel(r) +
-        " · vol " +
-        (fmtVolumeMain(r.volume) || "—")
-      );
+    renderOpportunityList(demandEl, demand, function (r, i) {
+      var chips =
+        metricChip("Pressure", scoreNum(r) != null ? String(scoreNum(r)) : "—") +
+        metricChip("Volume", fmtVolumeMain(r.volume) || "—");
+      return renderOpportunityRow(i + 1, r, chips);
     });
-    renderOpportunityList(supplyEl, supply, function (r) {
-      return (
-        "<strong>" +
-        formatItemName(r) +
-        "</strong> · pressure " +
-        pressureLabel(r) +
-        " · sell " +
-        fmtMoney(r.sellNew)
-      );
+    renderOpportunityList(supplyEl, supply, function (r, i) {
+      var chips =
+        metricChip("Sell", fmtMoney(r.sellNew)) +
+        metricChip("Pressure", scoreNum(r) != null ? String(scoreNum(r)) : "—");
+      return renderOpportunityRow(i + 1, r, chips);
     });
   }
 
