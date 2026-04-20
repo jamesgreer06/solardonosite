@@ -48,13 +48,17 @@
     <p class="page-commands-lead">
       Live market snapshot for players making trade decisions. Scan the overview, check opportunity lists, then verify in the full table before you farm, hold, buy, or dump.
     </p>
-    <p class="shop-changes-meta" id="shop-changes-meta">Loading snapshot…</p>
-    <p class="shop-changes-empty" id="shop-changes-empty" hidden>This snapshot is not available right now.</p>
-
-    <section class="econ-guide-section" aria-labelledby="dash-kpi-heading">
-      <h2 id="dash-kpi-heading" class="econ-guide-h2">Market overview</h2>
+    <section class="econ-guide-section econ-dash-hero" aria-labelledby="dash-kpi-heading">
+      <div class="econ-dash-hero__head">
+        <h2 id="dash-kpi-heading" class="econ-guide-h2">At a glance</h2>
+        <p class="shop-changes-meta" id="shop-changes-meta">Loading snapshot…</p>
+      </div>
       <div class="econ-dash-kpi-grid" id="econ-dash-kpis"></div>
+      <p class="econ-dash-hero__note">
+        Use <strong>Best items to sell now</strong> for quick targets, then confirm with the full table and sort filters before committing farm time.
+      </p>
     </section>
+    <p class="shop-changes-empty" id="shop-changes-empty" hidden>This snapshot is not available right now.</p>
 
     <section class="econ-guide-section" aria-labelledby="dash-opportunities-heading">
       <h2 id="dash-opportunities-heading" class="econ-guide-h2">Player opportunities</h2>
@@ -63,11 +67,6 @@
           <h3>Best items to sell now</h3>
           <p class="econ-dash-op-note">Weighted by sell payout, demand pressure, and trade volume.</p>
           <ol class="econ-dash-list" id="dash-best-sell"></ol>
-        </article>
-        <article class="econ-dash-op-card">
-          <h3>Best demand momentum</h3>
-          <p class="econ-dash-op-note">Strong demand plus real trade flow often signals short-term upside.</p>
-          <ol class="econ-dash-list" id="dash-demand"></ol>
         </article>
         <article class="econ-dash-op-card">
           <h3>Most oversupplied items</h3>

@@ -6,7 +6,6 @@
   var sortSelect = document.getElementById("shop-changes-sort");
   var kpiWrap = document.getElementById("econ-dash-kpis");
   var bestSellEl = document.getElementById("dash-best-sell");
-  var demandEl = document.getElementById("dash-demand");
   var supplyEl = document.getElementById("dash-supply");
   if (!tbody || !metaEl) return;
 
@@ -429,17 +428,9 @@
 
   function renderKpis(rows) {
     if (!kpiWrap) return;
-    var validScoreRows = rows.filter(function (r) {
-      return Number.isFinite(scoreNum(r));
-    });
-    var demandLeader = validScoreRows.slice().sort(cmpDemandStrong)[0];
-    var supplyLeader = validScoreRows.slice().sort(cmpSupplyStrong)[0];
     var cards = [
-      { label: "Items tracked", value: String(rows.length) },
       { label: "Volume (14d)", value: fmtVolumeMain(sumFinite(rows, volNum)) || "—" },
       { label: "Volume value (14d)", value: fmtVolumeMoney(sumFinite(rows, function (r) { return Number(r && r.volumeMoney); })) || "—" },
-      { label: "Strongest demand", value: demandLeader ? formatItemName(demandLeader) : "—" },
-      { label: "Strongest supply", value: supplyLeader ? formatItemName(supplyLeader) : "—" },
     ];
     kpiWrap.innerHTML = "";
     cards.forEach(function (card) {
@@ -529,13 +520,6 @@
         return x.row;
       });
 
-    var demand = rows
-      .filter(function (r) {
-        return scoreNum(r) != null;
-      })
-      .slice()
-      .sort(cmpDemandStrong);
-
     var supply = rows
       .filter(function (r) {
         return scoreNum(r) != null;
@@ -546,12 +530,6 @@
     renderOpportunityList(bestSellEl, bestSell, function (r, i) {
       var chips =
         metricChip("Sell", fmtMoney(r.sellNew)) +
-        metricChip("Volume", fmtVolumeMain(r.volume) || "—");
-      return renderOpportunityRow(i + 1, r, chips);
-    });
-    renderOpportunityList(demandEl, demand, function (r, i) {
-      var chips =
-        metricChip("Pressure", scoreNum(r) != null ? String(scoreNum(r)) : "—") +
         metricChip("Volume", fmtVolumeMain(r.volume) || "—");
       return renderOpportunityRow(i + 1, r, chips);
     });
