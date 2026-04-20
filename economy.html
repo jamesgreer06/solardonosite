@@ -96,51 +96,14 @@
       </div>
     </section>
 
-    <section class="econ-guide-section" id="view" aria-labelledby="recent-heading">
-      <h2 id="recent-heading" class="econ-guide-h2">Recent shop price changes</h2>
+    <section class="econ-guide-section econ-dashboard-cta" id="view" aria-labelledby="dashboard-heading">
+      <h2 id="dashboard-heading" class="econ-guide-h2">Economy dashboard</h2>
       <p class="cmd-section-lead" style="margin-top: 0;">
-        Snapshot of items whose shop prices moved recently. <strong>Volume (14d)</strong> counts items traded in the last 14 days (in-game only, not real money).
+        Want live strategy data? Open the dashboard for rankings, demand/supply signals, and the full sortable market table.
       </p>
-      <p class="shop-changes-meta" id="shop-changes-meta"></p>
-      <p class="shop-changes-empty" id="shop-changes-empty" hidden>This snapshot isn’t available right now.</p>
-      <div class="shop-changes-panel" id="shop-changes-panel" hidden>
-        <div class="shop-changes-toolbar" id="shop-changes-toolbar" role="region" aria-label="Sort snapshot table">
-          <span class="shop-changes-toolbar__title">Snapshot table</span>
-          <div class="shop-changes-toolbar__control">
-            <label class="shop-changes-sort-label" for="shop-changes-sort">Order by</label>
-            <select id="shop-changes-sort" class="shop-changes-sort" aria-controls="shop-changes-tbody">
-              <optgroup label="Volume &amp; price">
-                <option value="volume-desc" selected>Volume (high → low)</option>
-                <option value="buy-desc">Buy price (high → low)</option>
-                <option value="sell-desc">Sell price (high → low)</option>
-              </optgroup>
-              <optgroup label="Time">
-                <option value="changed-desc">Recently changed (newest → oldest)</option>
-              </optgroup>
-              <optgroup label="Pressure">
-                <option value="demand-strong">Strongest demand</option>
-                <option value="supply-strong">Strongest supply</option>
-                <option value="balanced">Most balanced</option>
-              </optgroup>
-            </select>
-          </div>
-        </div>
-        <div class="shop-changes-wrap cmd-table-wrap shop-changes-wrap--in-panel" id="shop-changes-wrap">
-          <table class="shop-changes-table cmd-table" aria-describedby="shop-changes-meta">
-            <caption class="sr-only">Items with recent buy and sell price adjustments</caption>
-            <thead>
-              <tr>
-                <th scope="col">Item</th>
-                <th scope="col">Pressure</th>
-                <th scope="col">Volume <span class="th-hint">(14d)</span></th>
-                <th scope="col">Buy</th>
-                <th scope="col">Sell</th>
-              </tr>
-            </thead>
-            <tbody id="shop-changes-tbody"></tbody>
-          </table>
-        </div>
-      </div>
+      <p>
+        <a class="btn btn-primary" href="economy-dashboard.html">Open economy dashboard</a>
+      </p>
     </section>
 
     <p class="cmd-footnote">
@@ -155,6 +118,5 @@
 
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
-  <script src="js/economy-shop.js"></script>
 </body>
 </html>

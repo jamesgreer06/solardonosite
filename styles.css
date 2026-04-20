@@ -2362,6 +2362,10 @@ kbd {
   margin-bottom: 2rem;
 }
 
+.econ-dashboard-cta .btn {
+  margin-top: 0.4rem;
+}
+
 .econ-guide-list {
   margin: 0;
   padding-left: 1.25rem;
@@ -2636,6 +2640,71 @@ kbd {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--text-muted);
+}
+
+.econ-dash-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.75rem;
+}
+
+.econ-dash-kpi {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.8rem 0.95rem;
+}
+
+.econ-dash-kpi h3 {
+  margin: 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.econ-dash-kpi p {
+  margin: 0.4rem 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.econ-dash-op-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.8rem;
+}
+
+.econ-dash-op-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+}
+
+.econ-dash-op-card h3 {
+  margin: 0;
+  font-size: 0.94rem;
+}
+
+.econ-dash-op-note {
+  margin: 0.35rem 0 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.econ-dash-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.45rem;
+  color: var(--text-muted);
+}
+
+.econ-dash-list li {
+  line-height: 1.4;
 }
 
 @media (prefers-reduced-motion: reduce) {

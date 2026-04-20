@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Endcity Survival economy dashboard — pressure, volume, and price-change insights for better trading decisions." />
+  <meta name="theme-color" content="#0a0a0c" />
+  <title>Economy dashboard — Endcity Survival</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="logo" href="index.html">Endcity<span> Survival</span></a>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html#join">Join</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#rules">Rules</a>
+      <a href="economy.html" aria-current="page">Economy</a>
+      <a href="index.html#donate">Donate</a>
+      <a href="commands.html">Commands</a>
+      <a href="/status">Status</a>
+      <a class="nav-cta" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
+    </nav>
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-panel" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+  <div id="nav-panel" class="nav-panel" hidden>
+    <div class="nav-panel-group">
+      <a href="index.html#join">Join</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#rules">Rules</a>
+      <a href="economy.html" aria-current="page">Economy</a>
+      <a href="index.html#donate">Donate</a>
+      <a href="commands.html">Commands</a>
+      <a href="/status">Status</a>
+      <a class="nav-cta nav-cta--panel" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
+    </div>
+  </div>
+
+  <main class="page-commands-main page-economy-main page-economy-dashboard" id="top">
+    <p class="intro-eyebrow">In-game economy</p>
+    <h1 class="intro-title">Economy <span class="intro-accent">dashboard</span></h1>
+    <p class="page-commands-lead">
+      Live market snapshot for players who want better trade decisions. Use pressure, volume (14d), and buy/sell movement to pick what to farm, hold, or offload.
+    </p>
+    <p class="shop-changes-meta" id="shop-changes-meta">Loading snapshot…</p>
+    <p class="shop-changes-empty" id="shop-changes-empty" hidden>This snapshot is not available right now.</p>
+
+    <section class="econ-guide-section" aria-labelledby="dash-kpi-heading">
+      <h2 id="dash-kpi-heading" class="econ-guide-h2">Market overview</h2>
+      <div class="econ-dash-kpi-grid" id="econ-dash-kpis"></div>
+    </section>
+
+    <section class="econ-guide-section" aria-labelledby="dash-opportunities-heading">
+      <h2 id="dash-opportunities-heading" class="econ-guide-h2">Player opportunities</h2>
+      <div class="econ-dash-op-grid">
+        <article class="econ-dash-op-card">
+          <h3>Best items to sell now</h3>
+          <p class="econ-dash-op-note">Weighted by sell payout, demand pressure, and trade volume.</p>
+          <ol class="econ-dash-list" id="dash-best-sell"></ol>
+        </article>
+        <article class="econ-dash-op-card">
+          <h3>Best demand momentum</h3>
+          <p class="econ-dash-op-note">Items under strongest demand pressure with active volume.</p>
+          <ol class="econ-dash-list" id="dash-demand"></ol>
+        </article>
+        <article class="econ-dash-op-card">
+          <h3>Most oversupplied items</h3>
+          <p class="econ-dash-op-note">Supply-heavy items likely to stay weaker for payouts.</p>
+          <ol class="econ-dash-list" id="dash-supply"></ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="econ-guide-section" aria-labelledby="dash-table-heading">
+      <h2 id="dash-table-heading" class="econ-guide-h2">Full market table</h2>
+      <div class="shop-changes-panel" id="shop-changes-panel" hidden>
+        <div class="shop-changes-toolbar" id="shop-changes-toolbar" role="region" aria-label="Sort snapshot table">
+          <span class="shop-changes-toolbar__title">Snapshot table</span>
+          <div class="shop-changes-toolbar__control">
+            <label class="shop-changes-sort-label" for="shop-changes-sort">Order by</label>
+            <select id="shop-changes-sort" class="shop-changes-sort" aria-controls="shop-changes-tbody">
+              <optgroup label="Volume and price">
+                <option value="volume-desc" selected>Volume (high to low)</option>
+                <option value="buy-desc">Buy price (high to low)</option>
+                <option value="sell-desc">Sell price (high to low)</option>
+              </optgroup>
+              <optgroup label="Time">
+                <option value="changed-desc">Recently changed (newest to oldest)</option>
+              </optgroup>
+              <optgroup label="Pressure">
+                <option value="demand-strong">Strongest demand</option>
+                <option value="supply-strong">Strongest supply</option>
+                <option value="balanced">Most balanced</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+        <div class="shop-changes-wrap cmd-table-wrap shop-changes-wrap--in-panel">
+          <table class="shop-changes-table cmd-table" aria-describedby="shop-changes-meta">
+            <caption class="sr-only">Items with recent buy and sell price adjustments</caption>
+            <thead>
+              <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Pressure</th>
+                <th scope="col">Volume <span class="th-hint">(14d)</span></th>
+                <th scope="col">Buy</th>
+                <th scope="col">Sell</th>
+              </tr>
+            </thead>
+            <tbody id="shop-changes-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <p class="cmd-footnote">
+      Read the pricing model: <a href="economy.html">economy guide</a>.
+    </p>
+  </main>
+
+  <footer class="site-footer">
+    <p><strong>Endcity Survival</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
+    <p class="footer-small">Not affiliated with Mojang or Microsoft. Minecraft is a trademark of Mojang Synergies AB.</p>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/economy-dashboard.js"></script>
+</body>
+</html>
