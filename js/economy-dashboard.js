@@ -428,8 +428,12 @@
 
   function renderKpis(rows) {
     if (!kpiWrap) return;
+    var volumeText = fmtVolumeMain(sumFinite(rows, volNum));
     var cards = [
-      { label: "Volume (14d)", value: fmtVolumeMain(sumFinite(rows, volNum)) || "—" },
+      {
+        label: "Volume (14d)",
+        value: volumeText != null ? volumeText + " items" : "—",
+      },
       { label: "Volume value (14d)", value: fmtVolumeMoney(sumFinite(rows, function (r) { return Number(r && r.volumeMoney); })) || "—" },
     ];
     kpiWrap.innerHTML = "";

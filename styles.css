@@ -2645,15 +2645,11 @@ kbd {
 .econ-dash-kpi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 0.8rem;
+  gap: 0.35rem 1.2rem;
 }
 
 .econ-dash-hero {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-card) 90%, #ffffff 10%), var(--bg-card));
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1rem 1.1rem;
-  box-shadow: var(--shadow);
+  padding: 0;
 }
 
 .econ-dash-hero__head {
@@ -2670,23 +2666,16 @@ kbd {
 }
 
 .econ-dash-hero .shop-changes-meta {
-  margin: 0;
+  margin: 0 0 0.35rem;
   font-size: 0.8rem;
 }
 
-.econ-dash-hero__note {
-  margin: 0.85rem 0 0;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  line-height: 1.45;
-}
-
 .econ-dash-kpi {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-elevated) 88%, #ffffff 12%), var(--bg-elevated));
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 0.95rem 1rem;
-  box-shadow: var(--shadow);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
 }
 
 .econ-dash-kpi h3 {
