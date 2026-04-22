@@ -541,7 +541,8 @@ main,
 
 .donor-strip__item {
   flex: 0 0 auto;
-  width: 76px;
+  min-width: 76px;
+  width: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -565,8 +566,7 @@ main,
   font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
   color: var(--text);
   line-height: 1.2;
-  word-break: break-word;
-  max-width: 100%;
+  white-space: nowrap;
 }
 
 .donor-strip__amt {
