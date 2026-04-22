@@ -54,6 +54,46 @@
     </section>
     <p class="shop-changes-empty" id="shop-changes-empty" hidden>This snapshot is not available right now.</p>
 
+    <section class="econ-guide-section" aria-labelledby="dash-charts-heading">
+      <h2 id="dash-charts-heading" class="econ-guide-h2">Market trends</h2>
+      <p class="cmd-section-lead econ-chart-lead">
+        Trends build as snapshots are collected over time in your browser. Keep this page updating to grow the timeline.
+      </p>
+      <div class="econ-chart-grid">
+        <article class="econ-chart-card">
+          <div class="econ-chart-card__head">
+            <h3>Item trend</h3>
+            <div class="econ-chart-controls">
+              <label for="chart-item-select">Item</label>
+              <select id="chart-item-select"></select>
+              <label for="chart-item-metric">Metric</label>
+              <select id="chart-item-metric">
+                <option value="buyNew">Buy price</option>
+                <option value="sellNew" selected>Sell price</option>
+                <option value="pressureScore">Pressure</option>
+                <option value="volume">Volume</option>
+              </select>
+            </div>
+          </div>
+          <div class="econ-chart" id="chart-item"></div>
+        </article>
+        <article class="econ-chart-card">
+          <div class="econ-chart-card__head">
+            <h3>Total market trend</h3>
+            <div class="econ-chart-controls">
+              <label for="chart-market-metric">Metric</label>
+              <select id="chart-market-metric">
+                <option value="totalVolume" selected>Total volume</option>
+                <option value="totalValue">Total value</option>
+                <option value="avgPressure">Average pressure</option>
+              </select>
+            </div>
+          </div>
+          <div class="econ-chart" id="chart-market"></div>
+        </article>
+      </div>
+    </section>
+
     <section class="econ-guide-section" aria-label="Market table">
       <div class="shop-changes-panel" id="shop-changes-panel" hidden>
         <div class="shop-changes-toolbar" id="shop-changes-toolbar" role="region" aria-label="Sort snapshot table">

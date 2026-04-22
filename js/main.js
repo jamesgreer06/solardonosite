@@ -165,9 +165,9 @@
     var disc = (cfg.discordUsername && String(cfg.discordUsername).trim()) || "tcp.syn.ack";
     var esc = disc.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     elAltPay.innerHTML =
-      "<strong>Apple Pay</strong> or <strong>crypto</strong> — DM on Discord (<strong translate=\"no\">" +
+      "Donate via Discord — DM <strong translate=\"no\">" +
       esc +
-      "</strong>) and we’ll work it out.";
+      "</strong> to contribute.";
   }
 
   var donations = Array.isArray(cfg.donations) ? cfg.donations : [];
