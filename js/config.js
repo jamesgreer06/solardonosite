@@ -28,7 +28,7 @@ window.ENDCITY_CONFIG = {
    */
   donations: [
     { username: "MkMonte", amount: 30 },
-    { username: "Ladyangel3588", amount: 3 },
+    { username: "Ladyangel3588", amount: 28 },
     { username: "9loreGetZooted", amount: 20 },
   ],
 
