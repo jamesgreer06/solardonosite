@@ -14,7 +14,7 @@ window.ENDCITY_CONFIG = {
   /**
    * Amount collected toward the upcoming bill (PayPal total for this fundraising period).
    */
-  raisedTowardNextBill: 23,
+  raisedTowardNextBill: 48,
 
   /** Credit from surplus rolled into this upcoming bill (optional). */
   rolloverFromPriorMonth: 0,
