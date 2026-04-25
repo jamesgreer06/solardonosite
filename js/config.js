@@ -4,7 +4,7 @@
  */
 window.ENDCITY_CONFIG = {
   /** Label for the bill you’re raising toward (e.g. the upcoming month after the one that’s paid). */
-  fundraisingForLabel: "May 2026",
+  fundraisingForLabel: "June 2026",
 
   monthlyBill: 60,
 
@@ -14,20 +14,20 @@ window.ENDCITY_CONFIG = {
   /**
    * Amount collected toward the upcoming bill (PayPal total for this fundraising period).
    */
-  raisedTowardNextBill: 53,
+  raisedTowardNextBill: 0,
 
   /** Credit from surplus rolled into this upcoming bill (optional). */
   rolloverFromPriorMonth: 0,
 
   /** Short status line, e.g. that the previous month is covered. */
-  billingNote: "April is paid for.",
+  billingNote: "May is paid for.",
 
   /**
    * Supporters — Minecraft username and amount toward this fundraising period.
    * Heads use mc-heads.net (steve fallback if name invalid).
    */
   donations: [
-    { username: "MkMonte", amount: 30 },
+    { username: "MkMonte", amount: 42 },
     { username: "Ladyangel3588", amount: 30 },
     { username: "9loreGetZooted", amount: 20 },
   ],
