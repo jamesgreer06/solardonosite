@@ -14,7 +14,7 @@ window.ENDCITY_CONFIG = {
   /**
    * Amount collected toward the upcoming bill (PayPal total for this fundraising period).
    */
-  raisedTowardNextBill: 0,
+  raisedTowardNextBill: 30,
 
   /** Credit from surplus rolled into this upcoming bill (optional). */
   rolloverFromPriorMonth: 0,
@@ -27,8 +27,8 @@ window.ENDCITY_CONFIG = {
    * Heads use mc-heads.net (steve fallback if name invalid).
    */
   donations: [
-    { username: "MkMonte", amount: 42 },
-    { username: "Ladyangel3588", amount: 30 },
+    { username: "MkMonte", amount: 67 },
+    { username: "Ladyangel3588", amount: 35 },
     { username: "9loreGetZooted", amount: 20 },
   ],
 
