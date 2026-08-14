@@ -31,7 +31,6 @@
     <a class="logo" href="#top"><span class="logo-mark" aria-hidden="true"></span>Endcity</a>
     <nav class="nav" aria-label="Primary">
       <a href="#join">Play</a>
-      <a href="#dispatch">News</a>
       <a href="#rules">Rules</a>
       <a href="#economy">Shop</a>
       <a class="nav-cta" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
@@ -43,7 +42,6 @@
   <div id="nav-panel" class="nav-panel" hidden>
     <div class="nav-panel-group">
       <a href="#join">Play</a>
-      <a href="#dispatch">News</a>
       <a href="#rules">Rules</a>
       <a href="#economy">Shop</a>
       <a href="commands.html">Commands</a>
@@ -174,11 +172,11 @@
       </div>
     </section>
 
-    <!-- Dispatch / manual blog: edit data/blog-posts.json (newest first), then deploy on Cloudflare Pages. -->
-    <section id="dispatch" class="section section-board" aria-labelledby="dispatch-heading">
+    <!-- Dispatch / manual blog: hidden for now. Edit data/blog-posts.json, then remove hidden from .city-board__news. -->
+    <section id="dispatch" class="section section-board" aria-labelledby="community-heading">
       <div class="section-inner">
-        <div class="city-board">
-          <div class="city-board__news">
+        <div class="city-board city-board--hang-only">
+          <div class="city-board__news" hidden>
             <p class="edition-kicker">What’s happening</p>
             <h2 id="dispatch-heading" class="section-title">From the city</h2>
             <p class="section-intro">Little notes from people already inside. Then go say hi.</p>

@@ -175,8 +175,9 @@
       .join("");
   }
 
+  var news = document.querySelector(".city-board__news");
   var list = document.getElementById("dispatch-list");
-  if (list) {
+  if (list && news && !news.hasAttribute("hidden")) {
     list.addEventListener("click", function (event) {
       var toggle = event.target.closest("[data-dispatch-toggle]");
       if (!toggle) return;

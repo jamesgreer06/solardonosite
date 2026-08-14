@@ -837,9 +837,14 @@
   }
 }
 
-.city-board {
-  display: grid;
-  overflow: hidden;
+.city-board--hang-only {
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.city-board--hang-only .city-board__hang {
+  border: 0;
+  order: 0;
 }
 
 .city-board__news {
