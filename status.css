@@ -1,0 +1,278 @@
+/* Status page — same End City GUI as the homepage. */
+
+.page-status .page-status-main {
+  position: relative;
+  z-index: 1;
+  padding-top: 5.5rem;
+}
+
+.page-status .nav a[aria-current="page"] {
+  color: #e8d48b;
+  font-weight: 700;
+}
+
+.page-status .edition-kicker {
+  font-family: var(--font-mc);
+}
+
+.page-status .intro-title {
+  font-family: var(--font-mc);
+  font-size: clamp(2rem, 7vw, 3.1rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 0.95;
+  color: #f4f0fa;
+  text-shadow:
+    3px 3px 0 #1a1520,
+    0 0 18px rgba(157, 139, 201, 0.35);
+  margin: 0 0 0.45rem;
+}
+
+.page-status .page-commands-lead {
+  font-size: 1.02rem;
+  max-width: 36rem;
+  margin-bottom: 1.35rem;
+}
+
+.page-status .status-grid {
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-status .status-card,
+.page-status .status-panel {
+  border-radius: 0;
+  border: 4px solid #000;
+  background: #1c1828;
+  box-shadow: var(--mc-in), 4px 4px 0 #000;
+}
+
+.page-status .status-card {
+  padding: 1rem 1.05rem 1.05rem;
+  background: #1c1828;
+}
+
+.page-status .status-card--primary {
+  background: #1c1828;
+}
+
+.page-status .status-card h2,
+.page-status .cmd-section h2 {
+  font-family: var(--font-mc);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-muted);
+}
+
+.page-status .status-value,
+.page-status .status-peak-value {
+  font-family: var(--font-mc);
+  color: #f4f0fa;
+  text-shadow: 2px 2px 0 #1a1520;
+}
+
+.page-status .status-value {
+  font-size: clamp(2rem, 6vw, 2.6rem);
+  margin-bottom: 0.35rem;
+}
+
+.page-status .status-sep {
+  color: var(--end-stone);
+}
+
+.page-status .status-state {
+  font-family: var(--font-mc);
+  font-size: 1.05rem;
+  color: #7dff9a;
+  text-shadow: 1px 1px 0 #1a1520;
+}
+
+.page-status .status-state.is-offline {
+  color: #e8a0a0;
+}
+
+.page-status .status-meta {
+  font-size: 0.9rem;
+}
+
+.page-status .status-card--peaks {
+  padding: 1rem 1.05rem 1.05rem;
+}
+
+.page-status .status-peaks__rule {
+  width: 3px;
+  background: #000;
+  opacity: 1;
+}
+
+.page-status .status-peak-value {
+  font-size: 1.65rem;
+}
+
+.page-status .status-quick-actions {
+  border-top: 3px solid #000;
+  padding-top: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.page-status .status-quick-actions__hint {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.page-status .status-quick-actions__hint--java strong {
+  font-family: var(--font-mc);
+  color: var(--java);
+}
+
+.page-status .status-quick-actions__hint--bedrock strong {
+  font-family: var(--font-mc);
+  color: var(--bedrock);
+}
+
+.page-status .status-quick-actions__hint span {
+  font-family: var(--font-mc);
+}
+
+.page-status .status-panel {
+  padding: 1rem 1.05rem 1.15rem;
+  margin-bottom: 1.25rem;
+}
+
+.page-status .status-panel > h2 {
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--text);
+  margin-bottom: 0.7rem;
+}
+
+.page-status .status-range {
+  gap: 0;
+  padding: 0;
+  border-radius: 0;
+  border: 3px solid #000;
+  background: #0c0a10;
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.45);
+}
+
+.page-status .status-range__btn {
+  border-radius: 0;
+  border: 0;
+  border-right: 3px solid #000;
+  background: #2a2436;
+  color: var(--text-muted);
+  font-family: var(--font-mc);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.4rem 0.75rem;
+  min-height: 2.2rem;
+}
+
+.page-status .status-range__btn:last-child {
+  border-right: 0;
+}
+
+.page-status .status-range__btn:hover {
+  color: #fff;
+  background: #3a3350;
+}
+
+.page-status .status-range__btn.is-active {
+  color: #fff;
+  background: linear-gradient(#7a6a9a, #5c4f75);
+  text-shadow: 1px 1px 0 #2a2436;
+  border-color: #000;
+}
+
+.page-status .status-graph-wrap {
+  padding: 0.55rem;
+  background: #0c0a10;
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.55);
+}
+
+.page-status .status-gridline {
+  stroke: rgba(138, 116, 176, 0.28);
+}
+
+.page-status .status-axis-label {
+  fill: var(--accent-muted);
+  font-family: var(--font-sans);
+}
+
+.page-status .status-line {
+  stroke: #c4b5e0;
+  filter: drop-shadow(0 0 4px rgba(196, 181, 224, 0.28));
+}
+
+.page-status .status-brush-rect {
+  fill: rgba(138, 116, 176, 0.28);
+  stroke: #e8d48b;
+}
+
+.page-status .status-hover-line {
+  stroke: #e8d48b;
+  stroke-dasharray: 3 4;
+}
+
+.page-status .status-point--latest {
+  fill: #e8d48b;
+  stroke: #1a1520;
+}
+
+.page-status .status-tooltip {
+  border-radius: 0;
+  border: 3px solid #000;
+  background: #241e32;
+  box-shadow: 4px 4px 0 #000;
+}
+
+.page-status .status-tooltip__count {
+  font-family: var(--font-mc);
+}
+
+.page-status .status-player-list {
+  gap: 0.45rem;
+  max-height: 14rem;
+}
+
+.page-status .status-player-list li {
+  border-radius: 0;
+  border: 3px solid #000;
+  background: #241e32;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.1),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.4);
+  font-family: var(--font-mc);
+  font-size: 0.85rem;
+  padding: 0.4rem 0.5rem;
+}
+
+.page-status .status-player-list__more {
+  border: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  font-family: var(--font-sans);
+}
+
+.page-status .cmd-coming-soon {
+  font-style: normal;
+  font-size: 1rem;
+}
+
+.page-status .cmd-coming-soon[hidden],
+.page-status .mods-policy-note[hidden] {
+  display: none;
+}
+
+@media (max-width: 380px) {
+  .page-status .status-peaks__rule {
+    width: 100%;
+    height: 3px;
+  }
+}

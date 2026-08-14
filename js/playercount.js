@@ -130,18 +130,18 @@
     if (brushWindow && brushWindow.startT != null && brushWindow.endT != null) {
       var a = Math.min(brushWindow.startT, brushWindow.endT);
       var b = Math.max(brushWindow.startT, brushWindow.endT);
-      graphHeading.textContent = "Online trend (" + fmtDateTime(a) + " – " + fmtDateTime(b) + ")";
+      graphHeading.textContent = "Online · " + fmtDateTime(a) + " – " + fmtDateTime(b);
       return;
     }
     var label =
       selectedRange === "30m"
-        ? "30 Minutes"
+        ? "30 minutes"
         : selectedRange === "6h"
-          ? "6 Hours"
+          ? "6 hours"
           : selectedRange === "12h"
-            ? "12 Hours"
-            : "24 Hours";
-    graphHeading.textContent = "Online Trend (Last " + label + ")";
+            ? "12 hours"
+            : "24 hours";
+    graphHeading.textContent = "Online · last " + label;
   }
 
   function setRange(rangeKey) {
