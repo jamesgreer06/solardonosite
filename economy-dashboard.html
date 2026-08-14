@@ -3,24 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Endcity Survival economy dashboard — pressure, volume, and price-change insights for better trading decisions." />
-  <meta name="theme-color" content="#0a0a0c" />
-  <title>Economy dashboard — Endcity Survival</title>
+  <meta name="description" content="Endcity Survival — live shop snapshot. See what the city is buying and selling at endcity.net." />
+  <meta name="theme-color" content="#241e32" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <title>Dashboard — Endcity</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="home.css" />
+  <link rel="stylesheet" href="economy.css" />
+  <link rel="stylesheet" href="economy-dashboard.css" />
 </head>
-<body>
+<body class="page-economy page-economy-dashboard">
+  <a class="skip-link" href="#top">Skip to content</a>
   <div class="noise" aria-hidden="true"></div>
+  <div class="void-stars" aria-hidden="true"></div>
   <header class="site-header">
-    <a class="logo" href="index.html">Endcity<span> Survival</span></a>
+    <a class="logo" href="index.html"><span class="logo-mark" aria-hidden="true"></span>Endcity</a>
     <nav class="nav" aria-label="Primary">
-      <a href="index.html#join">Join</a>
-      <a href="index.html#about">About</a>
+      <a href="index.html#join">Play</a>
       <a href="index.html#rules">Rules</a>
-      <a href="economy.html" aria-current="page">Economy</a>
-      <a href="commands.html">Commands</a>
+      <a href="index.html#economy">Shop</a>
       <a href="/status">Status</a>
       <a class="nav-cta" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
     </nav>
@@ -30,123 +35,87 @@
   </header>
   <div id="nav-panel" class="nav-panel" hidden>
     <div class="nav-panel-group">
-      <a href="index.html#join">Join</a>
-      <a href="index.html#about">About</a>
+      <a href="index.html#join">Play</a>
       <a href="index.html#rules">Rules</a>
-      <a href="economy.html" aria-current="page">Economy</a>
-      <a href="commands.html">Commands</a>
+      <a href="index.html#economy">Shop</a>
       <a href="/status">Status</a>
+      <a href="commands.html">Commands</a>
       <a class="nav-cta nav-cta--panel" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
     </div>
   </div>
 
-  <main class="page-commands-main page-economy-main page-economy-dashboard" id="top">
-    <p class="intro-eyebrow">In-game economy</p>
-    <h1 class="intro-title">Economy <span class="intro-accent">dashboard</span></h1>
+  <main class="page-commands-main page-economy-main" id="top">
+    <p class="edition-kicker">Live numbers</p>
+    <h1 class="intro-title">Dashboard</h1>
     <p class="page-commands-lead">
-      Live market snapshot for players making trade decisions. Check volume, value, and pressure, then sort the table to decide what to farm, hold, buy, or dump.
+      See what the city is buying and selling. Then decide what to farm, hold, or dump.
     </p>
-    <section class="econ-guide-section econ-dash-hero" aria-label="Market snapshot">
-      <p class="shop-changes-meta" id="shop-changes-meta">Loading snapshot…</p>
-      <div class="econ-dash-kpi-grid" id="econ-dash-kpis"></div>
-    </section>
+
+    <p class="shop-changes-meta" id="shop-changes-meta">Loading snapshot…</p>
+    <div class="econ-dash-kpi-grid" id="econ-dash-kpis"></div>
+
+    <ul class="econ-dash-legend" aria-label="How to read pressure">
+      <li><span class="shop-pressure shop-pressure--demand">Demand</span> lots of buying</li>
+      <li><span class="shop-pressure shop-pressure--supply">Supply</span> lots of selling</li>
+      <li><span class="shop-pressure shop-pressure--mixed">Mixed</span> both sides busy</li>
+    </ul>
+
     <p class="shop-changes-empty" id="shop-changes-empty" hidden>This snapshot is not available right now.</p>
 
-    <section class="econ-guide-section" aria-labelledby="dash-charts-heading">
-      <h2 id="dash-charts-heading" class="econ-guide-h2">Market trends</h2>
-      <p class="cmd-section-lead econ-chart-lead">
-        Trends build as snapshots are collected over time in your browser. Keep this page updating to grow the timeline.
-      </p>
-      <div class="econ-chart-grid">
-        <article class="econ-chart-card">
-          <div class="econ-chart-card__head">
-            <h3>Item trend</h3>
-            <div class="econ-chart-controls">
-              <label for="chart-item-select">Item</label>
-              <select id="chart-item-select"></select>
-              <label for="chart-item-metric">Metric</label>
-              <select id="chart-item-metric">
-                <option value="buyNew">Buy price</option>
-                <option value="sellNew" selected>Sell price</option>
-                <option value="pressureScore">Pressure</option>
-                <option value="volume">Volume</option>
-              </select>
-            </div>
-          </div>
-          <div class="econ-chart" id="chart-item"></div>
-        </article>
-        <article class="econ-chart-card">
-          <div class="econ-chart-card__head">
-            <h3>Total market trend</h3>
-            <div class="econ-chart-controls">
-              <label for="chart-market-metric">Metric</label>
-              <select id="chart-market-metric">
-                <option value="totalVolume" selected>Total volume</option>
-                <option value="totalValue">Total value</option>
-                <option value="avgPressure">Average pressure</option>
-              </select>
-            </div>
-          </div>
-          <div class="econ-chart" id="chart-market"></div>
-        </article>
+    <section class="shop-changes-panel" id="shop-changes-panel" hidden aria-label="Market table">
+      <div class="shop-changes-toolbar" id="shop-changes-toolbar" role="region" aria-label="Sort snapshot table">
+        <span class="shop-changes-toolbar__title">Snapshot</span>
+        <div class="shop-changes-toolbar__control">
+          <label class="shop-changes-sort-label" for="shop-changes-sort">Order by</label>
+          <select id="shop-changes-sort" class="shop-changes-sort" aria-controls="shop-changes-tbody">
+            <optgroup label="Volume and price">
+              <option value="volume-desc" selected>Volume (high to low)</option>
+              <option value="volume-asc">Volume (low to high)</option>
+              <option value="buy-desc">Buy price (high to low)</option>
+              <option value="buy-asc">Buy price (low to high)</option>
+              <option value="sell-desc">Sell price (high to low)</option>
+              <option value="sell-asc">Sell price (low to high)</option>
+            </optgroup>
+            <optgroup label="Item">
+              <option value="item-asc">Item (A to Z)</option>
+              <option value="item-desc">Item (Z to A)</option>
+            </optgroup>
+            <optgroup label="Time">
+              <option value="changed-desc">Recently changed (newest to oldest)</option>
+            </optgroup>
+            <optgroup label="Pressure">
+              <option value="demand-strong">Strongest demand</option>
+              <option value="supply-strong">Strongest supply</option>
+              <option value="balanced">Most balanced</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <div class="shop-changes-wrap cmd-table-wrap shop-changes-wrap--in-panel">
+        <table class="shop-changes-table cmd-table" aria-describedby="shop-changes-meta">
+          <caption class="sr-only">Items with recent buy and sell price adjustments</caption>
+          <thead>
+            <tr>
+              <th scope="col">Item</th>
+              <th scope="col">Pressure</th>
+              <th scope="col">Volume <span class="th-hint">(14d)</span></th>
+              <th scope="col">Buy</th>
+              <th scope="col">Sell</th>
+            </tr>
+          </thead>
+          <tbody id="shop-changes-tbody"></tbody>
+        </table>
       </div>
     </section>
 
-    <section class="econ-guide-section" aria-label="Market table">
-      <div class="shop-changes-panel" id="shop-changes-panel" hidden>
-        <div class="shop-changes-toolbar" id="shop-changes-toolbar" role="region" aria-label="Sort snapshot table">
-          <span class="shop-changes-toolbar__title">Snapshot table</span>
-          <div class="shop-changes-toolbar__control">
-            <label class="shop-changes-sort-label" for="shop-changes-sort">Order by</label>
-            <select id="shop-changes-sort" class="shop-changes-sort" aria-controls="shop-changes-tbody">
-              <optgroup label="Volume and price">
-                <option value="volume-desc" selected>Volume (high to low)</option>
-                <option value="volume-asc">Volume (low to high)</option>
-                <option value="buy-desc">Buy price (high to low)</option>
-                <option value="buy-asc">Buy price (low to high)</option>
-                <option value="sell-desc">Sell price (high to low)</option>
-                <option value="sell-asc">Sell price (low to high)</option>
-              </optgroup>
-              <optgroup label="Item">
-                <option value="item-asc">Item (A to Z)</option>
-                <option value="item-desc">Item (Z to A)</option>
-              </optgroup>
-              <optgroup label="Time">
-                <option value="changed-desc">Recently changed (newest to oldest)</option>
-              </optgroup>
-              <optgroup label="Pressure">
-                <option value="demand-strong">Strongest demand</option>
-                <option value="supply-strong">Strongest supply</option>
-                <option value="balanced">Most balanced</option>
-              </optgroup>
-            </select>
-          </div>
-        </div>
-        <div class="shop-changes-wrap cmd-table-wrap shop-changes-wrap--in-panel">
-          <table class="shop-changes-table cmd-table" aria-describedby="shop-changes-meta">
-            <caption class="sr-only">Items with recent buy and sell price adjustments</caption>
-            <thead>
-              <tr>
-                <th scope="col">Item</th>
-                <th scope="col">Pressure</th>
-                <th scope="col">Volume <span class="th-hint">(14d)</span></th>
-                <th scope="col">Buy</th>
-                <th scope="col">Sell</th>
-              </tr>
-            </thead>
-            <tbody id="shop-changes-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <p class="cmd-footnote">
-      Read the pricing model: <a href="economy.html">economy guide</a>.
+    <p class="econ-close">
+      Want the story behind the numbers? <a class="domain-link" href="economy.html">How prices move</a>.
+      Ready to play? <a class="domain-link" href="index.html#join">Pick your door</a>.
     </p>
   </main>
 
   <footer class="site-footer">
-    <p><strong>Endcity Survival</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
+    <p><strong>Endcity</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="index.html">Home</a> · <a href="/status">Status</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
     <p class="footer-small">Not affiliated with Mojang or Microsoft. Minecraft is a trademark of Mojang Synergies AB.</p>
   </footer>
 

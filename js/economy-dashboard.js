@@ -473,20 +473,20 @@
     var cards = [
       {
         key: "volume",
-        label: "Volume (14d)",
+        label: "Items moved",
         value: volumeText != null ? volumeText + " items" : "—",
-        note: "Items traded in this window",
+        note: "How much the shop traded in two weeks",
       },
       {
         key: "value",
-        label: "Volume value (14d)",
+        label: "Coin value",
         value:
           fmtVolumeMoney(
             sumFinite(rows, function (r) {
               return Number(r && r.volumeMoney);
             })
           ) || "—",
-        note: "Estimated total turnover",
+        note: "About how much those trades were worth",
       },
     ];
     kpiWrap.innerHTML = "";
