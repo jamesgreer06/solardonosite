@@ -3,24 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Endcity Survival — how in-game money and dynamic shop prices work. Fair economy at endcity.net." />
-  <meta name="theme-color" content="#0a0a0c" />
-  <title>How the economy works — Endcity Survival</title>
+  <meta name="description" content="Endcity Survival — how shop prices move. Java and Bedrock share the same wallet at endcity.net." />
+  <meta name="theme-color" content="#241e32" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <title>How prices move — Endcity</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="home.css" />
+  <link rel="stylesheet" href="economy.css" />
 </head>
-<body>
+<body class="page-economy">
+  <a class="skip-link" href="#top">Skip to content</a>
   <div class="noise" aria-hidden="true"></div>
+  <div class="void-stars" aria-hidden="true"></div>
   <header class="site-header">
-    <a class="logo" href="index.html">Endcity<span> Survival</span></a>
+    <a class="logo" href="index.html"><span class="logo-mark" aria-hidden="true"></span>Endcity</a>
     <nav class="nav" aria-label="Primary">
-      <a href="index.html#join">Join</a>
-      <a href="index.html#about">About</a>
+      <a href="index.html#join">Play</a>
       <a href="index.html#rules">Rules</a>
-      <a href="economy.html" aria-current="page">Economy</a>
-      <a href="commands.html">Commands</a>
+      <a href="index.html#economy">Shop</a>
       <a href="/status">Status</a>
       <a class="nav-cta" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
     </nav>
@@ -30,87 +34,79 @@
   </header>
   <div id="nav-panel" class="nav-panel" hidden>
     <div class="nav-panel-group">
-      <a href="index.html#join">Join</a>
-      <a href="index.html#about">About</a>
+      <a href="index.html#join">Play</a>
       <a href="index.html#rules">Rules</a>
-      <a href="economy.html" aria-current="page">Economy</a>
-      <a href="commands.html">Commands</a>
+      <a href="index.html#economy">Shop</a>
       <a href="/status">Status</a>
+      <a href="commands.html">Commands</a>
       <a class="nav-cta nav-cta--panel" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
     </div>
   </div>
 
   <main class="page-commands-main page-economy-main" id="top">
-    <p class="intro-eyebrow">In-game economy</p>
-    <h1 class="intro-title">How money &amp; <span class="intro-accent">shop prices</span> work</h1>
+    <p class="edition-kicker">In-game money</p>
+    <h1 class="intro-title">How prices move</h1>
     <p class="page-commands-lead">
-      Endcity uses a <strong>player-driven economy</strong>: you earn money by playing, trading, and selling—not with real cash.
-      The server shop’s buy and sell prices <strong>move over time</strong> so busy items don’t stay frozen at one number forever.
+      Earn coins by playing — farming, selling, trading. Java and Bedrock share the same wallet. The shop is not stuck on one number. It follows what people do.
     </p>
 
-    <section class="econ-guide-section" aria-labelledby="simple-heading">
-      <h2 id="simple-heading" class="econ-guide-h2">The simple version</h2>
-      <ul class="econ-guide-list">
-        <li><strong>You earn</strong> by selling things (to the shop or other players) and doing normal survival stuff.</li>
-        <li><strong>You spend</strong> in the shop or by paying other players.</li>
-        <li><strong>Prices change</strong> because lots of people buying or selling the same item pushes the numbers up or down—like a busy store running low on stock vs. everyone dumping the same crop.</li>
-      </ul>
-    </section>
+    <ul class="econ-motto">
+      <li>
+        <strong>Earn</strong>
+        <span>Sell to the shop or to friends. Play survival.</span>
+      </li>
+      <li>
+        <strong>Spend</strong>
+        <span>Buy from the shop. Pay other players.</span>
+      </li>
+      <li>
+        <strong>Prices move</strong>
+        <span>If everyone sells cobble, cobble pays less.</span>
+      </li>
+    </ul>
 
-    <section class="econ-callout econ-callout--kids" aria-labelledby="kids-heading">
-      <h2 id="kids-heading" class="econ-callout__title">Still confused? Picture a lemonade stand</h2>
-      <p>
-        If <strong>everyone</strong> wants lemonade today, the stand might <strong>raise the price</strong> a little (or pay friends more to bring lemons)—that’s <strong>high demand</strong>.
-        If <strong>everyone</strong> keeps bringing lemons and the stand is <strong>overflowing</strong>, they might <strong>lower what they pay</strong> for more lemons—that’s <strong>high supply</strong>.
-      </p>
-      <p class="econ-callout__note">
-        Our shop does the same idea in the background so one item can’t stay “free money” forever if the whole server farms it nonstop.
-      </p>
-    </section>
+    <div class="econ-split">
+      <article class="econ-door econ-door--buy">
+        <p class="edition-kicker">You pay</p>
+        <h2 class="econ-door__title">Buy from shop</h2>
+        <p>What it costs to take an item out. If lots of people keep buying the same thing, this number often <strong>goes up</strong>.</p>
+      </article>
+      <article class="econ-door econ-door--sell">
+        <p class="edition-kicker">You get paid</p>
+        <h2 class="econ-door__title">Sell to shop</h2>
+        <p>What the shop pays you. If everyone dumps the same item, this number often <strong>goes down</strong>.</p>
+      </article>
+    </div>
 
-    <section class="econ-guide-section" aria-labelledby="detail-heading">
-      <h2 id="detail-heading" class="econ-guide-h2">For players who want the deeper picture</h2>
-      <p class="cmd-section-lead" style="margin-top: 0;">
-        The shop tracks <strong>volume</strong>—how many items or blocks moved in a period—and whether most of that flow was players <strong>buying from the shop</strong> or <strong>selling to it</strong>.
-        That balance shows up as <strong>pressure</strong> (demand-heavy vs. supply-heavy). When demand dominates, buy prices and payouts tend to rise until the flow cools.
-        When supply dominates, buy-from-shop prices and sell payouts tend to fall so the economy doesn’t overpay for an oversupplied item.
-      </p>
-      <p class="cmd-section-lead">
-        Nothing here is random: it’s feedback from how the community actually plays. You can still get rich by smart farming and trading—you’re just not competing against a price list that never moves.
-      </p>
-    </section>
+    <article class="econ-sign">
+      <p class="edition-kicker">Easy picture</p>
+      <h2 class="econ-pane__title">A lemonade stand</h2>
+      <p>If <strong>everyone</strong> wants lemonade, the stand raises the price a little. That’s demand.</p>
+      <p>If <strong>everyone</strong> keeps bringing lemons, they pay less for more. That’s supply.</p>
+      <p class="econ-sign__note">The shop does the same idea in the background, so one farm can’t stay easy money forever.</p>
+    </article>
 
-    <section class="econ-guide-section" aria-labelledby="buysell-heading">
-      <h2 id="buysell-heading" class="econ-guide-h2">Buy price vs. sell price</h2>
-      <div class="econ-buysell-grid">
-        <article class="econ-buysell-card">
-          <h3 class="econ-buysell-card__h">Buy from shop</h3>
-          <p>What <strong>you pay</strong> the server to take an item out of stock. If lots of people keep buying the same thing, this number often <strong>goes up</strong>.</p>
-        </article>
-        <article class="econ-buysell-card">
-          <h3 class="econ-buysell-card__h">Sell to shop</h3>
-          <p>What <strong>the server pays you</strong> when you add stock. If everyone floods the shop with the same item, this number often <strong>goes down</strong>.</p>
-        </article>
-      </div>
-    </section>
+    <article class="econ-panel">
+      <p class="edition-kicker">Deeper bit</p>
+      <h2 class="econ-pane__title">The city is the signal</h2>
+      <p>The shop watches how much moved, and whether people were mostly buying or selling. Demand-heavy → prices tend to rise. Supply-heavy → prices tend to fall. It’s feedback from how you play — not a random spin.</p>
+    </article>
 
-    <section class="econ-guide-section econ-dashboard-cta" id="view" aria-labelledby="dashboard-heading">
-      <h2 id="dashboard-heading" class="econ-guide-h2">Economy dashboard</h2>
-      <p class="cmd-section-lead" style="margin-top: 0;">
-        Want live strategy data? Open the dashboard for rankings, demand/supply signals, and the full sortable market table.
-      </p>
-      <p>
-        <a class="btn btn-primary" href="economy-dashboard.html">Open economy dashboard</a>
-      </p>
-    </section>
+    <article class="econ-cta" id="view">
+      <p class="edition-kicker">Live numbers</p>
+      <h2 class="econ-pane__title">See the market</h2>
+      <p>Rankings, demand and supply, and a full table you can sort.</p>
+      <a class="btn btn-hero" href="economy-dashboard.html">Open dashboard</a>
+    </article>
 
-    <p class="cmd-footnote">
-      Back to <a href="index.html#economy">economy overview</a> on the home page, or see <a href="commands.html">commands</a> for balances, shop, and auctions.
+    <p class="econ-close">
+      Need the commands? See <a class="domain-link" href="commands.html">commands</a>.
+      Ready to play? <a class="domain-link" href="index.html#join">Pick your door</a>.
     </p>
   </main>
 
   <footer class="site-footer">
-    <p><strong>Endcity Survival</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
+    <p><strong>Endcity</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="index.html">Home</a> · <a href="/status">Status</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
     <p class="footer-small">Not affiliated with Mojang or Microsoft. Minecraft is a trademark of Mojang Synergies AB.</p>
   </footer>
 
