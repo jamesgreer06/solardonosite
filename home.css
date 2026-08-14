@@ -457,10 +457,10 @@
 .page-home .join-address code {
   display: block;
   padding: 0.55rem 0.7rem;
-  font-family: var(--font-mc);
-  font-size: 1.12rem;
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
   text-align: center;
   color: #f4f0fa;
   border-radius: 0;
