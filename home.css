@@ -202,9 +202,31 @@
 .mc-title .hero-deck {
   margin: 0.55rem auto 0;
   max-width: 36rem;
-  font-size: 1.08rem;
-  line-height: 1.6;
+  font-size: 1.12rem;
+  line-height: 1.55;
   color: var(--text);
+}
+
+.play-now {
+  position: relative;
+  z-index: 1;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0.25rem 0 0;
+}
+
+.play-now__title {
+  font-family: var(--font-mc);
+  font-size: clamp(1.25rem, 3vw, 1.55rem);
+  text-align: center;
+  margin: 0 0 0.3rem;
+}
+
+.play-now__lead {
+  text-align: center;
+  margin: 0 0 1rem;
+  font-size: 1.02rem;
+  color: var(--text-muted);
 }
 
 .mc-title .hero-actions.hero-actions--primary {
@@ -356,8 +378,8 @@
 .page-home .dispatch-card__body p,
 .page-home .rules-list,
 .page-home .join-tips {
-  font-size: 1.05rem;
-  line-height: 1.65;
+  font-size: 1.02rem;
+  line-height: 1.55;
 }
 
 .page-home .hero-highlights {
@@ -461,7 +483,7 @@
 }
 
 .edition-card {
-  padding: 1.35rem 1.2rem 1.25rem;
+  padding: 1rem 1.05rem 1rem;
 }
 
 .edition-card--java {
@@ -491,8 +513,8 @@
 }
 
 .edition-card__title {
-  margin: 0 0 0.65rem;
-  font-size: 1.35rem;
+  margin: 0 0 0.45rem;
+  font-size: 1.15rem;
   color: var(--text);
 }
 
@@ -536,12 +558,67 @@
 }
 
 .edition-together {
-  margin: 1.2rem 0 0;
+  margin: 0.9rem 0 0;
   text-align: center;
-  font-size: 1.08rem;
-  line-height: 1.55;
-  color: var(--text);
-  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.page-home .section {
+  padding: 1.6rem var(--pad-x);
+}
+
+.page-home .section-title {
+  font-size: clamp(1.3rem, 3vw, 1.65rem);
+  margin-bottom: 0.45rem;
+}
+
+.page-home .section-intro {
+  font-size: 1.02rem;
+  margin-bottom: 1rem;
+  max-width: 36rem;
+}
+
+.page-home .muted {
+  font-size: 0.98rem;
+}
+
+.rules-more {
+  margin: 1rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.section-inner--fund {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 860px) {
+  .section-inner--fund {
+    grid-template-columns: minmax(0, 1.1fr) minmax(260px, 340px);
+    align-items: start;
+    gap: 1.75rem;
+  }
+}
+
+.page-home .econ-grid.econ-grid--simple {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 700px) {
+  .page-home .econ-grid.econ-grid--simple {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.page-home .about-card-text,
+.page-home .econ-card p {
+  font-size: 0.98rem;
+  line-height: 1.5;
 }
 
 @media (min-width: 640px) {
