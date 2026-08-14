@@ -1,5 +1,5 @@
 /**
- * Homepage extras: copy-to-join chips and the manual Dispatch blog.
+ * Homepage extras: copy-to-join buttons and the manual Dispatch blog.
  * Edit posts in data/blog-posts.json (newest first).
  */
 (function () {
@@ -16,7 +16,7 @@
     if (!btn.getAttribute("data-original-label")) {
       btn.setAttribute("data-original-label", original);
     }
-    btn.textContent = ok ? "Copied" : "Copy failed";
+    btn.textContent = ok ? "Copied — now join" : "Copy failed";
     btn.classList.toggle("is-copied", ok);
     window.setTimeout(function () {
       btn.textContent = btn.getAttribute("data-original-label");
@@ -122,9 +122,9 @@
     if (!posts.length) {
       var emptyInvite = discordHref();
       root.innerHTML =
-        '<p class="muted">No city notes on the board yet. Discord is already ahead — <a class="domain-link" data-discord-invite href="' +
+        '<p class="muted">No notes on the board yet. The conversation is already happening on <a class="domain-link" data-discord-invite href="' +
         escapeHtml(emptyInvite) +
-        '" target="_blank" rel="noopener noreferrer">join the conversation</a>.</p>';
+        '" target="_blank" rel="noopener noreferrer">Discord</a> — come be in it.</p>';
       return;
     }
 
@@ -167,7 +167,7 @@
           paragraphs(post.body) +
           '<p class="dispatch-card__cta"><a class="domain-link" href="' +
           escapeHtml(invite) +
-          '" data-discord-invite target="_blank" rel="noopener noreferrer">Talk about it on Discord</a></p>' +
+          '" data-discord-invite target="_blank" rel="noopener noreferrer">Come talk on Discord</a></p>' +
           "</div>" +
           "</article>"
         );
@@ -184,6 +184,18 @@
       var body = card && card.querySelector(".dispatch-card__body");
       if (!card || !body) return;
       var open = !card.classList.contains("is-open");
+      if (open) {
+        var others = list.querySelectorAll(".dispatch-card.is-open");
+        for (var i = 0; i < others.length; i++) {
+          var other = others[i];
+          if (other === card) continue;
+          other.classList.remove("is-open");
+          var otherBody = other.querySelector(".dispatch-card__body");
+          var otherToggle = other.querySelector("[data-dispatch-toggle]");
+          if (otherBody) otherBody.hidden = true;
+          if (otherToggle) otherToggle.setAttribute("aria-expanded", "false");
+        }
+      }
       card.classList.toggle("is-open", open);
       body.hidden = !open;
       toggle.setAttribute("aria-expanded", open ? "true" : "false");

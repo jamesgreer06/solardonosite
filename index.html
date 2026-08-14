@@ -3,8 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Endcity Survival — Java vs Bedrock on one Minecraft world. Fair play. Come join at endcity.net." />
-  <meta name="theme-color" content="#0a0a0c" />
+  <meta name="description" content="Endcity Survival — Java vs Bedrock on one Minecraft world. Come join at endcity.net." />
+  <meta name="theme-color" content="#241e32" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="canonical" href="https://endcity.net/" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://endcity.net/" />
+  <meta property="og:title" content="Endcity — Java vs Bedrock" />
+  <meta property="og:description" content="Java vs Bedrock on one Minecraft world. Come join at endcity.net." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Endcity — Java vs Bedrock" />
+  <meta name="twitter:description" content="Java vs Bedrock on one Minecraft world. Come join at endcity.net." />
   <title>Endcity — Java vs Bedrock</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,6 +24,7 @@
   <link rel="stylesheet" href="home.css" />
 </head>
 <body class="page-home">
+  <a class="skip-link" href="#top">Skip to content</a>
   <div class="noise" aria-hidden="true"></div>
   <div class="void-stars" aria-hidden="true"></div>
   <header class="site-header">
@@ -22,7 +34,6 @@
       <a href="#dispatch">News</a>
       <a href="#rules">Rules</a>
       <a href="#economy">Shop</a>
-      <a href="#donate">Donate</a>
       <a class="nav-cta" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
     </nav>
     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-panel" aria-label="Open menu">
@@ -35,7 +46,6 @@
       <a href="#dispatch">News</a>
       <a href="#rules">Rules</a>
       <a href="#economy">Shop</a>
-      <a href="#donate">Donate</a>
       <a href="commands.html">Commands</a>
       <a href="/status">Status</a>
       <a class="nav-cta nav-cta--panel" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
@@ -45,7 +55,7 @@
   <main id="top">
     <section class="hero-section end-hero" aria-labelledby="intro-heading">
       <div class="end-banner" aria-hidden="true">
-        <svg class="end-banner-art" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+        <svg class="end-banner-art" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet" focusable="false">
           <g fill="#cbb892">
             <rect x="8" y="70" width="56" height="8"/>
             <rect x="108" y="72" width="96" height="8"/>
@@ -111,25 +121,32 @@
           <span class="hero-playercount__suffix">playing now</span>
           <a class="domain-link hero-playercount__link" href="/status">See who’s on</a>
         </p>
-        <p class="hero-deck">A survival world for Java <em>and</em> Bedrock. Same builds. Same chat. Same city.</p>
+        <p class="hero-deck">Java and Bedrock. Same builds. Same chat. Same city. Come take a street.</p>
         <div class="hero-actions hero-actions--primary">
           <a class="btn btn-hero" href="#join-java">Play Java</a>
           <a class="btn btn-hero btn-hero--bedrock" href="#join-bedrock">Play Bedrock</a>
-          <a class="btn btn-hero" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Open Discord</a>
         </div>
+        <p class="hero-discord">
+          <a class="hero-discord__btn" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Meet everyone</a>
+        </p>
       </div>
     </section>
 
     <section id="join" class="section section-join play-now" aria-labelledby="join-heading">
       <div class="section-inner">
-        <h2 id="join-heading" class="play-now__title">Pick your door. Jump in.</h2>
-        <p class="play-now__lead">Two teams. One world. Copy your door, then come find us in-game.</p>
+        <p class="edition-kicker">How to play</p>
+        <h2 id="join-heading" class="section-title play-now__title">Pick your door</h2>
+        <p class="play-now__lead">Java or Bedrock — you’ll land in the same city.</p>
 
         <div class="edition-arena">
           <article class="edition-card edition-card--java" id="join-java">
             <p class="edition-card__side">Team Java</p>
-            <h3 class="edition-card__title">I play on a computer</h3>
-            <p class="edition-card__text">Use version <strong>1.21.11</strong> or newer. Open Multiplayer, add a server, and paste this:</p>
+            <h3 class="edition-card__title">Computer</h3>
+            <ol class="join-steps">
+              <li>Use version <strong>1.21.11</strong> or newer</li>
+              <li>Open Multiplayer → Add server</li>
+              <li>Paste this address</li>
+            </ol>
             <p class="join-address" translate="no"><code>endcity.net</code></p>
             <button type="button" class="btn btn-hero copy-btn" data-copy="endcity.net" data-copy-label="Java address" aria-label="Copy Java address">Copy Java address</button>
           </article>
@@ -142,176 +159,119 @@
 
           <article class="edition-card edition-card--bedrock" id="join-bedrock">
             <p class="edition-card__side">Team Bedrock</p>
-            <h3 class="edition-card__title">I play on phone or console</h3>
-            <p class="edition-card__text">Open the <strong>Social</strong> tab. Add this friend, then join their game:</p>
+            <h3 class="edition-card__title">Phone or console</h3>
+            <ol class="join-steps">
+              <li>Open the <strong>Social</strong> tab</li>
+              <li>Add this friend</li>
+              <li>Join their game</li>
+            </ol>
             <p class="join-address" translate="no"><code>joinendcity</code></p>
             <button type="button" class="btn btn-hero btn-hero--bedrock copy-btn" data-copy="joinendcity" data-copy-label="Bedrock account" aria-label="Copy Bedrock account name">Copy Bedrock name</button>
           </article>
         </div>
 
-        <p class="edition-together">Stuck? Ask on <a class="domain-link" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a> — say Java or Bedrock, and what you see on the screen.</p>
-      </div>
-    </section>
-
-    <section id="about" class="section section-about">
-      <div class="section-inner">
-        <p class="edition-kicker">Why it feels good</p>
-        <h2 class="section-title">Fair. Fun. Together.</h2>
-        <div class="about-grid">
-          <article class="about-card">
-            <h3 class="about-card-title">One city</h3>
-            <p class="about-card-text">Java and Bedrock stand in the same world. You can trade, build, and chat with anyone.</p>
-          </article>
-          <article class="about-card">
-            <h3 class="about-card-title">No pay-to-win</h3>
-            <p class="about-card-text">Nobody buys extra power. Donations only keep the server online.</p>
-          </article>
-          <article class="about-card">
-            <h3 class="about-card-title">Friends on Discord</h3>
-            <p class="about-card-text">That’s where people say “come see this” and “who’s on?” The website is just the front door.</p>
-          </article>
-        </div>
+        <p class="edition-together">Can’t get in? We’ll help on <a class="domain-link" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>. Say Java or Bedrock, and what you see.</p>
       </div>
     </section>
 
     <!-- Dispatch / manual blog: edit data/blog-posts.json (newest first), then deploy on Cloudflare Pages. -->
-    <section id="dispatch" class="section section-dispatch" aria-labelledby="dispatch-heading">
+    <section id="dispatch" class="section section-board" aria-labelledby="dispatch-heading">
       <div class="section-inner">
-        <p class="edition-kicker">What’s new</p>
-        <h2 id="dispatch-heading" class="section-title">News</h2>
-        <p class="section-intro">Tiny notes from the city. The longer chats live on Discord.</p>
-        <div class="dispatch-list" id="dispatch-list">
-          <p class="dispatch-fallback muted">Loading city notes…</p>
+        <div class="city-board">
+          <div class="city-board__news">
+            <p class="edition-kicker">What’s happening</p>
+            <h2 id="dispatch-heading" class="section-title">From the city</h2>
+            <p class="section-intro">Little notes from people already inside. Then go say hi.</p>
+            <div class="dispatch-list" id="dispatch-list">
+              <p class="dispatch-fallback muted">Loading city notes…</p>
+            </div>
+          </div>
+          <aside class="city-board__hang" id="community" aria-labelledby="community-heading">
+            <p class="edition-kicker">Your people</p>
+            <h2 id="community-heading" class="city-pane__title">Come hang out</h2>
+            <p class="city-board__hang-lead">This is where the city talks — screenshots, trades, and who’s on. That’s how you find your group.</p>
+            <a class="btn btn-hero btn-community" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Meet everyone</a>
+          </aside>
         </div>
-        <p class="dispatch-discord">
-          Want the next note first?
-          <a class="btn btn-primary btn-community" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Open Discord</a>
+      </div>
+    </section>
+
+    <section id="about" class="section section-city" aria-labelledby="city-heading">
+      <div class="section-inner">
+        <p class="edition-kicker">Once you’re in</p>
+        <h2 id="city-heading" class="section-title">What it’s like here</h2>
+
+        <ul class="city-motto">
+          <li>
+            <strong>One city</strong>
+            <span>Java and Bedrock stand in the same world. Trade, build, and chat with anyone.</span>
+          </li>
+          <li>
+            <strong>Java vs Bedrock</strong>
+            <span>Pick a team for fun. You still share the same streets.</span>
+          </li>
+          <li>
+            <strong>Your people</strong>
+            <span>Someone’s always building, trading, or asking who’s on. You won’t play alone.</span>
+          </li>
+        </ul>
+
+        <div class="city-split">
+          <article class="city-sign" id="rules">
+            <p class="edition-kicker">Keep it kind</p>
+            <h3 class="city-pane__title">Three rules</h3>
+            <ol class="city-sign__list">
+              <li>
+                <span class="city-sign__n" aria-hidden="true">1</span>
+                <span><strong>No cheating.</strong> No x-ray, fly hacks, or bots that play for you.</span>
+              </li>
+              <li>
+                <span class="city-sign__n" aria-hidden="true">2</span>
+                <span><strong>No unfair tricks.</strong> If it gives you a secret edge, ask first.</span>
+              </li>
+              <li>
+                <span class="city-sign__n" aria-hidden="true">3</span>
+                <span><strong>Be kind.</strong> No bullying or mean spam in chat.</span>
+              </li>
+            </ol>
+            <p class="city-pane__foot">Some computer mods are not allowed, so phone and console players stay even. See the <a class="domain-link" href="mods.html">mod list</a>.</p>
+          </article>
+
+          <article class="city-chest" id="economy">
+            <p class="edition-kicker">In-game money</p>
+            <h3 class="city-pane__title">The shop</h3>
+            <p class="city-chest__lead">Earn coins by playing — farming, selling, trading. Java and Bedrock share the same wallet.</p>
+            <ul class="city-hotbar">
+              <li>
+                <span class="city-slot city-slot--trade" aria-hidden="true"></span>
+                <strong>Trade</strong>
+                <span>Pay friends. Check your coins.</span>
+              </li>
+              <li>
+                <span class="city-slot city-slot--shop" aria-hidden="true"></span>
+                <strong>Buy &amp; sell</strong>
+                <span>Prices move. Too much cobble? It pays less.</span>
+              </li>
+              <li>
+                <span class="city-slot city-slot--auction" aria-hidden="true"></span>
+                <strong>Auctions</strong>
+                <span>Put items up. Other players bid.</span>
+              </li>
+            </ul>
+            <p class="city-pane__foot">
+              <a class="domain-link" href="economy.html">How prices move</a>
+              <span aria-hidden="true"> · </span>
+              <a class="domain-link" href="commands.html">Commands</a>
+            </p>
+          </article>
+        </div>
+
+        <p class="city-close">
+          Your street is waiting.
+          <a class="domain-link" href="#join">Pick your door</a>
+          <span aria-hidden="true"> · </span>
+          <a class="domain-link" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Meet everyone</a>
         </p>
-      </div>
-    </section>
-
-    <section id="rules" class="section section-rules">
-      <div class="section-inner narrow">
-        <p class="edition-kicker">Keep it kind</p>
-        <h2 class="section-title">Rules</h2>
-        <p class="muted">Three easy rules. Staff help if something goes wrong.</p>
-        <ol class="rules-list">
-          <li><strong>No cheating</strong> — no x-ray, fly hacks, or bots that play for you.</li>
-          <li><strong>No unfair tricks</strong> — if it gives you a secret edge, ask first.</li>
-          <li><strong>Be kind</strong> — no bullying, hate, or mean spam in chat.</li>
-        </ol>
-        <p class="rules-more">Some computer mods are not allowed, so phone and console players stay even. See the <a class="domain-link" href="mods.html">mod list</a> or ask on Discord.</p>
-      </div>
-    </section>
-
-    <section id="economy" class="section section-economy">
-      <div class="section-inner">
-        <p class="edition-kicker">In-game money</p>
-        <h2 class="section-title">The shop</h2>
-        <p class="section-intro">You earn coins by playing — farming, selling, trading. You cannot buy coins with real money. Java and Bedrock share the same wallet.</p>
-        <div class="econ-stack">
-          <div class="econ-grid econ-grid--simple">
-            <article class="econ-card">
-              <h3>Trade</h3>
-              <p>Pay friends. Check your coins. That’s it.</p>
-            </article>
-            <article class="econ-card">
-              <h3>Buy &amp; sell</h3>
-              <p>The shop prices move. If lots of people sell cobble, cobble pays less.</p>
-            </article>
-            <article class="econ-card">
-              <h3>Auctions</h3>
-              <p>Put items up. Other players bid. Fun for rare stuff.</p>
-            </article>
-          </div>
-          <footer class="econ-section-footer">
-            <a class="domain-link" href="economy.html">How prices move</a>
-            <span class="econ-section-footer__sep" aria-hidden="true">·</span>
-            <a class="domain-link" href="commands.html">Commands</a>
-          </footer>
-        </div>
-      </div>
-    </section>
-
-    <section id="donate" class="section section-fund">
-      <div class="section-inner section-inner--fund">
-        <div class="fund-copy">
-          <p class="edition-kicker">Keep the lights on</p>
-          <h2 class="section-title">The city costs real money</h2>
-          <p class="section-intro">Hosting is about <strong>$50–$60 a month</strong>. Gifts go to the bill — never to ranks or crates. Extra money rolls to next month.</p>
-          <div class="donor-strip-wrap">
-            <h3 class="donor-strip-title">Thank you</h3>
-            <div class="donor-strip" role="region" aria-label="Recent supporters" id="donor-strip-region">
-              <div class="donor-strip__track" id="donor-strip-track"></div>
-            </div>
-            <p class="donor-strip-empty" id="donor-strip-empty" hidden>
-              No names yet — thank you for helping keep Endcity online.
-            </p>
-          </div>
-        </div>
-
-        <div class="donate-card donate-card--sidebar fund-card">
-          <div class="fund-card__head">
-            <h2 id="donate-heading" class="fund-card__title">This month</h2>
-            <p class="fund-card__deck">Community-funded hosting.</p>
-          </div>
-          <div class="fund-card__panel">
-            <p class="fund-card__period" id="goal-month">—</p>
-            <p class="fund-card__bill" id="bill-due-line"></p>
-            <p class="fund-card__billing-note" id="billing-note" hidden></p>
-            <div class="fund-card__grid">
-              <div class="fund-card__col">
-                <p class="fund-card__kicker">
-                  <span class="fund-card__badge">Goal</span>
-                  <span class="fund-card__kicker-text">Monthly target</span>
-                </p>
-                <p class="fund-card__figure" id="goal-amount">$0.00</p>
-              </div>
-              <div class="fund-card__col fund-card__col--split">
-                <p class="fund-card__kicker">
-                  <span class="fund-card__badge">Progress</span>
-                  <span class="fund-card__kicker-text">Raised vs goal</span>
-                </p>
-                <p class="fund-card__figure fund-card__figure--progress" id="fund-raised-summary">—</p>
-              </div>
-            </div>
-            <div
-              class="progress-wrap progress-wrap--sidebar progress-wrap--fund"
-              role="progressbar"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              aria-valuenow="0"
-              aria-labelledby="goal-progress-label"
-              id="goal-progressbar"
-            >
-              <div class="progress-fill" id="progress-fill"></div>
-              <span class="progress-label sr-only" id="goal-progress-label">$0.00 toward goal</span>
-            </div>
-            <p class="fund-card__status" id="goal-status"></p>
-            <p class="fund-card__rollover goal-rollover" id="goal-rollover" hidden></p>
-          </div>
-          <div class="fund-card__footer">
-            <p class="fund-card__hint donate-instructions donate-instructions--compact">
-              To help, message us on <a class="domain-link" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a> with your <strong>Minecraft name</strong>.
-            </p>
-            <p class="fund-card__alts donate-alt-payments donate-alt-payments--compact" id="donate-alt-payments"></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="community" class="section section-community" aria-labelledby="community-heading">
-      <div class="section-inner section-inner--community">
-        <div class="community-copy">
-          <p class="edition-kicker">Don’t miss the city</p>
-          <h2 id="community-heading" class="section-title">Come hang out</h2>
-          <p class="section-intro community-lead">
-            Joining the world is step one. Discord is where people call you over to a build, a shop deal, or a joke about Java vs Bedrock.
-          </p>
-        </div>
-        <div class="community-actions">
-          <a class="btn btn-primary btn-community" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Join Discord</a>
-        </div>
       </div>
     </section>
   </main>
