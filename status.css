@@ -69,13 +69,17 @@
 
 .page-status .status-value,
 .page-status .status-peak-value {
-  font-family: var(--font-mc);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: -0.03em;
   color: #f4f0fa;
-  text-shadow: 2px 2px 0 #1a1520;
+  text-shadow: 1px 1px 0 #1a1520;
 }
 
 .page-status .status-value {
-  font-size: clamp(2rem, 6vw, 2.6rem);
+  font-size: clamp(2.15rem, 6vw, 2.85rem);
+  line-height: 1.05;
   margin-bottom: 0.35rem;
 }
 
@@ -84,10 +88,10 @@
 }
 
 .page-status .status-state {
-  font-family: var(--font-mc);
-  font-size: 1.05rem;
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  font-weight: 700;
   color: #7dff9a;
-  text-shadow: 1px 1px 0 #1a1520;
 }
 
 .page-status .status-state.is-offline {
@@ -109,7 +113,8 @@
 }
 
 .page-status .status-peak-value {
-  font-size: 1.65rem;
+  font-size: 1.85rem;
+  line-height: 1.1;
 }
 
 .page-status .status-quick-actions {
@@ -135,7 +140,10 @@
 }
 
 .page-status .status-quick-actions__hint span {
-  font-family: var(--font-mc);
+  font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .page-status .status-panel {
@@ -149,6 +157,12 @@
   text-transform: none;
   color: var(--text);
   margin-bottom: 0.7rem;
+}
+
+.page-status #pc-graph-heading {
+  font-family: var(--font-sans);
+  letter-spacing: -0.02em;
+  font-weight: 650;
 }
 
 .page-status .status-range {
@@ -166,11 +180,12 @@
   border-right: 3px solid #000;
   background: #2a2436;
   color: var(--text-muted);
-  font-family: var(--font-mc);
+  font-family: var(--font-sans);
   font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  padding: 0.4rem 0.75rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  padding: 0.4rem 0.8rem;
   min-height: 2.2rem;
 }
 
@@ -192,6 +207,7 @@
 
 .page-status .status-graph-wrap {
   padding: 0.55rem;
+  border: 3px solid #000;
   background: #0c0a10;
   box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.55);
 }
@@ -233,7 +249,8 @@
 }
 
 .page-status .status-tooltip__count {
-  font-family: var(--font-mc);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
 }
 
 .page-status .status-player-list {
@@ -248,9 +265,10 @@
   box-shadow:
     inset 2px 2px 0 rgba(255, 255, 255, 0.1),
     inset -2px -2px 0 rgba(0, 0, 0, 0.4);
-  font-family: var(--font-mc);
-  font-size: 0.85rem;
-  padding: 0.4rem 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  font-weight: 600;
+  padding: 0.42rem 0.55rem;
 }
 
 .page-status .status-player-list__more {
