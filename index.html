@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Endcity Survival — community Minecraft SMP at endcity.net. Java &amp; Bedrock. Donations, economy, fair play." />
+  <meta name="description" content="Endcity Survival — Java vs Bedrock on one Minecraft SMP. Fair play, player economy, community-funded. Join at endcity.net." />
   <meta name="theme-color" content="#0a0a0c" />
-  <title>Endcity Survival — endcity.net</title>
+  <title>Endcity Survival — Java vs Bedrock</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="page-home">
   <div class="noise" aria-hidden="true"></div>
+  <div class="void-stars" aria-hidden="true"></div>
   <header class="site-header">
-    <a class="logo" href="#top">Endcity<span> Survival</span></a>
+    <a class="logo" href="#top"><span class="logo-mark" aria-hidden="true"></span>Endcity<span> Survival</span></a>
     <nav class="nav" aria-label="Primary">
       <a href="#join">Join</a>
+      <a href="#dispatch">Dispatch</a>
       <a href="#about">About</a>
       <a href="#rules">Rules</a>
       <a href="#economy">Economy</a>
@@ -32,6 +34,7 @@
   <div id="nav-panel" class="nav-panel" hidden>
     <div class="nav-panel-group">
       <a href="#join">Join</a>
+      <a href="#dispatch">Dispatch</a>
       <a href="#about">About</a>
       <a href="#rules">Rules</a>
       <a href="#economy">Economy</a>
@@ -43,60 +46,106 @@
   </div>
 
   <main id="top">
-    <section class="hero-section" aria-labelledby="intro-heading">
+    <section class="hero-section end-hero" aria-labelledby="intro-heading">
+      <div class="end-banner" aria-hidden="true">
+        <svg class="end-banner-art" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+          <g fill="#cbb892">
+            <rect x="6" y="34" width="28" height="4"/>
+            <rect x="54" y="35" width="46" height="4"/>
+            <rect x="118" y="34" width="26" height="4"/>
+          </g>
+          <g fill="#6b5d8a">
+            <rect x="10" y="18" width="6" height="16"/>
+            <rect x="58" y="14" width="6" height="21"/>
+            <rect x="88" y="20" width="6" height="15"/>
+            <rect x="122" y="16" width="6" height="18"/>
+          </g>
+          <g fill="#8a74b0">
+            <rect x="16" y="10" width="8" height="24"/>
+            <rect x="66" y="6" width="10" height="29"/>
+            <rect x="80" y="12" width="8" height="23"/>
+            <rect x="128" y="8" width="8" height="26"/>
+          </g>
+          <g fill="#9d8bc9">
+            <rect x="18" y="10" width="4" height="10"/>
+            <rect x="70" y="6" width="4" height="12"/>
+            <rect x="82" y="12" width="4" height="8"/>
+            <rect x="130" y="8" width="4" height="10"/>
+          </g>
+          <g fill="#f3e9ff">
+            <rect x="19" y="2" width="2" height="8"/>
+            <rect x="71" y="0" width="2" height="6"/>
+            <rect x="83" y="4" width="2" height="8"/>
+            <rect x="131" y="1" width="2" height="7"/>
+          </g>
+          <g fill="#c77db5">
+            <rect x="36" y="24" width="2" height="2"/>
+            <rect x="48" y="20" width="2" height="2"/>
+            <rect x="108" y="22" width="2" height="2"/>
+            <rect x="148" y="18" width="2" height="2"/>
+          </g>
+          <g fill="#5a3d6e">
+            <rect x="36" y="26" width="2" height="8"/>
+            <rect x="48" y="22" width="2" height="13"/>
+            <rect x="108" y="24" width="2" height="11"/>
+            <rect x="148" y="20" width="2" height="14"/>
+          </g>
+        </svg>
+      </div>
+
       <div class="hero-shell">
         <div class="hero-primary">
           <header class="hero-brand">
-            <p class="intro-eyebrow">endcity.net · Java &amp; Bedrock</p>
+            <p class="intro-eyebrow">endcity.net · The End · Java vs Bedrock</p>
             <p class="hero-playercount" id="hero-playercount" aria-live="polite">
               <span class="hero-playercount__dot" id="hero-playercount-dot" aria-hidden="true"></span>
               <span class="hero-playercount__nums">
                 <span id="hero-playercount-online">—</span><span class="hero-playercount__sep" aria-hidden="true"> / </span><span id="hero-playercount-max">—</span>
               </span>
-              <span class="hero-playercount__suffix">players online</span>
+              <span class="hero-playercount__suffix">in the city right now</span>
               <a class="domain-link hero-playercount__link" href="/status">Live graph</a>
             </p>
-            <h1 id="intro-heading" class="intro-title">Play together. <span class="intro-accent">Keep it fair.</span></h1>
-            <p class="hero-deck">Survival multiplayer with a player-run economy and a few conveniences—shop, auctions, homes—on a world we fund together. The core loop stays close to <strong>vanilla</strong>: we’re not chasing a modpack or minigame-server vibe.</p>
+            <h1 id="intro-heading" class="intro-title">Java vs Bedrock. <span class="intro-accent">One End City.</span></h1>
+            <p class="hero-deck">The city is already running. Java and Bedrock share the same builds, the same shop, and the same chat — on a survival world we keep online together.</p>
           </header>
 
           <div class="hero-about">
             <p>
-              <strong>Endcity Survival</strong> is a community server: hosting is paid month to month with help from players who want the server to stay up.
-              There’s no pay-to-win—donations cover the bill, not perks.
+              <strong>Endcity Survival</strong> is a fair community SMP. Hosting is paid month to month with help from players who want the world to stay up.
+              Donations cover the bill — never ranks, crates, or pay-to-win.
             </p>
             <p>
-              Fair play matters—see <a class="domain-link" href="#rules">Rules</a> for how we handle cheats, mods, and community conduct. Everything else is normal survival: build, trade, explore.
+              Pick Java or Bedrock the way you pick a team color. Then you play in the <em>same</em> city. Screenshots, trades, and “come see this build” live on Discord — that is where the city actually talks.
             </p>
             <ul class="hero-highlights">
-              <li>Java <strong>1.21.11</strong>–latest and Bedrock via Social tab account <strong class="join-gamertag" translate="no">joinendcity</strong></li>
-              <li>Economy, travel, and chat helpers sit on top of normal survival—not a reinvented game mode</li>
-              <li>Same address for everyone: <code class="hero-inline-code" translate="no">endcity.net</code></li>
+              <li><strong>Java</strong> 1.21.11–latest at <code class="hero-inline-code" translate="no">endcity.net</code></li>
+              <li><strong>Bedrock</strong> (phone, console, Windows): add account <strong class="join-gamertag" translate="no">joinendcity</strong> in the Social tab</li>
+              <li>Vanilla-first survival with a player economy — close to the real game, not a minigame lobby</li>
             </ul>
           </div>
 
           <div class="donor-strip-wrap">
-            <h2 class="donor-strip-title">Supporters</h2>
+            <h2 class="donor-strip-title">City supporters</h2>
             <div class="donor-strip" role="region" aria-label="Recent supporters" id="donor-strip-region">
               <div class="donor-strip__track" id="donor-strip-track"></div>
             </div>
             <p class="donor-strip-empty" id="donor-strip-empty" hidden>
-              No supporters listed yet—thank you for helping keep Endcity online.
+              No supporters listed yet — thank you for helping keep Endcity online.
             </p>
           </div>
 
           <div class="hero-actions hero-actions--primary">
-            <a class="btn btn-hero" href="#join">How to join</a>
-            <a class="btn btn-hero" href="#about">Community effort</a>
-            <a class="btn btn-hero" href="#rules">Rules</a>
+            <a class="btn btn-hero" href="#join">Choose your edition</a>
+            <a class="btn btn-hero" href="#dispatch">City dispatch</a>
+            <a class="btn btn-hero" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Enter Discord</a>
           </div>
         </div>
 
         <aside class="hero-aside" aria-label="Join and funding goal">
           <div class="aside-panel aside-panel--join join-card">
             <div class="join-card__head">
-              <h2 class="join-card__title">Join the server</h2>
-              <p class="join-card__deck">Same survival world — pick your edition.</p>
+              <h2 class="join-card__title">Two doors. One world.</h2>
+              <p class="join-card__deck">Same survival city — pick the edition you already play.</p>
             </div>
             <div class="join-card__grid" role="group" aria-label="Java and Bedrock connection details">
               <div class="join-card__col">
@@ -105,25 +154,27 @@
                   <span class="join-card__kicker-text">Server address</span>
                 </p>
                 <code class="join-card__value join-card__value--address" translate="no">endcity.net</code>
+                <button type="button" class="copy-chip" data-copy="endcity.net" data-copy-label="Java address" aria-label="Copy Java address">Copy address</button>
                 <p class="join-card__note">Versions 1.21.11–latest</p>
               </div>
               <div class="join-card__col join-card__col--bedrock">
                 <p class="join-card__kicker">
-                  <span class="join-card__badge">Bedrock</span>
+                  <span class="join-card__badge join-card__badge--bedrock">Bedrock</span>
                   <span class="join-card__kicker-text">Crossplay friend</span>
                 </p>
                 <code class="join-card__value join-card__value--tag" translate="no">joinendcity</code>
+                <button type="button" class="copy-chip" data-copy="joinendcity" data-copy-label="Bedrock account" aria-label="Copy Bedrock account name">Copy name</button>
                 <p class="join-card__note">Social tab → add account → join their game</p>
               </div>
             </div>
-            <a class="join-card__link" href="#join">Versions &amp; troubleshooting</a>
+            <a class="join-card__link" href="#join">Full join steps</a>
           </div>
 
           <section id="donate" class="section-donate aside-fund" aria-labelledby="donate-heading">
             <div class="donate-card donate-card--sidebar fund-card">
               <div class="fund-card__head">
-                <h2 id="donate-heading" class="fund-card__title">Hosting</h2>
-                <p class="fund-card__deck">Community-funded — the server bill, not ranks or crates.</p>
+                <h2 id="donate-heading" class="fund-card__title">Keep the city lit</h2>
+                <p class="fund-card__deck">Community-funded hosting — the server bill, not ranks or crates.</p>
               </div>
 
               <div class="fund-card__panel">
@@ -167,7 +218,7 @@
 
               <div class="fund-card__footer">
                 <p class="fund-card__hint donate-instructions donate-instructions--compact">
-                  To donate, contact us on Discord and include your <strong>Minecraft username</strong>.
+                  To donate, message us on <a class="domain-link" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a> and include your <strong>Minecraft username</strong>.
                 </p>
                 <p class="fund-card__alts donate-alt-payments donate-alt-payments--compact" id="donate-alt-payments"></p>
               </div>
@@ -177,58 +228,95 @@
       </div>
     </section>
 
-    <section id="join" class="section section-join">
+    <section id="join" class="section section-join edition-section">
       <div class="section-inner">
-        <h2 class="section-title">How to join</h2>
+        <p class="edition-kicker">Choose a door</p>
+        <h2 class="section-title">Java vs Bedrock</h2>
         <p class="section-intro join-lead">
-          One world for Java and Bedrock—same economy, same chat. Address for Java: <a class="domain-link" href="https://endcity.net">endcity.net</a>
+          Friendly rivalry. Same End City. Java players often tease Bedrock about pistons and redstone. Bedrock players often tease Java about playing on a computer. Then they trade diamonds in the same shop. Address for Java: <a class="domain-link" href="https://endcity.net">endcity.net</a>
         </p>
-        <div class="join-grid">
-          <article class="join-card">
-            <h3 class="join-card-title">Java Edition</h3>
-            <p class="join-card-text">
-              Use <strong>1.21.11</strong> through <strong>latest</strong>. Add <code class="join-inline-code" translate="no">endcity.net</code> in Multiplayer—no port in the address field for the default.
+
+        <div class="edition-arena">
+          <article class="edition-card edition-card--java">
+            <p class="edition-card__side">Team Java</p>
+            <h3 class="edition-card__title">Java Edition</h3>
+            <p class="edition-card__text">
+              Use <strong>1.21.11</strong> through <strong>latest</strong>. In Multiplayer, add a server and type the address below — no extra port for the default.
             </p>
             <p class="join-address" translate="no"><code>endcity.net</code></p>
+            <button type="button" class="btn btn-ghost copy-btn" data-copy="endcity.net" data-copy-label="Java address" aria-label="Copy Java address">Copy Java address</button>
           </article>
-          <article class="join-card">
-            <h3 class="join-card-title">Bedrock</h3>
-            <p class="join-card-text">
-              In the <strong>Social</strong> tab, add account <strong class="join-gamertag" translate="no">joinendcity</strong> and join their game.
+
+          <div class="edition-vs" aria-hidden="true">
+            <span class="edition-vs__gem"></span>
+            <span class="edition-vs__label">VS</span>
+            <span class="edition-vs__note">same world</span>
+          </div>
+
+          <article class="edition-card edition-card--bedrock">
+            <p class="edition-card__side">Team Bedrock</p>
+            <h3 class="edition-card__title">Bedrock</h3>
+            <p class="edition-card__text">
+              On phone, console, or Windows Bedrock: open the <strong>Social</strong> tab, add account <strong class="join-gamertag" translate="no">joinendcity</strong>, then join their game. You land in the same world as Java.
             </p>
+            <p class="join-address" translate="no"><code>joinendcity</code></p>
+            <button type="button" class="btn btn-ghost copy-btn" data-copy="joinendcity" data-copy-label="Bedrock account" aria-label="Copy Bedrock account name">Copy Bedrock name</button>
           </article>
         </div>
+
+        <p class="edition-together">
+          Neither edition “wins” End City. The city only feels full when both show up.
+        </p>
+
         <div class="join-extra">
           <h3 class="join-extra-title">First time or stuck?</h3>
           <ul class="join-tips">
-            <li><strong>Wrong version:</strong> Java must be in the supported range—older clients won’t connect cleanly.</li>
-            <li><strong>Need help:</strong> Ping staff or players on <a class="domain-link" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a> with your edition (Java or Bedrock) and any error message.</li>
+            <li><strong>Wrong version:</strong> Java must be in the supported range — older clients will not connect cleanly.</li>
+            <li><strong>Need a hand:</strong> Ask on <a class="domain-link" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a> with your edition (Java or Bedrock) and any error message. Someone in the city has almost always seen it before.</li>
           </ul>
         </div>
       </div>
     </section>
 
+    <!-- Dispatch / manual blog: edit data/blog-posts.json (newest first), then deploy on Cloudflare Pages. -->
+    <section id="dispatch" class="section section-dispatch" aria-labelledby="dispatch-heading">
+      <div class="section-inner">
+        <p class="edition-kicker">City paper</p>
+        <h2 id="dispatch-heading" class="section-title">Dispatch</h2>
+        <p class="section-intro">
+          Short notes from End City — the kind you can read in a minute. The longer talks, gatherings, and “you had to be there” bits live on Discord.
+        </p>
+        <div class="dispatch-list" id="dispatch-list">
+          <p class="dispatch-fallback muted">Loading city notes…</p>
+        </div>
+        <p class="dispatch-discord">
+          Want the next note early — or to argue Java vs Bedrock with actual evidence?
+          <a class="btn btn-primary btn-community" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Continue on Discord</a>
+        </p>
+      </div>
+    </section>
+
     <section id="about" class="section section-about">
       <div class="section-inner">
-        <h2 class="section-title">How we run the server</h2>
+        <h2 class="section-title">How we run the city</h2>
         <p class="section-intro">
-          Hosting costs land around <strong>$50 per month</strong>. Donations and the goal bar in the sidebar go straight toward that—<strong>not</strong> ranks, crates, or gameplay boosts. Surplus when we’re ahead <em>carries to the next bill</em> so the math stays transparent.
+          Hosting costs land around <strong>$50–$60 per month</strong>. Donations and the goal bar go straight toward that — <strong>not</strong> ranks, crates, or gameplay boosts. Surplus when we’re ahead <em>carries to the next bill</em> so the math stays easy to follow.
         </p>
         <p class="section-intro section-intro--tight">
-          <strong>Vanilla-first.</strong> Mining, building, and exploring stay the point. Plugins cover economy, crossplay, and quality-of-life (homes, warps, messaging)—enough to trade and travel together, not enough to replace the survival game underneath.
+          <strong>Vanilla-first.</strong> Mining, building, and exploring stay the point. Plugins cover economy, crossplay, and quality-of-life (homes, warps, messaging) — enough to trade and travel together, not enough to replace the survival game underneath.
         </p>
         <div class="about-grid">
           <article class="about-card">
             <h3 class="about-card-title">Funding</h3>
-            <p class="about-card-text">Donations are coordinated on Discord using the contact shown next to the donate card.</p>
+            <p class="about-card-text">Donations are set up on Discord so we can match your Minecraft username to the supporter wall.</p>
           </article>
           <article class="about-card">
             <h3 class="about-card-title">Crossplay</h3>
-            <p class="about-card-text">Bedrock connects through Geyser—you share the same survival world, economy, and warps as Java, not a separate lobby.</p>
+            <p class="about-card-text">Bedrock connects through Geyser — you share the same survival world, economy, and warps as Java, not a separate lobby.</p>
           </article>
           <article class="about-card">
-            <h3 class="about-card-title">News &amp; votes</h3>
-            <p class="about-card-text">Announcements and support live on Discord. Voting links and the in-game Discord invite are there when you need them.</p>
+            <h3 class="about-card-title">The town square</h3>
+            <p class="about-card-text">Announcements, votes, and “is the End open?” live on Discord. If the site is the front door, Discord is the city inside.</p>
           </article>
         </div>
       </div>
@@ -237,15 +325,15 @@
     <section id="rules" class="section section-rules">
       <div class="section-inner narrow">
         <h2 class="section-title">Rules</h2>
-        <p class="muted">Three principles—staff apply them with context, not robot bans.</p>
+        <p class="muted">Three principles — staff apply them with context, not robot bans. Written so kids and grown-ups can both follow them.</p>
         <ol class="rules-list">
-          <li><strong>No hacking or cheating</strong> — including x-ray, fly hacks, auto-clickers meant to bypass human play, or anything that mimics unfair client abilities.</li>
+          <li><strong>No hacking or cheating</strong> — including x-ray, fly hacks, auto-clickers meant to skip human play, or anything that copies unfair client powers.</li>
           <li><strong>No unfair gameplay advantages</strong> — if it gives you an edge others can’t reasonably match, ask staff before using it.</li>
-          <li><strong>Respect the community</strong> — harassment, hate, or sustained toxicity can still get you removed even if it isn’t “technical cheating.”</li>
+          <li><strong>Respect the community</strong> — be kind in chat. Harassment, hate, or sustained meanness can still get you removed even if it isn’t “technical cheating.”</li>
         </ol>
         <div class="rules-extra">
-          <p><strong>Mods &amp; clients:</strong> Quality-of-life (e.g. zoom) is usually fine. Anything that reveals hidden ores, entities, or automates combat/building beyond fair human play is not. See the <a class="domain-link" href="mods.html">prohibited mods list</a> for Java-only mods we ban to keep Bedrock players on fair ground.</p>
-          <p><strong>Enforcement:</strong> Staff may warn, mute, kick, or ban depending on severity and history. If you’re unsure whether something is allowed, ask before you rely on it in a competitive situation.</p>
+          <p><strong>Mods &amp; clients:</strong> Quality-of-life (for example zoom) is usually fine. Anything that reveals hidden ores, entities, or automates combat/building beyond fair human play is not. See the <a class="domain-link" href="mods.html">prohibited mods list</a> for Java-only mods we ban so Bedrock players stay on fair ground.</p>
+          <p><strong>Enforcement:</strong> Staff may warn, mute, kick, or ban depending on how serious it is and whether it has happened before. If you are not sure something is allowed, ask on Discord before you rely on it.</p>
         </div>
       </div>
     </section>
@@ -254,17 +342,17 @@
       <div class="section-inner">
         <h2 class="section-title">Economy</h2>
         <p class="section-intro">
-          Money is earned in-world—farming, selling, player trade—and spent at the server shop or with each other. Nothing here is bought with real money.
+          Money is earned in-world — farming, selling, player trade — and spent at the server shop or with each other. Nothing here is bought with real money. Java and Bedrock use the same wallet.
         </p>
         <div class="econ-stack">
           <div class="econ-grid">
             <article class="econ-card">
               <h3>Balances &amp; trade</h3>
-              <p>Pay players, check your balance, and toggle who can pay you—useful when you want privacy from tips or spam.</p>
+              <p>Pay players, check your balance, and toggle who can pay you — useful when you want privacy from tips or spam.</p>
             </article>
             <article class="econ-card">
               <h3>Shop &amp; selling</h3>
-              <p>Buy from the server shop; sell through the sell GUI or bulk—prices shift over time, not fixed forever.</p>
+              <p>Buy from the server shop; sell through the sell GUI or bulk — prices shift over time, not fixed forever.</p>
             </article>
             <article class="econ-card econ-card--feature">
               <h3>Supply &amp; demand pricing</h3>
@@ -292,25 +380,27 @@
     <section id="community" class="section section-community" aria-labelledby="community-heading">
       <div class="section-inner section-inner--community">
         <div class="community-copy">
-          <h2 id="community-heading" class="section-title">Community</h2>
+          <p class="edition-kicker">The rest of the city</p>
+          <h2 id="community-heading" class="section-title">The rest happens here</h2>
           <p class="section-intro community-lead">
-            Hang out on Discord for patch notes, build screenshots, and voice. In-game help and the rules screen are there when you need a quick reminder.
+            The website tells you the address. Discord is where End City actually happens — who’s online, what’s being built, when the next gathering is, and which edition is winning the joke this week. If you join the world and skip Discord, you will miss the city.
           </p>
         </div>
         <div class="community-actions">
-          <a class="btn btn-primary btn-community" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Join Discord</a>
+          <a class="btn btn-primary btn-community" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Join the city Discord</a>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p><strong>Endcity Survival</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
+    <p><strong>Endcity Survival</strong> · <a href="https://endcity.net">endcity.net</a> · Java vs Bedrock · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
     <p class="footer-small">Not affiliated with Mojang or Microsoft. Minecraft is a trademark of Mojang Synergies AB.</p>
   </footer>
 
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
   <script src="js/hero-playercount.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>

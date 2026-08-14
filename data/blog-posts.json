@@ -1,0 +1,26 @@
+{
+  "howToEdit": "Add a new object at the TOP of posts so it shows first. date is YYYY-MM-DD. side must be java, bedrock, or both. body is plain text; use a blank line between paragraphs. Keep the tone friendly for all ages. End with a reason to open Discord.",
+  "posts": [
+    {
+      "id": "java-vs-bedrock",
+      "date": "2026-08-14",
+      "side": "both",
+      "title": "Java built the towers. Bedrock filled the streets.",
+      "body": "End City is a crossplay survival world. That means a Java player and a Bedrock player can stand on the same purpur stairs and argue about whose piston door is better.\n\nPick a side for fun. Wear it like a team color. Then remember the rule that actually matters: there is only one city, and it feels empty if your friends are still playing somewhere else.\n\nThe live score — screenshots, shop flexes, “come see this build” — is on Discord. The website cannot shout across the void for you."
+    },
+    {
+      "id": "city-is-open",
+      "date": "2026-08-10",
+      "side": "both",
+      "title": "The city is open. The void does not wait.",
+      "body": "endcity.net is a fair Minecraft SMP. No pay-to-win. Hosting is a real monthly bill, and players who can help keep the End rods lit.\n\nIf you have not joined yet: Java types endcity.net. Bedrock adds the account joinendcity in the Social tab. Same world either way.\n\nOnce you are in, the next step is Discord. That is where we post when something is happening — a shop restock, a gathering, a “we need one more person for this farm.” Missing Discord is how people log in to an empty-looking spawn and assume the city is asleep."
+    },
+    {
+      "id": "shop-talk",
+      "date": "2026-08-01",
+      "side": "both",
+      "title": "The shop has opinions. So should you.",
+      "body": "Our economy uses supply and demand. If everyone dumps cobble, cobble pays less. If everyone buys chorus fruit, chorus fruit costs more. That is the game on top of the game.\n\nJava and Bedrock spend the same money. There is no secret edition wallet.\n\nIf you like watching numbers move, the economy pages on this site are the map. If you like talking about them — “don’t sell yet,” “buy this, trust me” — that conversation is Discord, not the loading screen."
+    }
+  ]
+}

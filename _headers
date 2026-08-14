@@ -1,0 +1,4 @@
+# Cloudflare Pages — keep Dispatch posts fresh after each deploy
+/data/blog-posts.json
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Type: application/json; charset=utf-8
