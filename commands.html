@@ -3,24 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Endcity Survival — in-game commands, syntax, and Discord. Java &amp; Bedrock at endcity.net." />
-  <meta name="theme-color" content="#0a0a0c" />
-  <title>Commands &amp; help — Endcity Survival</title>
+  <meta name="description" content="Endcity Survival — in-game commands for Java and Bedrock at endcity.net." />
+  <meta name="theme-color" content="#241e32" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <title>Commands — Endcity</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="home.css" />
+  <link rel="stylesheet" href="commands.css" />
 </head>
-<body>
+<body class="page-commands">
+  <a class="skip-link" href="#top">Skip to content</a>
   <div class="noise" aria-hidden="true"></div>
+  <div class="void-stars" aria-hidden="true"></div>
   <header class="site-header">
-    <a class="logo" href="index.html">Endcity<span> Survival</span></a>
+    <a class="logo" href="index.html"><span class="logo-mark" aria-hidden="true"></span>Endcity</a>
     <nav class="nav" aria-label="Primary">
-      <a href="index.html#join">Join</a>
-      <a href="index.html#about">About</a>
+      <a href="index.html#join">Play</a>
       <a href="index.html#rules">Rules</a>
-      <a href="index.html#economy">Economy</a>
-      <a href="commands.html" aria-current="page">Commands</a>
+      <a href="index.html#economy">Shop</a>
       <a href="/status">Status</a>
       <a class="nav-cta" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
     </nav>
@@ -30,31 +34,41 @@
   </header>
   <div id="nav-panel" class="nav-panel" hidden>
     <div class="nav-panel-group">
-      <a href="index.html#join">Join</a>
-      <a href="index.html#about">About</a>
+      <a href="index.html#join">Play</a>
       <a href="index.html#rules">Rules</a>
-      <a href="index.html#economy">Economy</a>
-      <a href="commands.html" aria-current="page">Commands</a>
+      <a href="index.html#economy">Shop</a>
       <a href="/status">Status</a>
+      <a href="commands.html" aria-current="page">Commands</a>
       <a class="nav-cta nav-cta--panel" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
     </div>
   </div>
 
   <main class="page-commands-main" id="top">
-    <p class="intro-eyebrow">In-game</p>
-    <h1 class="intro-title">Commands &amp; help</h1>
+    <p class="edition-kicker">In-game</p>
+    <h1 class="intro-title">Commands</h1>
     <p class="page-commands-lead">
-      Command reference for <strong>endcity.net</strong>. Staff may adjust aliases or permissions over time—use <kbd>/help</kbd> in-game if something differs.
+      Type these in chat. Java and Bedrock use the same list. If a name looks different, try <kbd>/help</kbd> in-game.
     </p>
 
-    <section class="discord-card" id="discord" aria-labelledby="discord-heading">
+    <article class="cmd-discord" id="discord">
+      <p class="edition-kicker">Hang out</p>
       <h2 id="discord-heading">Discord</h2>
-      <p>Announcements, support, and voice with the community. You can also run <kbd>/discord</kbd> in-game to copy the invite.</p>
-      <a id="discord-join-link" class="btn btn-primary" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Join Discord</a>
-    </section>
+      <p>News, help, and voice with everyone. You can also type <kbd>/discord</kbd> in-game to copy the invite.</p>
+      <a id="discord-join-link" class="btn btn-hero" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Join Discord</a>
+    </article>
+
+    <nav class="cmd-jump" aria-label="Jump to section">
+      <a href="#basics-heading">Basics</a>
+      <a href="#huskhomes-heading">Homes</a>
+      <a href="#eco-heading">Shop</a>
+      <a href="#ah-heading">Auctions</a>
+      <a href="#teams-heading">Teams</a>
+      <a href="#bounty-heading">Bounties</a>
+      <a href="#chat-heading">Chat</a>
+    </nav>
 
     <section class="cmd-section" aria-labelledby="basics-heading">
-      <h2 id="basics-heading">The Basics</h2>
+      <h2 id="basics-heading">The basics</h2>
       <div class="cmd-table-wrap">
         <table class="cmd-table">
           <thead>
@@ -70,7 +84,7 @@
             </tr>
             <tr>
               <td><code>/list</code></td>
-              <td>Show who is online right now (player list).</td>
+              <td>Show who is online right now.</td>
             </tr>
             <tr>
               <td><code>/rules</code></td>
@@ -86,7 +100,7 @@
             </tr>
             <tr>
               <td><code>/suicide</code></td>
-              <td>Eliminate your character.</td>
+              <td>Respawn from where you stand.</td>
             </tr>
           </tbody>
         </table>
@@ -158,7 +172,7 @@
     </section>
 
     <section class="cmd-section" aria-labelledby="eco-heading">
-      <h2 id="eco-heading">Economy &amp; shop</h2>
+      <h2 id="eco-heading">Shop &amp; coins</h2>
       <div class="cmd-table-wrap">
         <table class="cmd-table">
           <thead>
@@ -268,7 +282,7 @@
     <section class="cmd-section" aria-labelledby="teams-heading">
       <h2 id="teams-heading">Teams</h2>
       <p class="cmd-section-lead">
-        Use <code>/team</code> to create and manage teams, members, allies, homes, economy, and permissions.
+        Use <code>/team</code> to create and manage teams, members, allies, homes, coins, and permissions.
       </p>
       <div class="cmd-table-wrap">
         <table class="cmd-table">
@@ -420,15 +434,19 @@
       </div>
     </section>
 
+    <p class="cmd-close">
+      Want the shop story? <a class="domain-link" href="economy.html">How prices move</a>.
+      Ready to play? <a class="domain-link" href="index.html#join">Pick your door</a>.
+    </p>
     <p class="cmd-footnote">
-      References:
+      Plugin docs:
       <a href="https://github.com/WiIIiam278/HuskHomes/wiki/Commands" rel="noopener noreferrer">Homes &amp; warps</a>,
       <a href="https://wiki.gpplugins.com/economyshopgui/basics/commands" rel="noopener noreferrer">Shop &amp; sell</a>.
     </p>
   </main>
 
   <footer class="site-footer">
-    <p><strong>Endcity Survival</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="index.html">Home</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
+    <p><strong>Endcity</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="index.html">Home</a> · <a href="/status">Status</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
     <p class="footer-small">Not affiliated with Mojang or Microsoft. Minecraft is a trademark of Mojang Synergies AB.</p>
   </footer>
 

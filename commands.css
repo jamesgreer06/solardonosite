@@ -1,0 +1,238 @@
+/* Commands page — same End City GUI as the homepage. */
+
+.page-commands .page-commands-main {
+  position: relative;
+  z-index: 1;
+  padding-top: 5.5rem;
+  padding-bottom: 2.85rem;
+}
+
+.page-commands .nav a[aria-current="page"] {
+  color: #e8d48b;
+  font-weight: 700;
+}
+
+.page-commands .edition-kicker {
+  font-family: var(--font-mc);
+}
+
+.page-commands .intro-title {
+  font-family: var(--font-mc);
+  font-size: clamp(2rem, 7vw, 3.1rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 0.95;
+  color: #f4f0fa;
+  text-shadow:
+    3px 3px 0 #1a1520,
+    0 0 18px rgba(157, 139, 201, 0.35);
+  margin: 0 0 0.45rem;
+}
+
+.page-commands .page-commands-lead {
+  font-size: 1.02rem;
+  max-width: 36rem;
+  margin-bottom: 1.35rem;
+}
+
+.page-commands .page-commands-lead kbd,
+.page-commands kbd {
+  border-radius: 0;
+  border: 2px solid #000;
+  background: #0c0a10;
+  color: var(--java);
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.08),
+    2px 2px 0 #000;
+}
+
+.page-commands .cmd-discord {
+  border-radius: 0;
+  border: 4px solid #000;
+  background: #1c1828;
+  box-shadow: var(--mc-in), 4px 4px 0 #000;
+  padding: 1rem 1.05rem 1.15rem;
+  margin: 0 0 1.15rem;
+}
+
+.page-commands .cmd-discord h2 {
+  font-family: var(--font-mc);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.55rem;
+  color: var(--text);
+}
+
+.page-commands .cmd-discord p {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.page-commands .cmd-discord .btn-hero {
+  display: inline-flex;
+  width: auto;
+  max-width: none;
+  margin-top: 0.85rem;
+  border-radius: 0;
+  border: 3px solid #000;
+  background: linear-gradient(#7a6a9a, #5c4f75);
+  color: #fff;
+  font-family: var(--font-mc);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: 2px 2px 0 #2a2436;
+  box-shadow:
+    inset 3px 3px 0 rgba(255, 255, 255, 0.22),
+    inset -3px -3px 0 rgba(0, 0, 0, 0.4);
+  min-height: 2.75rem;
+  padding: 0.55rem 1.15rem;
+}
+
+.page-commands .cmd-discord .btn-hero::after {
+  content: none;
+}
+
+.page-commands .cmd-discord .btn-hero:hover {
+  transform: none;
+  background: linear-gradient(#9583b8, #6b5d8a);
+  color: #fff;
+}
+
+.page-commands .cmd-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 1.25rem;
+}
+
+.page-commands .cmd-jump a {
+  font-family: var(--font-mc);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #f4f0fa;
+  text-decoration: none;
+  border: 3px solid #000;
+  background: #241e32;
+  padding: 0.32rem 0.6rem;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.12),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.4),
+    3px 3px 0 #000;
+}
+
+.page-commands .cmd-jump a:hover {
+  background: #3a3350;
+  color: #fff;
+}
+
+.page-commands .cmd-section {
+  margin-bottom: 1.35rem;
+}
+
+.page-commands .cmd-section h2 {
+  scroll-margin-top: 5rem;
+  font-family: var(--font-mc);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--text);
+  margin: 0 0 0.55rem;
+}
+
+.page-commands .cmd-section-lead {
+  font-size: 0.96rem;
+  margin-bottom: 0.7rem;
+}
+
+.page-commands .cmd-section-lead code {
+  font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", "Consolas", monospace;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: var(--java);
+}
+
+.page-commands .cmd-table-wrap {
+  border-radius: 0;
+  border: 4px solid #000;
+  background: #0c0a10;
+  overflow-x: auto;
+  box-shadow: var(--mc-in), 4px 4px 0 #000;
+}
+
+.page-commands .cmd-table {
+  font-family: var(--font-sans);
+}
+
+.page-commands .cmd-table th,
+.page-commands .cmd-table td {
+  padding: 0.7rem 0.85rem;
+  border-bottom: 3px solid #000;
+}
+
+.page-commands .cmd-table th {
+  font-family: var(--font-mc);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-muted);
+  background: #241e32;
+}
+
+.page-commands .cmd-table tbody tr:nth-child(even) td {
+  background: #14101c;
+}
+
+.page-commands .cmd-table tbody tr:hover td {
+  background: #221c30;
+}
+
+.page-commands .cmd-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.page-commands .cmd-table td:last-child {
+  color: var(--text-muted);
+}
+
+.page-commands .cmd-table code {
+  font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", "Consolas", monospace;
+  font-size: 0.86em;
+  font-weight: 600;
+  color: var(--java);
+  background: transparent;
+}
+
+.page-commands .cmd-close {
+  margin: 1.35rem 0 0;
+  text-align: center;
+  font-family: var(--font-mc);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.page-commands .cmd-close .domain-link,
+.page-commands .cmd-footnote a {
+  font-weight: 700;
+}
+
+.page-commands .cmd-footnote {
+  margin-top: 1.15rem;
+  padding-top: 0;
+  border-top: 0;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+}
+
+.page-commands #discord {
+  scroll-margin-top: 5rem;
+}

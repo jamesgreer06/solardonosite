@@ -1,8 +1,9 @@
-/* Homepage, status, and economy — Minecraft End City GUI. Same purple palette. */
+/* Homepage, status, economy, and commands — Minecraft End City GUI. Same purple palette. */
 
 .page-home,
 .page-status,
-.page-economy {
+.page-economy,
+.page-commands {
   --end-stone: #d4c4a0;
   --end-stone-dim: #a89878;
   --end-rod: #f3e9ff;
@@ -27,7 +28,8 @@
 
 .page-home .noise,
 .page-status .noise,
-.page-economy .noise {
+.page-economy .noise,
+.page-commands .noise {
   opacity: 0.04;
 }
 
@@ -52,7 +54,8 @@
 /* Inventory-bar header */
 .page-home .site-header,
 .page-status .site-header,
-.page-economy .site-header {
+.page-economy .site-header,
+.page-commands .site-header {
   border-bottom: 4px solid #000;
   border-radius: 0;
   background: #241e32;
@@ -65,7 +68,8 @@
 
 .page-home .logo,
 .page-status .logo,
-.page-economy .logo {
+.page-economy .logo,
+.page-commands .logo {
   font-family: var(--font-mc);
   letter-spacing: 0.04em;
   display: inline-flex;
@@ -76,7 +80,8 @@
 
 .page-home .logo-mark,
 .page-status .logo-mark,
-.page-economy .logo-mark {
+.page-economy .logo-mark,
+.page-commands .logo-mark {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
@@ -92,7 +97,8 @@
 
 .page-home .nav a:not(.nav-cta),
 .page-status .nav a:not(.nav-cta),
-.page-economy .nav a:not(.nav-cta) {
+.page-economy .nav a:not(.nav-cta),
+.page-commands .nav a:not(.nav-cta) {
   font-family: var(--font-mc);
   font-size: 0.92rem;
   letter-spacing: 0.04em;
@@ -103,7 +109,9 @@
 .page-status .nav .nav-cta,
 .page-status .nav-cta--panel,
 .page-economy .nav .nav-cta,
-.page-economy .nav-cta--panel {
+.page-economy .nav-cta--panel,
+.page-commands .nav .nav-cta,
+.page-commands .nav-cta--panel {
   border-radius: 0 !important;
   border: 3px solid #000 !important;
   background: #6b5d8a !important;
@@ -119,14 +127,17 @@
 .page-status .nav .nav-cta:hover,
 .page-status .nav-cta--panel:hover,
 .page-economy .nav .nav-cta:hover,
-.page-economy .nav-cta--panel:hover {
+.page-economy .nav-cta--panel:hover,
+.page-commands .nav .nav-cta:hover,
+.page-commands .nav-cta--panel:hover {
   background: #8a74b0 !important;
   color: #fff !important;
 }
 
 .page-home .nav-panel,
 .page-status .nav-panel,
-.page-economy .nav-panel {
+.page-economy .nav-panel,
+.page-commands .nav-panel {
   background: #1c1828;
   border-bottom: 4px solid #000;
 }
@@ -405,7 +416,10 @@
 .page-status .nav .nav-cta:focus-visible,
 .page-status .status-range__btn:focus-visible,
 .page-economy .nav .nav-cta:focus-visible,
-.page-economy .btn-hero:focus-visible {
+.page-economy .btn-hero:focus-visible,
+.page-commands .nav .nav-cta:focus-visible,
+.page-commands .btn-hero:focus-visible,
+.page-commands .cmd-jump a:focus-visible {
   outline: 3px solid #e8d48b;
   outline-offset: 3px;
 }
@@ -1037,7 +1051,8 @@
 
 .page-home .site-footer,
 .page-status .site-footer,
-.page-economy .site-footer {
+.page-economy .site-footer,
+.page-commands .site-footer {
   border-top: 4px solid #000;
   background: #241e32;
   box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.08);
