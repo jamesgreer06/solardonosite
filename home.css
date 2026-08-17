@@ -1,9 +1,10 @@
-/* Homepage, status, economy, and commands — Minecraft End City GUI. Same purple palette. */
+/* Homepage, status, economy, commands, and mods — Minecraft End City GUI. Same purple palette. */
 
 .page-home,
 .page-status,
 .page-economy,
-.page-commands {
+.page-commands,
+.page-mods {
   --end-stone: #d4c4a0;
   --end-stone-dim: #a89878;
   --end-rod: #f3e9ff;
@@ -29,7 +30,8 @@
 .page-home .noise,
 .page-status .noise,
 .page-economy .noise,
-.page-commands .noise {
+.page-commands .noise,
+.page-mods .noise {
   opacity: 0.04;
 }
 
@@ -55,7 +57,8 @@
 .page-home .site-header,
 .page-status .site-header,
 .page-economy .site-header,
-.page-commands .site-header {
+.page-commands .site-header,
+.page-mods .site-header {
   border-bottom: 4px solid #000;
   border-radius: 0;
   background: #241e32;
@@ -69,7 +72,8 @@
 .page-home .logo,
 .page-status .logo,
 .page-economy .logo,
-.page-commands .logo {
+.page-commands .logo,
+.page-mods .logo {
   font-family: var(--font-mc);
   letter-spacing: 0.04em;
   display: inline-flex;
@@ -81,7 +85,8 @@
 .page-home .logo-mark,
 .page-status .logo-mark,
 .page-economy .logo-mark,
-.page-commands .logo-mark {
+.page-commands .logo-mark,
+.page-mods .logo-mark {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
@@ -98,7 +103,8 @@
 .page-home .nav a:not(.nav-cta),
 .page-status .nav a:not(.nav-cta),
 .page-economy .nav a:not(.nav-cta),
-.page-commands .nav a:not(.nav-cta) {
+.page-commands .nav a:not(.nav-cta),
+.page-mods .nav a:not(.nav-cta) {
   font-family: var(--font-mc);
   font-size: 0.92rem;
   letter-spacing: 0.04em;
@@ -111,7 +117,9 @@
 .page-economy .nav .nav-cta,
 .page-economy .nav-cta--panel,
 .page-commands .nav .nav-cta,
-.page-commands .nav-cta--panel {
+.page-commands .nav-cta--panel,
+.page-mods .nav .nav-cta,
+.page-mods .nav-cta--panel {
   border-radius: 0 !important;
   border: 3px solid #000 !important;
   background: #6b5d8a !important;
@@ -129,7 +137,9 @@
 .page-economy .nav .nav-cta:hover,
 .page-economy .nav-cta--panel:hover,
 .page-commands .nav .nav-cta:hover,
-.page-commands .nav-cta--panel:hover {
+.page-commands .nav-cta--panel:hover,
+.page-mods .nav .nav-cta:hover,
+.page-mods .nav-cta--panel:hover {
   background: #8a74b0 !important;
   color: #fff !important;
 }
@@ -137,7 +147,8 @@
 .page-home .nav-panel,
 .page-status .nav-panel,
 .page-economy .nav-panel,
-.page-commands .nav-panel {
+.page-commands .nav-panel,
+.page-mods .nav-panel {
   background: #1c1828;
   border-bottom: 4px solid #000;
 }
@@ -183,16 +194,10 @@
   padding: 0 0.5rem 1.75rem;
 }
 
-.mc-splash {
+.mc-title-mark {
+  position: relative;
   display: inline-block;
-  margin: 0;
-  font-family: var(--font-mc);
-  font-size: clamp(1.05rem, 3vw, 1.55rem);
-  font-weight: 700;
-  color: #e8d48b;
-  text-shadow: 2px 2px 0 #3a3018;
-  transform: rotate(-8deg);
-  letter-spacing: 0.02em;
+  overflow: visible;
 }
 
 .page-home .intro-title {
@@ -201,18 +206,37 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  line-height: 0.92;
-  margin: 0.15rem 0 0.35rem;
+  line-height: 0.82;
+  margin: 0.15rem 0 0;
   color: #f4f0fa;
   text-shadow:
     5px 5px 0 #1a1520,
     0 0 28px rgba(157, 139, 201, 0.4);
 }
 
-.mc-title-sub {
-  margin: 0 0 0.85rem;
+.mc-splash {
+  position: absolute;
+  right: 0;
+  bottom: 0.08em;
+  z-index: 2;
+  display: inline-block;
+  margin: 0;
+  white-space: nowrap;
   font-family: var(--font-mc);
-  font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+  font-size: clamp(1.05rem, 3vw, 1.55rem);
+  font-weight: 700;
+  color: #e8d48b;
+  text-shadow: 2px 2px 0 #3a3018;
+  letter-spacing: 0.02em;
+  transform: translate(38%, 34%) rotate(-20deg);
+  transform-origin: center;
+  pointer-events: none;
+}
+
+.mc-title-sub {
+  margin: -0.4rem 0 0.85rem;
+  font-family: var(--font-mc);
+  font-size: clamp(0.95rem, 2.2vw, 1.6rem);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-muted);
@@ -419,7 +443,9 @@
 .page-economy .btn-hero:focus-visible,
 .page-commands .nav .nav-cta:focus-visible,
 .page-commands .btn-hero:focus-visible,
-.page-commands .cmd-jump a:focus-visible {
+.page-commands .cmd-jump a:focus-visible,
+.page-mods .nav .nav-cta:focus-visible,
+.page-mods .domain-link:focus-visible {
   outline: 3px solid #e8d48b;
   outline-offset: 3px;
 }
@@ -669,6 +695,13 @@
   font-size: 0.95rem;
   line-height: 1.45;
   color: var(--text-muted);
+}
+
+.page-home .city-motto .world-size {
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--text);
 }
 
 .city-split {
@@ -1052,7 +1085,8 @@
 .page-home .site-footer,
 .page-status .site-footer,
 .page-economy .site-footer,
-.page-commands .site-footer {
+.page-commands .site-footer,
+.page-mods .site-footer {
   border-top: 4px solid #000;
   background: #241e32;
   box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.08);
@@ -1068,8 +1102,8 @@
   }
 
   .mc-splash {
-    transform: rotate(-4deg);
-    font-size: 1.05rem;
+    font-size: 0.95rem;
+    transform: translate(32%, 36%) rotate(-20deg);
   }
 
   .page-home .mc-title .hero-actions .btn-hero {

@@ -3,24 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Endcity Survival — mods and clients not allowed. Fair play for Java and Bedrock at endcity.net." />
-  <meta name="theme-color" content="#0a0a0c" />
-  <title>Prohibited mods — Endcity Survival</title>
+  <meta name="description" content="Endcity Survival — computer mods that are not allowed, so phone and console players stay even at endcity.net." />
+  <meta name="theme-color" content="#241e32" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <title>Mod list — Endcity</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="home.css" />
+  <link rel="stylesheet" href="mods.css" />
 </head>
-<body>
+<body class="page-mods">
+  <a class="skip-link" href="#top">Skip to content</a>
   <div class="noise" aria-hidden="true"></div>
+  <div class="void-stars" aria-hidden="true"></div>
   <header class="site-header">
-    <a class="logo" href="index.html">Endcity<span> Survival</span></a>
+    <a class="logo" href="index.html"><span class="logo-mark" aria-hidden="true"></span>Endcity</a>
     <nav class="nav" aria-label="Primary">
-      <a href="index.html#join">Join</a>
-      <a href="index.html#about">About</a>
+      <a href="index.html#join">Play</a>
       <a href="index.html#rules">Rules</a>
-      <a href="index.html#economy">Economy</a>
-      <a href="commands.html">Commands</a>
+      <a href="index.html#economy">Shop</a>
       <a href="/status">Status</a>
       <a class="nav-cta" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
     </nav>
@@ -30,64 +34,57 @@
   </header>
   <div id="nav-panel" class="nav-panel" hidden>
     <div class="nav-panel-group">
-      <a href="index.html#join">Join</a>
-      <a href="index.html#about">About</a>
+      <a href="index.html#join">Play</a>
       <a href="index.html#rules">Rules</a>
-      <a href="index.html#economy">Economy</a>
-      <a href="commands.html">Commands</a>
+      <a href="index.html#economy">Shop</a>
       <a href="/status">Status</a>
+      <a href="commands.html">Commands</a>
       <a class="nav-cta nav-cta--panel" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a>
     </div>
   </div>
 
-  <main class="page-commands-main" id="top">
-    <p class="intro-eyebrow">Fair play</p>
-    <h1 class="intro-title">Prohibited mods &amp; clients</h1>
+  <main class="page-commands-main page-mods-main" id="top">
+    <p class="edition-kicker">Fair play</p>
+    <h1 class="intro-title">Mod list</h1>
     <p class="page-commands-lead">
-      Java and Bedrock already play on different clients—we don’t need Java-only tools that make navigation and awareness easier than what Bedrock players can match. These mods are <strong>banned</strong> because they’re common on the server and widen that gap.
+      Some computer mods are not allowed, so phone and console players stay even.
     </p>
 
-    <section class="cmd-section" aria-labelledby="banned-mods-heading">
-      <h2 id="banned-mods-heading">Explicitly not allowed</h2>
-      <p class="mods-policy-note">Do not use the following (including optional features like cave maps or entity radar if you enable them):</p>
-      <div class="cmd-table-wrap">
-        <table class="cmd-table">
-          <thead>
-            <tr>
-              <th scope="col">Mod</th>
-              <th scope="col">Why</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <a class="domain-link" href="https://modrinth.com/mod/xaeros-world-map" rel="noopener noreferrer" target="_blank">Xaero’s World Map</a>
-              </td>
-              <td>Full map and waypoint tooling not available to Bedrock; unfair world awareness at scale.</td>
-            </tr>
-            <tr>
-              <td>
-                <a class="domain-link" href="https://modrinth.com/mod/xaeros-minimap" rel="noopener noreferrer" target="_blank">Xaero’s Minimap</a>
-              </td>
-              <td>Minimap and related features (waypoints, radar-style info) stack advantage on Java over Bedrock.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+    <article class="mods-sign">
+      <p class="edition-kicker">These two stay off</p>
+      <p>That includes extras like cave maps or entity radar, even if the rest of the mod looks quiet.</p>
+    </article>
 
-    <section class="cmd-section" aria-labelledby="general-heading">
-      <h2 id="general-heading">Everything else</h2>
-      <p class="mods-policy-outro">
-        Hacks, x-ray, automation that bypasses fair play, and other unfair edges are still covered under the
-        <a href="index.html#rules">server rules</a>. If you’re unsure about a mod or shader pack, ask staff on
-        <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a> before you rely on it.
-      </p>
-    </section>
+    <div class="mods-split" aria-labelledby="banned-mods-heading">
+      <h2 id="banned-mods-heading" class="sr-only">Mods not allowed</h2>
+      <article class="mods-card">
+        <p class="edition-kicker">Not allowed</p>
+        <h3 class="mods-card__title">Xaero’s World Map</h3>
+        <p>A full map and waypoints. Phones and consoles don’t get that kind of view.</p>
+        <a class="domain-link" href="https://modrinth.com/mod/xaeros-world-map" rel="noopener noreferrer" target="_blank">View on Modrinth</a>
+      </article>
+      <article class="mods-card">
+        <p class="edition-kicker">Not allowed</p>
+        <h3 class="mods-card__title">Xaero’s Minimap</h3>
+        <p>A minimap plus radar-style info. Same extra edge.</p>
+        <a class="domain-link" href="https://modrinth.com/mod/xaeros-minimap" rel="noopener noreferrer" target="_blank">View on Modrinth</a>
+      </article>
+    </div>
+
+    <article class="mods-panel" id="general-heading">
+      <p class="edition-kicker">Still counts</p>
+      <h2 class="mods-panel__title">Everything else</h2>
+      <p>Hacks, x-ray, and bots that play for you are still against the <a class="domain-link" href="index.html#rules">rules</a>.</p>
+      <p>Not sure about a mod? Ask on <a class="domain-link" href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a> first.</p>
+    </article>
+
+    <p class="mods-close">
+      Ready to play? <a class="domain-link" href="index.html#join">Pick your door</a>.
+    </p>
   </main>
 
   <footer class="site-footer">
-    <p><strong>Endcity Survival</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="index.html">Home</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
+    <p><strong>Endcity</strong> · <a href="https://endcity.net">endcity.net</a> · <a href="index.html">Home</a> · <a href="/status">Status</a> · <a href="https://discord.gg/Z5sZx9cjsC" data-discord-invite target="_blank" rel="noopener noreferrer">Discord</a></p>
     <p class="footer-small">Not affiliated with Mojang or Microsoft. Minecraft is a trademark of Mojang Synergies AB.</p>
   </footer>
 
