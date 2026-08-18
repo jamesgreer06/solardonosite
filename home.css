@@ -697,13 +697,6 @@
   color: var(--text-muted);
 }
 
-.page-home .city-motto .world-size {
-  font-family: var(--font-sans);
-  font-variant-numeric: tabular-nums;
-  font-weight: 700;
-  color: var(--text);
-}
-
 .city-split {
   display: grid;
   gap: 1rem;
