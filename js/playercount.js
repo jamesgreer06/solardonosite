@@ -20,6 +20,7 @@
   var MAX_POINTS = 5000;
   var MIN_BRUSH_MS = 2 * 60 * 1000;
   var MIN_DRAG_PX = 10;
+  var DROPOUT_ZERO_MS = 30 * 60 * 1000;
   var brushWindow = null;
   var brushDrag = null;
   var touchBrushPending = null;
@@ -116,13 +117,58 @@
     return { minT: anchorNow - windowMs, windowMs: windowMs, mode: "preset" };
   }
 
+  function dropDropoutZeros(list) {
+    if (!Array.isArray(list) || !list.length) return [];
+    var keep = list.map(function () {
+      return true;
+    });
+    var i = 0;
+    while (i < list.length) {
+      if (list[i].v > 0) {
+        i += 1;
+        continue;
+      }
+      var start = i;
+      while (i < list.length && list[i].v === 0) i += 1;
+      var end = i - 1;
+      var prev = start > 0 ? list[start - 1] : null;
+      var next = end + 1 < list.length ? list[end + 1] : null;
+      var runMs = list[end].t - list[start].t;
+      var flanked =
+        prev &&
+        next &&
+        prev.v > 0 &&
+        next.v > 0 &&
+        list[start].t - prev.t <= DROPOUT_ZERO_MS &&
+        next.t - list[end].t <= DROPOUT_ZERO_MS &&
+        runMs <= DROPOUT_ZERO_MS;
+      var trailingShort =
+        prev && prev.v > 0 && !next && list[end].t - prev.t <= DROPOUT_ZERO_MS;
+      if (flanked || trailingShort) {
+        for (var k = start; k <= end; k += 1) keep[k] = false;
+      }
+    }
+    return list.filter(function (_pt, idx) {
+      return keep[idx];
+    });
+  }
+
   function getRangeHistory() {
     var vw = getViewWindow();
     var minT = vw.minT;
     var maxT = vw.minT + vw.windowMs;
-    return history.filter(function (pt) {
-      return pt.t >= minT && pt.t <= maxT;
-    });
+    var cleaned = dropDropoutZeros(history);
+    var inRange = [];
+    var before = null;
+    for (var i = 0; i < cleaned.length; i += 1) {
+      var pt = cleaned[i];
+      if (pt.t < minT) before = pt;
+      else if (pt.t <= maxT) inRange.push(pt);
+    }
+    if (before && (!inRange.length || inRange[0].t > minT)) {
+      inRange.unshift({ t: minT, v: before.v });
+    }
+    return inRange;
   }
 
   function updateGraphHeading() {
@@ -326,20 +372,26 @@
       return;
     }
 
-    var d = "";
-    rangeHistory.forEach(function (pt, idx) {
-      var x = xScale(pt.t);
-      var y = yScale(pt.v);
-      d += (idx === 0 ? "M" : " L") + x.toFixed(2) + " " + y.toFixed(2);
-      if (idx === rangeHistory.length - 1) {
-        var dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        dot.setAttribute("cx", x.toFixed(2));
-        dot.setAttribute("cy", y.toFixed(2));
-        dot.setAttribute("r", "4");
-        dot.setAttribute("class", "status-point status-point--latest");
-        pointsEl.appendChild(dot);
-      }
-    });
+    var first = rangeHistory[0];
+    var d = "M" + xScale(first.t).toFixed(2) + " " + yScale(first.v).toFixed(2);
+    for (var p = 1; p < rangeHistory.length; p += 1) {
+      var nx = xScale(rangeHistory[p].t);
+      var ny = yScale(rangeHistory[p].v);
+      d += " H" + nx.toFixed(2) + " V" + ny.toFixed(2);
+    }
+    var holdT = Math.min(minT + windowMs, Date.now());
+    var lastHold = rangeHistory[rangeHistory.length - 1];
+    if (lastHold.t < holdT) {
+      d += " H" + xScale(holdT).toFixed(2);
+    }
+    var lastX = xScale(lastHold.t < holdT ? holdT : lastHold.t);
+    var lastY = yScale(lastHold.v);
+    var dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    dot.setAttribute("cx", lastX.toFixed(2));
+    dot.setAttribute("cy", lastY.toFixed(2));
+    dot.setAttribute("r", "4");
+    dot.setAttribute("class", "status-point status-point--latest");
+    pointsEl.appendChild(dot);
     lineEl.setAttribute("d", d);
     lastGeometry = {
       width: width,
@@ -433,6 +485,7 @@
       players: normalizePlayers((data && data.players) || []),
       version: (data && data.version) || "Unknown",
       stale: data && data.stale === true,
+      updatedAt: Number(data && data.updatedAt) || 0,
     };
   }
 
@@ -442,17 +495,21 @@
     var missing = Math.max(0, parsed.onlineCount - parsed.players.length);
     if (parsed.online) {
       onlineEl.textContent = String(parsed.onlineCount);
-      maxEl.textContent = String(parsed.maxCount);
-      stateEl.textContent = "Online";
+      if (parsed.maxCount > 0) maxEl.textContent = String(parsed.maxCount);
+      stateEl.textContent = parsed.stale ? "Online · last check" : "Online";
       stateEl.classList.remove("is-offline");
-      versionEl.textContent = "Version: " + parsed.version;
-      setPlayers(parsed.players, missing);
+      if (parsed.version && parsed.version !== "Unknown") {
+        versionEl.textContent = "Version: " + parsed.version;
+      }
+      if (parsed.players.length || missing > 0) {
+        setPlayers(parsed.players, missing);
+      }
       if (parsed.onlineCount > (allTimeHigh.value || 0)) {
         allTimeHigh = { value: parsed.onlineCount, timestamp: nowTs };
       }
       playerNoteEl.hidden = true;
       playerNoteEl.textContent = "";
-      addSample(parsed.onlineCount);
+      if (!parsed.stale) addSample(parsed.onlineCount);
     } else {
       onlineEl.textContent = "0";
       maxEl.textContent = "0";
@@ -462,9 +519,9 @@
       setPlayers([], 0);
       playerNoteEl.hidden = true;
       playerNoteEl.textContent = "";
-      addSample(0);
     }
-    updatedEl.textContent = "Last updated: " + fmtTime(nowTs);
+    var stamp = parsed.stale && parsed.updatedAt ? parsed.updatedAt : nowTs;
+    updatedEl.textContent = (parsed.stale ? "Last confirmed: " : "Last updated: ") + fmtTime(stamp);
     drawGraph();
   }
 
@@ -476,7 +533,7 @@
       })
       .then(updateStatus)
       .catch(function () {
-        updateStatus({ online: false });
+        // Keep the last good card/graph; a failed poll is not an empty server.
       });
   }
 

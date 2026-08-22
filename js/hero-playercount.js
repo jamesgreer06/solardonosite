@@ -27,14 +27,9 @@
     var parsed = parseCurrentPayload(data || {});
     if (parsed.online) {
       onlineEl.textContent = String(parsed.onlineCount);
-      maxEl.textContent = String(parsed.maxCount);
+      if (parsed.maxCount > 0) maxEl.textContent = String(parsed.maxCount);
       root.classList.remove("is-offline");
       if (dotEl) dotEl.classList.remove("is-offline");
-    } else {
-      onlineEl.textContent = "0";
-      maxEl.textContent = "0";
-      root.classList.add("is-offline");
-      if (dotEl) dotEl.classList.add("is-offline");
     }
   }
 
@@ -46,7 +41,7 @@
       })
       .then(update)
       .catch(function () {
-        update({ online: false });
+        // Keep the last good count; a failed poll is not an empty server.
       });
   }
 
